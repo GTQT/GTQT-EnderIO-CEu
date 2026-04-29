@@ -256,13 +256,35 @@ def combineResourceJsons = (path, push, get) -> {
     target << JsonOutput.prettyPrint(JsonOutput.toJson(get()))
 }
 
+def assetFiles = [
+    "mcmod.info",
+    "assets/enderio/sounds.json",
+]
+def assetDirs = [
+    "assets/enderio/lang"
+]
+
 tasks.register('combinedAssets') {
-    dependsOn subprojects.findAll { it.name.replace(":", "") in modsToCombine }.collect { it.tasks.named('build') }
+    dependsOn subprojects.findAll { it.name.replace(":", "") in modsToCombine }.collect { it.tasks.named('processResources') }
     dependsOn processResources
 
-    outputs.file("${generatedResourceDir}/mcmod.info")
-    outputs.file("${generatedResourceDir}/assets/enderio/sounds.json")
-    outputs.dir("${generatedResourceDir}/assets/enderio/lang")
+    assetFiles.forEach { outputs.file("${generatedResourceDir}/${it}") }
+    assetDirs.forEach { outputs.dir("${generatedResourceDir}/${it}") }
+
+    modsToCombine.forEach { mod ->
+        assetFiles.forEach { name ->
+            def fp = "${mod}/${generatedResourceDir}/${name}"
+            if (file(fp).exists()) {
+                inputs.file(fp)
+            }
+        }
+        assetDirs.forEach { dir ->
+            def fp = "${mod}/${generatedResourceDir}/${dir}"
+            if (file(fp).exists()) {
+                inputs.dir(fp)
+            }
+        }
+    }
 
     doLast {
         def mcmod = []
