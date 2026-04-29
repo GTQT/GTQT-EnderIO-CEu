@@ -1268,6 +1268,7 @@ enderio.loot.capacitor.intake=Hungry %s
 enderio.loot.capacitor.buffer=Insatiable %s
 
 # Names for capacitor levels, the number is the upper boundary of the range (e.g. "25" is used for capacitors level 1.51 to 2.5)
+# "45" is instead used for all levels above 3.51
 # This is the general level of the capacitor
 enderio.loot.capacitor.baselevel.10=%s Dud
 enderio.loot.capacitor.baselevel.15=%s
