@@ -38,10 +38,12 @@ public class ItemSettings extends BaseSettingsPanel {
   private static final int ID_PRIORITY_DOWN = 26;
   private static final int ID_INSERT_CHANNEL = 23;
   private static final int ID_EXTRACT_CHANNEL = 27;
+  private static final int ID_SLOT_SWITCH = 31;
 
   private @Nonnull IItemConduit itemConduit;
 
   private final ToggleButton loopB;
+  private final ToggleButton slotSwitchB;
   private final ToggleButton roundRobinB;
 
   private final MultiIconButton priUpB;
@@ -84,6 +86,13 @@ public class ItemSettings extends BaseSettingsPanel {
     loopB.setUnselectedToolTip(Lang.GUI_SELF_FEED_DISABLED.get());
     loopB.setPaintSelectedBorder(false);
 
+    x += 4 + loopB.getWidth();
+    // TODO: icons temp
+    slotSwitchB = new ToggleButton(gui, ID_SLOT_SWITCH, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
+    slotSwitchB.setSelectedToolTip(Lang.GUI_SLOT_SWITCH_ENABLED.get());
+    slotSwitchB.setUnselectedToolTip(Lang.GUI_SLOT_SWITCH_DISABLED.get());
+    slotSwitchB.setPaintSelectedBorder(false);
+
     y += insertChannelB.getHeight() + 6;
     x = rightColumn;
 
@@ -119,6 +128,8 @@ public class ItemSettings extends BaseSettingsPanel {
     loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.getDir()));
     roundRobinB.onGuiInit();
     roundRobinB.setSelected(itemConduit.isRoundRobinEnabled(gui.getDir()));
+    slotSwitchB.onGuiInit();
+    slotSwitchB.setSelected(itemConduit.isSlotSwitchEnabled(gui.getDir()));
 
     priUpB.onGuiInit();
     priDownB.onGuiInit();
@@ -140,6 +151,8 @@ public class ItemSettings extends BaseSettingsPanel {
       itemConduit.setSelfFeedEnabled(gui.getDir(), !itemConduit.isSelfFeedEnabled(gui.getDir()));
     } else if (guiButton.id == ID_ROUND_ROBIN) {
       itemConduit.setRoundRobinEnabled(gui.getDir(), !itemConduit.isRoundRobinEnabled(gui.getDir()));
+    } else if (guiButton.id == ID_SLOT_SWITCH) {
+      itemConduit.setSlotSwitchEnabled(gui.getDir(), !itemConduit.isSlotSwitchEnabled(gui.getDir()));
     } else if (guiButton.id == ID_PRIORITY_UP) {
       itemConduit.setOutputPriority(gui.getDir(), itemConduit.getOutputPriority(gui.getDir()) + 1);
     } else if (guiButton.id == ID_PRIORITY_DOWN) {
@@ -188,6 +201,7 @@ public class ItemSettings extends BaseSettingsPanel {
     rsB.detach();
     colorB.detach();
     roundRobinB.detach();
+    slotSwitchB.detach();
     loopB.detach();
     priUpB.detach();
     priDownB.detach();

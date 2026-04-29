@@ -19,6 +19,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemCo
 
   private boolean loopMode;
   private boolean roundRobin;
+  private boolean slotSwitch;
   private DyeColor colIn;
   private DyeColor colOut;
   private int priority;
@@ -33,6 +34,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemCo
     super(con, dir);
     loopMode = con.isSelfFeedEnabled(dir);
     roundRobin = con.isRoundRobinEnabled(dir);
+    slotSwitch = con.isSlotSwitchEnabled(dir);
     colIn = con.getInputColor(dir);
     colOut = con.getOutputColor(dir);
     priority = con.getOutputPriority(dir);
@@ -46,6 +48,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemCo
     super.write(buf);
     buf.writeBoolean(loopMode);
     buf.writeBoolean(roundRobin);
+    buf.writeBoolean(slotSwitch);
     buf.writeInt(priority);
     buf.writeShort(colIn.ordinal());
     buf.writeShort(colOut.ordinal());
@@ -58,6 +61,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemCo
     super.read(buf);
     loopMode = buf.readBoolean();
     roundRobin = buf.readBoolean();
+    slotSwitch = buf.readBoolean();
     priority = buf.readInt();
     colIn = DyeColor.fromIndex(buf.readShort());
     colOut = DyeColor.fromIndex(buf.readShort());
@@ -73,6 +77,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemCo
       if (conduit != null) {
         conduit.setSelfFeedEnabled(message.dir, message.loopMode);
         conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
+        conduit.setSlotSwitchEnabled(message.dir, message.slotSwitch);
         conduit.setInputColor(message.dir, NullHelper.first(message.colIn, DyeColor.BLACK));
         conduit.setOutputColor(message.dir, NullHelper.first(message.colOut, DyeColor.BLACK));
         conduit.setOutputPriority(message.dir, message.priority);

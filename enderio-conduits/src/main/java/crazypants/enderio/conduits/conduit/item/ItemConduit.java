@@ -103,6 +103,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
   protected final @Nonnull EnumMap<EnumFacing, Boolean> selfFeed = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
   protected final @Nonnull EnumMap<EnumFacing, Boolean> roundRobin = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Boolean> slotSwitch = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
   protected final @Nonnull EnumMap<EnumFacing, Integer> priorities = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
 
@@ -134,6 +135,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
     setOutputColor(dir, EnumReader.get(DyeColor.class, dataRoot.getShort("outputColor")));
     setSelfFeedEnabled(dir, dataRoot.getBoolean("selfFeed"));
     setRoundRobinEnabled(dir, dataRoot.getBoolean("roundRobin"));
+    setSlotSwitchEnabled(dir, dataRoot.getBoolean("slotSwitch"));
     setOutputPriority(dir, dataRoot.getInteger("outputPriority"));
   }
 
@@ -146,6 +148,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
     dataRoot.setShort("outputColor", (short) getOutputColor(dir).ordinal());
     dataRoot.setBoolean("selfFeed", isSelfFeedEnabled(dir));
     dataRoot.setBoolean("roundRobin", isRoundRobinEnabled(dir));
+    dataRoot.setBoolean("slotSwitch", isSlotSwitchEnabled(dir));
     dataRoot.setInteger("outputPriority", getOutputPriority(dir));
   }
 
@@ -443,6 +446,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
 
   @Override
   @Nonnull
+  public Map<EnumFacing, Boolean> getSlotSwitch() {
+    return slotSwitch;
+  }
+
+  @Override
+  @Nonnull
   public Map<EnumFacing, Integer> getOutputPriorities() {
     return priorities;
   }
@@ -588,6 +597,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
       }
     }
 
+    for (Entry<EnumFacing, Boolean> entry : slotSwitch.entrySet()) {
+      if (entry.getValue() != null) {
+        nbtRoot.setBoolean("slotSwitch." + entry.getKey().name(), entry.getValue());
+      }
+    }
+
     for (Entry<EnumFacing, Integer> entry : priorities.entrySet()) {
       if (entry.getValue() != null) {
         nbtRoot.setInteger("priority." + entry.getKey().name(), entry.getValue());
@@ -688,6 +703,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
       if (nbtRoot.hasKey(key)) {
         boolean val = nbtRoot.getBoolean(key);
         roundRobin.put(dir, val);
+      }
+
+      key = "slotSwitch." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        boolean val = nbtRoot.getBoolean(key);
+        slotSwitch.put(dir, val);
       }
 
       key = "priority." + dir.name();

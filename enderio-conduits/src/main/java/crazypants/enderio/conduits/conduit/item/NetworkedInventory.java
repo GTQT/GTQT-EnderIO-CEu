@@ -143,6 +143,7 @@ public class NetworkedInventory {
     }
 
     final int maxExtracted = con.getMaximumExtracted(conDir);
+    final boolean switchSlot = con.isSlotSwitchEnabled(conDir);
     final IItemFilter filter = valid(con.getInputFilter(conDir));
 
     int slotChecksPerTick = ConduitConfig.maxSlotCheckPerTick.get();
@@ -172,7 +173,7 @@ public class NetworkedInventory {
         }
 
         if (doTransfer(inventory, item, slot)) {
-          if (inventory.getStackInSlot(slot).isEmpty()) {
+          if (inventory.getStackInSlot(slot).isEmpty() || switchSlot) {
             setNextStartingSlot(slot + 1);
           } else {
             setNextStartingSlot(slot);

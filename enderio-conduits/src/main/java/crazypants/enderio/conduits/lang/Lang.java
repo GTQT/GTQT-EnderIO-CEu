@@ -15,6 +15,8 @@ public enum Lang implements ILang {
   GUI_CONDUIT_CHANNEL(".gui.conduit_channel"),
   GUI_ROUND_ROBIN_ENABLED(".gui.round_robin_enabled"),
   GUI_ROUND_ROBIN_DISABLED(".gui.round_robin_disabled"),
+  GUI_SLOT_SWITCH_ENABLED(".gui.slot_switch_enabled"),
+  GUI_SLOT_SWITCH_DISABLED(".gui.slot_switch_disabled"),
   GUI_SELF_FEED_ENABLED(".gui.self_feed_enabled"),
   GUI_SELF_FEED_DISABLED(".gui.self_feed_disabled"),
   GUI_ITEM_FILTER_UPGRADE(".gui.item_filter_upgrade"),

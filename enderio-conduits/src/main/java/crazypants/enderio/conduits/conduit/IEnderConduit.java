@@ -1,5 +1,6 @@
 package crazypants.enderio.conduits.conduit;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -112,6 +113,38 @@ public interface IEnderConduit {
   }
 
   /**
+   * Checks if the given conduit connection is using slot switch to select the next slot of the inventory it extracts from
+   * 
+   * @param dir
+   *          Direction of the conduit connection
+   * @return true if the given input connection has slot switch enabled
+   */
+  default boolean isSlotSwitchEnabled(@Nonnull EnumFacing dir) {
+    Boolean val = getSlotSwitch().get(dir);
+    if (val == null) {
+      return false;
+    }
+    return val;
+  }
+
+  /**
+   * Sets slot switch for a given conduit connection
+   * 
+   * @param dir
+   *          Direction of a conduit connection
+   * @param enabled
+   *          true to enable slot switch, false to disable it
+   */
+  default void setSlotSwitchEnabled(@Nonnull EnumFacing dir, boolean enabled) {
+    if (!enabled) {
+      getSlotSwitch().remove(dir);
+    } else {
+      getSlotSwitch().put(dir, enabled);
+    }
+    refreshConnection(dir);
+  }
+
+  /**
    * Gets the color channel for the given conduit input connection
    * 
    * @param dir
@@ -200,6 +233,16 @@ public interface IEnderConduit {
    */
   @Nonnull
   Map<EnumFacing, Boolean> getRoundRobin();
+
+  /**
+   * Gets the map of slot switch status for each connection
+   * 
+   * @return The map of slot switch status for each direction
+   */
+  @Nonnull
+  default Map<EnumFacing, Boolean> getSlotSwitch() {
+    return new HashMap<>();
+  }
 
   /**
    * Gets the output priority for each conduit connection
