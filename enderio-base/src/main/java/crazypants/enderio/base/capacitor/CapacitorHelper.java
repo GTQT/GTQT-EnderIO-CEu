@@ -57,7 +57,7 @@ public class CapacitorHelper {
       return null;
     }
     final float capLevel = nbtTag.getFloat("level");
-    if (capLevel < 0 || capLevel >= ItemConfig.capMaximumNBTLevel.get()) {
+    if (capLevel < 0 || capLevel > ItemConfig.capMaximumNBTLevel.get()) {
       return null;
     }
     return new NBTCapacitorData(stack.getItem().getUnlocalizedName(stack), capLevel, nbtTag);
@@ -122,7 +122,10 @@ public class CapacitorHelper {
     List<Pair<String, Float>> result = new ArrayList<Pair<String, Float>>();
     for (String key : tag.getKeySet()) {
       if (key != null && !"level".equals(key) && tag.hasKey(key, (new NBTTagFloat(0)).getId())) {
-        result.add(Pair.of(key, tag.getFloat(key)));
+        float value = tag.getFloat(key);
+        if (value > 0 && value <= ItemConfig.capMaximumNBTLevel.get()) {
+          result.add(Pair.of(key, tag.getFloat(key)));
+        }
       }
     }
     return result;
