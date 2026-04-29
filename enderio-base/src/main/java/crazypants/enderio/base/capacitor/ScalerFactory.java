@@ -30,30 +30,30 @@ public enum ScalerFactory implements Scaler {
       return MathHelper.clamp(idx, 0, 8);
     }
   }),
-  QUADRATIC(new Scaler() { // 1-2-4-8-16-...
+  QUADRATIC(new Scaler() { // 1-2-4.5-8-12.5-...
     @Override
     public float scaleValue(float idx) {
-      return (float) Math.pow(2, idx - 1);
-      // replace with identity
+      return Math.max(1.0f, idx * idx / 2f);
     }
   }),
-  QUADRATIC_1_8(new Scaler() { // 1-2-4-8-8-8
+  QUADRATIC_1_8(new Scaler() { // 1-2-4.5-8-8-8
     @Override
     public float scaleValue(float idx) {
-      return (float) MathHelper.clamp(Math.pow(2, idx - 1), 1, 8);
+      return MathHelper.clamp(idx * idx / 2f, 1.0f, 8.0f);
     }
   }),
-  CUBIC(new Scaler() { // 1-3-9-...
+  CUBIC(new Scaler() { // 1-3.2-10.8-...
     @Override
     public float scaleValue(float idx) {
-      return (float) Math.pow(3, idx - 1);
-      // ab^x * x^c
-      // a = 0.9999999999999999
-      // b = 1
-      // c = 1.584962500721159
+      return Math.max(1.0f, idx * idx * idx / 2.5f);
     }
   }),
-  OCTADIC_1_8(new IndexedScaler(.5f, 0, .5f, 1, 3, 2, 4, 8, 10, 16)),
+  CUBIC_1_50(new Scaler() { // 1-3.2-10.8-...-50-50-50
+    @Override
+    public float scaleValue(float idx) {
+      return MathHelper.clamp(idx * idx * idx / 2.5f, 1.0f, 50.0f);
+    }
+  }),
   POWER(new IndexedScaler(true, 1f, 0, 1, 3, 5, 8, 13, 18)),
   // indexed 0, 1, 3, 4, 5, 6.5, 8, 10.5, 13, 15.5, 18
   // better:

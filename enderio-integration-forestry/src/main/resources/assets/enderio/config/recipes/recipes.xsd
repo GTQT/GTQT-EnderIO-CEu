@@ -1122,7 +1122,7 @@
 			<pattern value="QUADRATIC" />
 			<pattern value="QUADRATIC_1_8" />
 			<pattern value="CUBIC" />
-			<pattern value="OCTADIC_1_8" />
+			<pattern value="CUBIC_1_50" />
 			<pattern value="POWER" />
 			<pattern value="CHARGE" />
 			<pattern value="SPEED" />

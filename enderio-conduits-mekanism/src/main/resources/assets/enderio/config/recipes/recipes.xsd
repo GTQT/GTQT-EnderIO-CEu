@@ -977,27 +977,27 @@
     <attribute name="scaler" type="enderio:ScalerString" use="optional"></attribute>
   </complexType>
   <simpleType name="ScalerString">
-    <restriction base="string">
-      <pattern value="IDENTITY"></pattern>
-      <pattern value="LINEAR_0_8"></pattern>
-      <pattern value="QUADRATIC"></pattern>
-      <pattern value="QUADRATIC_1_8"></pattern>
-      <pattern value="CUBIC"></pattern>
-      <pattern value="OCTADIC_1_8"></pattern>
-      <pattern value="POWER"></pattern>
-      <pattern value="CHARGE"></pattern>
-      <pattern value="SPEED"></pattern>
-      <pattern value="POWER10"></pattern>
-      <pattern value="RANGE"></pattern>
-      <pattern value="FIXED"></pattern>
-      <pattern value="SPAWNER"></pattern>
-      <pattern value="BURNTIME"></pattern>
-      <pattern value="CHEMICAL"></pattern>
-      <pattern value="DROPOFF"></pattern>
-      <pattern value="CENT"></pattern>
-      <pattern value="idx:([1-9]\d*(\.\d+)?|0\.\d+)(:([1-9]\d*|0)(\.\d+)?)+"></pattern>
-      <pattern value="idx\(([1-9]\d*(\.\d+)?|0\.\d+)\)(:?([1-9]\d*|0)(\.\d+)?)(:([1-9]\d*|0)(\.\d+)?)*"></pattern>
-    </restriction>
+		<restriction base="string">
+			<pattern value="IDENTITY" />
+			<pattern value="LINEAR_0_8" />
+			<pattern value="QUADRATIC" />
+			<pattern value="QUADRATIC_1_8" />
+			<pattern value="CUBIC" />
+			<pattern value="CUBIC_1_50" />
+			<pattern value="POWER" />
+			<pattern value="CHARGE" />
+			<pattern value="SPEED" />
+			<pattern value="POWER10" />
+			<pattern value="RANGE" />
+			<pattern value="FIXED" />
+			<pattern value="SPAWNER" />
+			<pattern value="BURNTIME" />
+			<pattern value="CHEMICAL" />
+			<pattern value="DROPOFF" />
+			<pattern value="CENT" />
+			<pattern value="idx:([1-9]\d*(\.\d+)?|0\.\d+)(:([1-9]\d*|0)(\.\d+)?)+" />
+			<pattern value="idx\(([1-9]\d*(\.\d+)?|0\.\d+)\)(:?([1-9]\d*|0)(\.\d+)?)(:([1-9]\d*|0)(\.\d+)?)*" />
+		</restriction>
   </simpleType>
 
   <complexType name="soulbindingType">

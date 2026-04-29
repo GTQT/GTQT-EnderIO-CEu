@@ -112,17 +112,17 @@ XML editor will display that as tooltips when editing this file.
   
   <capacitor key="enderio:block_aversion_obelisk/intake" base="640" scaler="CUBIC" />
   <capacitor key="enderio:block_aversion_obelisk/buffer" base="100000" scaler="POWER" />
-  <capacitor key="enderio:block_aversion_obelisk/use" base="80" scaler="CUBIC" />
+  <capacitor key="enderio:block_aversion_obelisk/use" base="80" scaler="CUBIC_1_50" />
   <capacitor key="enderio:block_aversion_obelisk/range" base="16" scaler="RANGE" />
 
   <capacitor key="enderio:block_inhibitor_obelisk/intake" base="80" scaler="CUBIC" />
   <capacitor key="enderio:block_inhibitor_obelisk/buffer" base="100000" scaler="POWER" />
-  <capacitor key="enderio:block_inhibitor_obelisk/use" base="20" scaler="CUBIC" />
+  <capacitor key="enderio:block_inhibitor_obelisk/use" base="20" scaler="CUBIC_1_50" />
   <capacitor key="enderio:block_inhibitor_obelisk/range" base="8" scaler="RANGE" />
   
   <capacitor key="enderio:block_relocator_obelisk/intake" base="640" scaler="CUBIC" />
   <capacitor key="enderio:block_relocator_obelisk/buffer" base="100000" scaler="POWER" />
-  <capacitor key="enderio:block_relocator_obelisk/use" base="80" scaler="CUBIC" />
+  <capacitor key="enderio:block_relocator_obelisk/use" base="80" scaler="CUBIC_1_50" />
   <capacitor key="enderio:block_relocator_obelisk/range" base="12" scaler="RANGE" />
 
   <capacitor key="enderio:block_weather_obelisk/intake" base="80" scaler="POWER" />
@@ -165,7 +165,7 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_powered_spawner/speed" base="1" scaler="QUADRATIC" />
   
   <capacitor key="enderio:block_transceiver/intake" base="40960" scaler="POWER" />
-  <capacitor key="enderio:block_transceiver/buffer" base="500000" scaler="CUBIC" />
+  <capacitor key="enderio:block_transceiver/buffer" base="500000" scaler="CUBIC_1_50" />
   <!-- above is the size of the buffer, below how it is split into machine and transfer parts -->
   <capacitor key="enderio:block_transceiver/ratio" base="1">
   <indexed step="1">
