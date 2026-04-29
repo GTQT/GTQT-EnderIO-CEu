@@ -54,7 +54,7 @@ public enum ScalerFactory implements Scaler {
     }
   }),
   OCTADIC_1_8(new IndexedScaler(.5f, 0, .5f, 1, 3, 2, 4, 8, 10, 16)),
-  POWER(new IndexedScaler(1f, 0, 1, 3, 5, 8, 13, 18)),
+  POWER(new IndexedScaler(true, 1f, 0, 1, 3, 5, 8, 13, 18)),
   // indexed 0, 1, 3, 4, 5, 6.5, 8, 10.5, 13, 15.5, 18
   // better:
   // a + bx + cx^2 + dx^3 + ex^4
@@ -71,7 +71,7 @@ public enum ScalerFactory implements Scaler {
   // c 8.36064838806583E+00
   // d -5.96021930516349E-01
   SPEED(new IndexedScaler(1f, 100, 20, 10, 2, 1)),
-  POWER10(new IndexedScaler(1f, 0, 1, 2, 10, 20, 40)),
+  POWER10(new IndexedScaler(true, 1f, 0, 1, 2, 10, 20, 40)),
   RANGE(new IndexedScaler(1f, 0, 4, 6, 10, 17, 24)),
   // 2 + 2x
   FIXED(new Scaler() { // 1-1-1
@@ -80,14 +80,14 @@ public enum ScalerFactory implements Scaler {
       return 1;
     }
   }),
-  SPAWNER(new IndexedScaler(1f, 0, 1, 5, 10, 20, 40)),
+  SPAWNER(new IndexedScaler(true, 1f, 0, 1, 5, 10, 20, 40)),
   // a + bx + cx^2 + dx^3 + ex^4
   // a -6.62857142856527E+00
   // b 1.02380952380926E+01
   // c -3.04166666666589E+00
   // d 4.49404761904681E-01
   // e -1.72619047619040E-02
-  BURNTIME(new IndexedScaler(1f, 0.8f, 1f, 1.25f, 1.5f, 1.5f, 2f, 2.5f) {
+  BURNTIME(new IndexedScaler(true, 1f, 0.8f, 1f, 1.25f, 1.5f, 1.5f, 2f, 2.5f) {
     @Override
     public float scaleValue(float idx) {
       return super.scaleValue(idx) / 100f; // Convert from percentage
@@ -99,7 +99,7 @@ public enum ScalerFactory implements Scaler {
       return 1 + (idx - 1f) * 0.25f;
     }
   }),
-  DROPOFF(new IndexedScaler(1f, 1, 1, 4 / 3f, 2, 2.5f, 3f, 3.25f)), // Special case for stirling gen
+  DROPOFF(new IndexedScaler(true, 1f, 1, 1, 4 / 3f, 2, 2.5f, 3f, 3.25f)), // Special case for stirling gen
   CENT(new Scaler() { // 0.01-0.01-0.01 (used for power loss)
     @Override
     public float scaleValue(float idx) {

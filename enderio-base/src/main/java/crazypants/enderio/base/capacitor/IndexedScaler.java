@@ -15,10 +15,19 @@ import crazypants.enderio.api.capacitor.Scaler;
 public class IndexedScaler implements Scaler {
   private final float scale;
   private final float[] keyValues;
+  private final boolean supportsOverscale;
 
   public IndexedScaler(float scale, float... keyValues) {
+    this(false, scale, keyValues);
+  }
+
+  public IndexedScaler(boolean supportsOverscale, float scale, float... keyValues) {
     this.scale = scale;
     this.keyValues = keyValues;
+    this.supportsOverscale = supportsOverscale;
+    if (supportsOverscale && keyValues.length <= 1) {
+      throw new IllegalArgumentException("Scalers supporting overscaling must have at least 2 key values");
+    }
   }
 
   public @Nonnull String store() {
@@ -42,6 +51,10 @@ public class IndexedScaler implements Scaler {
       return keyValues[0];
     }
     if (idxi >= keyValues.length - 1) {
+      if (supportsOverscale) {
+        float base = keyValues[keyValues.length - 1], delta = keyValues[keyValues.length - 1] - keyValues[keyValues.length - 2];
+        return base + delta * (idxi - (keyValues.length - 1));
+      }
       return keyValues[keyValues.length - 1];
     }
     return (1 - idxf) * keyValues[idxi] + idxf * keyValues[idxi + 1];
