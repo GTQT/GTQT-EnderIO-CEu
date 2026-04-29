@@ -126,9 +126,9 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
       return;
     }
     if (redstoneChecksPassed && !currentTask.isComplete()) {
-      usePower();
+      usePower(Math.min(getPowerUsePerTick(), (int) currentTask.getRemainingEnergy()));
       if (shouldDoubleTick(currentTask, getPowerUsePerTick())) {
-        usePower();
+        usePower(Math.min(getPowerUsePerTick(), (int) currentTask.getRemainingEnergy()));
       }
     }
     // then check if we are done

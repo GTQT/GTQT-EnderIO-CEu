@@ -119,6 +119,11 @@ public class PoweredTask implements IPoweredTask {
     return requiredEnergy;
   }
 
+  @Override
+  public float getRemainingEnergy() {
+    return requiredEnergy - usedEnergy;
+  }
+
   public void setRequiredEnergy(float requiredEnergy) {
     this.requiredEnergy = requiredEnergy;
     this.hasCustomEnergyCost = true;

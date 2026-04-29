@@ -24,6 +24,10 @@ public interface IPoweredTask {
 
   float getRequiredEnergy();
 
+  default float getRemainingEnergy() {
+    return getRequiredEnergy();
+  }
+
   @Nonnull
   RecipeBonusType getBonusType();
 
