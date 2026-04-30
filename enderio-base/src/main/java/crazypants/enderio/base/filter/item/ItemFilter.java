@@ -466,6 +466,7 @@ public class ItemFilter implements IItemFilter.WithGhostSlots {
       this.cb = cb;
       this.setDisplayStdOverlay(isLimited);
       this.setStackSizeLimit(isLimited ? 64 * 3 : 1);
+      this.setStackMultiplier(3);
     }
 
     @Override

@@ -37,6 +37,7 @@ public abstract class GhostSlot {
   private float grayOutLevel = 0.5f;
   private boolean displayStdOverlay = false;
   private int stackSizeLimit = 1;
+  private int stackSizeMultiplier = 1;
   private boolean updateServer = false;
   private boolean drawStdTooltip = true;
   private boolean drawFakeHover = true;
@@ -114,6 +115,18 @@ public abstract class GhostSlot {
 
   public void setStackSizeLimit(int stackSizeLimit) {
     this.stackSizeLimit = stackSizeLimit;
+  }
+
+  /**
+   * Limits the maximum stack size when the mouse wheel is used to increase the stack size
+   * This value will be multiplied by item's normal stack capacity, and can never go above the slot's stack size limit
+   */
+  public int getStackMultiplier() {
+    return stackSizeMultiplier;
+  }
+
+  public void setStackMultiplier(int stackMultiplier) {
+    this.stackSizeMultiplier = stackMultiplier;
   }
 
   /**

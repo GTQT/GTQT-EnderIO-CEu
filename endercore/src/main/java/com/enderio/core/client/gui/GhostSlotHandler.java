@@ -109,7 +109,7 @@ public class GhostSlotHandler {
   }
 
   protected void ghostSlotClickedMouseWheelUp(@Nonnull GhostSlot slot, @Nonnull ItemStack handStack, @Nonnull ItemStack existingStack) {
-    if (!existingStack.isEmpty() && existingStack.getCount() < existingStack.getMaxStackSize() && existingStack.getCount() < slot.getStackSizeLimit()) {
+    if (!existingStack.isEmpty() && existingStack.getCount() < existingStack.getMaxStackSize() * slot.getStackMultiplier() && existingStack.getCount() < slot.getStackSizeLimit()) {
       increaseSlot(slot, existingStack);
     }
   }
