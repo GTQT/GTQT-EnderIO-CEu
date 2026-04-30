@@ -16,6 +16,7 @@ plugins {
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'org.jetbrains.changelog' version '2.5.0'
+    id "com.dorongold.task-tree" version '4.0.1'
 }
 
 apply from: 'gradle/scripts/helpers.gradle'
@@ -303,7 +304,12 @@ tasks.register('combinedAssets') {
     }
 }
 
+tasks.named('build').configure {
+    dependsOn subprojects.findAll { it.name.replace(":", "") in modsToCombine }.collect { it.tasks.named('build') }
+}
+
 tasks.named('jar', Jar).configure {
+    dependsOn subprojects.findAll { it.name.replace(":", "") in modsToCombine }.collect { it.tasks.named('build') }
     dependsOn tasks.named('combinedAssets')
     from(file(generatedResourceDir))
     from {
