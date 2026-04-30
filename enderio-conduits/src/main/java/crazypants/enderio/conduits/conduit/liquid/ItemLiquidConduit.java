@@ -11,6 +11,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
+import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
@@ -25,6 +26,7 @@ import crazypants.enderio.conduits.render.ConduitBundleRenderManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -62,12 +64,23 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   @Override
   public IServerConduit createConduit(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+    AbstractLiquidConduit conduit;
     if (stack.getItemDamage() == 1) {
-      return new AdvancedLiquidConduit();
+      conduit = new AdvancedLiquidConduit();
+      configureAsInput(conduit);
     } else if (stack.getItemDamage() == 2) {
-      return new EnderLiquidConduit();
+      conduit = new EnderLiquidConduit();
+      configureAsInput(conduit);
+    } else {
+      conduit = new LiquidConduit();
     }
-    return new LiquidConduit();
+    return conduit;
+  }
+
+  private void configureAsInput(AbstractLiquidConduit conduit) {
+    for (EnumFacing dir : EnumFacing.values()) {
+      conduit.setConnectionMode(dir, ConnectionMode.INPUT);
+    }
   }
 
   @Override
