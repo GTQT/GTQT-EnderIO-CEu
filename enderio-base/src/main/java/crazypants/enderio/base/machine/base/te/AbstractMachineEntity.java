@@ -2,7 +2,6 @@ package crazypants.enderio.base.machine.base.te;
 
 import java.util.EnumMap;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -295,12 +294,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
     YetaUtil.refresh(this);
   }
 
-  protected final void doSideIo() {
-    if (faceModes == null) {
-      return;
-    }
-    Set<Entry<EnumFacing, IoMode>> ents = faceModes.entrySet();
-    for (Entry<EnumFacing, IoMode> ent : ents) {
+  private final void doPulling() {
+    for (Entry<EnumFacing, IoMode> ent : faceModes.entrySet()) {
       IoMode mode = ent.getValue();
       if (mode.pulls()) {
         Prof.start(getWorld(), "pull");
@@ -310,6 +305,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
           return;
         }
       }
+    }
+  }
+
+  private final void doPushing() {
+    for (Entry<EnumFacing, IoMode> ent : faceModes.entrySet()) {
+      IoMode mode = ent.getValue();
       if (mode.pushes()) {
         Prof.start(getWorld(), "push");
         boolean done = doPush(ent.getKey());
@@ -319,6 +320,14 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
         }
       }
     }
+  }
+
+  protected final void doSideIo() {
+    if (faceModes == null) {
+      return;
+    }
+    doPulling();
+    doPushing();
   }
 
   protected abstract boolean doPull(EnumFacing dir);
