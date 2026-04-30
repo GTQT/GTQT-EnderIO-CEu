@@ -1,5 +1,14 @@
 package crazypants.enderio.machines.machine.vat;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_DOUBLE_OP_CHANCE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_EFFICIENCY;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,14 +50,6 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_DOUBLE_OP_CHANCE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_USE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
-
 @Storable
 public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
@@ -69,6 +70,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
     public Enhanced() {
       super(new SlotDefinition(2, 0, 1), ENHANCED_VAT_POWER_INTAKE, ENHANCED_VAT_POWER_BUFFER, ENHANCED_VAT_POWER_USE);
+      setEfficiencyMultiplier(ENHANCED_VAT_POWER_EFFICIENCY);
     }
 
     @Nonnull
