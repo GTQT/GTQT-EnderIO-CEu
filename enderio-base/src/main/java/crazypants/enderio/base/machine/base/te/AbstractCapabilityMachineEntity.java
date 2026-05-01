@@ -1,5 +1,7 @@
 package crazypants.enderio.base.machine.base.te;
 
+import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -27,8 +29,6 @@ import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
-
-import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
 @Storable
 public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEntity {
@@ -299,7 +299,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
           return getInventory().getView(EnderInventory.Type.INPUT).insertItem(slot, stack, simulate);
         }
       }
-      return ItemStack.EMPTY;
+      return stack;
     }
 
     @Override
