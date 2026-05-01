@@ -62,7 +62,7 @@ public class RecipeFactory {
   public void placeXSD(String folderName) {
     final ResourceLocation xsdRL = new ResourceLocation(domain, "config/recipes/recipes.xsd");
     final File xsdFL = new File(configDirectory, folderName + "/recipes.xsd");
-    copyCore_dontMakeShittyCoreModsPlease_thisIncludesShittyMixins(xsdRL, xsdFL);
+    copyFile(xsdRL, xsdFL);
   }
 
   public void createFolder(String name) {
@@ -103,15 +103,15 @@ public class RecipeFactory {
     }
   }
 
-  public void copyCore(String fileName) {
-    copyCore(fileName, null);
+  public boolean copyCore(String fileName) {
+    final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
+    final File coreFL = new File(configDirectory, fileName);
+    return copyFile(coreRL, coreFL);
   }
 
   public void copyCore(String fileName, @Nullable String fallback) {
-    final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
-    final File coreFL = new File(configDirectory, fileName);
-    if (!copyCore_dontMakeShittyCoreModsPlease_thisIncludesShittyMixins(coreRL, coreFL) && fallback != null) {
-      copyCore(fallback, null);
+    if (!copyCore(fileName) && fallback != null) {
+      copyCore(fallback);
     }
   }
 
@@ -215,7 +215,7 @@ public class RecipeFactory {
   public void cleanFolder(String folderName) {
     File folder = new File(configDirectory, folderName);
     if (folder.exists()) {
-      String[] list = folder.list((file, name) -> name.toLowerCase(Locale.ENGLISH).endsWith(".xml") || name.toLowerCase(Locale.ENGLISH).endsWith(".pdf"));
+      String[] list = folder.list((file, name) -> name.toLowerCase(Locale.ENGLISH).endsWith(".xml"));
       if (list != null) {
         for (String name : list) {
           File file = new File(folder, name);
@@ -227,7 +227,7 @@ public class RecipeFactory {
     }
   }
 
-  private boolean copyCore_dontMakeShittyCoreModsPlease_thisIncludesShittyMixins(ResourceLocation resourceLocation, File file) {
+  private boolean copyFile(ResourceLocation resourceLocation, File file) {
     try (InputStream schemaIn = getResource(resourceLocation)) {
       file.setWritable(true, true);
       try (OutputStream schemaOut = new FileOutputStream(file)) {

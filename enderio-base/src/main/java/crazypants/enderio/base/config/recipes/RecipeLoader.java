@@ -289,7 +289,7 @@ public final class RecipeLoader {
 
   private static <T extends IRecipeRoot> T readCoreFile(T target, final RecipeFactory recipeFactory, String filename) {
     try {
-      recipeFactory.copyCore(filename + (Log.isInDev() ? EXT : ".pdf"), Log.isInDev() ? null : (filename + EXT));
+      recipeFactory.copyCore(filename + EXT);
       final T recipes = recipeFactory.readCoreFile(target, RECIPES_ROOT, filename + EXT);
       if (recipes.isValid()) {
         recipes.enforceValidity();
