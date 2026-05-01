@@ -57,7 +57,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
 
     String badBrand = null;
     for (String brand : FMLCommonHandler.instance().getModName().split(",")) {
-      if (brand != null && !brand.equals("fml") && !brand.equals("forge")) {
+      if (brand != null && !brand.equals("fml") && !brand.equals("forge") && !brand.equals("cleanroom")) {
         if (badBrand == null) {
           badBrand = brand;
         } else {
