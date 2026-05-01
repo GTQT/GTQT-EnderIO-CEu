@@ -15,7 +15,7 @@ public enum FunctionUpgrade {
   EXTRACT_SPEED_UPGRADE("extract_speed_upgrade", "item.item_extract_speed_upgrade", 15) {
     @Override
     public int getMaximumExtracted(int stackSize) {
-      return BASE_MAX_EXTRACTED + Math.min(stackSize, getMaxStackSize()) * 4;
+      return BASE_MAX_EXTRACTED + Math.min(stackSize, getMaxStackSize()) * EXTRACT_SPEED_PER_UPGRADE;
     }
 
     @Override
@@ -26,12 +26,12 @@ public enum FunctionUpgrade {
   EXTRACT_SPEED_DOWNGRADE("extract_speed_downgrade", "item.item_extract_speed_downgrade", 3) {
     @Override
     public int getMaximumExtracted(int stackSize) {
-      return stackSize;
+      return BASE_MAX_EXTRACTED - stackSize;
     }
 
     @Override
     public float getFluidSpeedMultiplier(int stackSize) {
-      return .25f * stackSize;
+      return 1 - 1.0f * stackSize / BASE_MAX_EXTRACTED;
     }
   },
 
@@ -52,6 +52,7 @@ public enum FunctionUpgrade {
   ;
 
   public static final int BASE_MAX_EXTRACTED = 4;
+  public static final int EXTRACT_SPEED_PER_UPGRADE = 4;
 
   public final @Nonnull String baseName;
   public final @Nonnull String iconName;
