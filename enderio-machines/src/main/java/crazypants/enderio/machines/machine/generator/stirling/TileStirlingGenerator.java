@@ -1,5 +1,13 @@
 package crazypants.enderio.machines.machine.generator.stirling;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_LOSS;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_EFFICIENCY;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_LOSS;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -9,7 +17,6 @@ import com.enderio.core.common.util.FluidUtil;
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
@@ -31,14 +38,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
-
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_GEN;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_LOSS;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_EFFICIENCY;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_GEN;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_LOSS;
 
 @Storable
 public class TileStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
@@ -76,7 +75,7 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
 
   protected TileStirlingGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyStored, maxEnergyUsed);
-    addICap(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, ICap.facedOnly(facingIn -> new LegacyStirlingWrapper(this, facingIn)));
+    addICap(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facingIn -> new LegacyStirlingWrapper(this, facingIn));
   }
 
   @Override

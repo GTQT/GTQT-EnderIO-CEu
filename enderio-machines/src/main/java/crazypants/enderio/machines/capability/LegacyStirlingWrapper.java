@@ -1,6 +1,7 @@
 package crazypants.enderio.machines.capability;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.capability.LegacyMachineWrapper;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -16,7 +17,7 @@ import net.minecraft.util.EnumFacing;
  */
 public class LegacyStirlingWrapper extends LegacyMachineWrapper {
 
-  public LegacyStirlingWrapper(@Nonnull TileStirlingGenerator machine, @Nonnull EnumFacing side) {
+  public LegacyStirlingWrapper(@Nonnull TileStirlingGenerator machine, @Nullable EnumFacing side) {
     super(machine, side);
   }
 

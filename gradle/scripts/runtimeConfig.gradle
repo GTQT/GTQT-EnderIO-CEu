@@ -8,6 +8,7 @@ def enabledDependencies = [
   "top": true,
   "waila": false,
   "aa": false,
+  "rftools": false,
   // Modules
   "endergy": true,
   "zoo": false,

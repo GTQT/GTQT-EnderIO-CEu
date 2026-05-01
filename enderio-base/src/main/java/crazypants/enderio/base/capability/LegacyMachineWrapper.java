@@ -1,6 +1,7 @@
 package crazypants.enderio.base.capability;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
@@ -15,11 +16,11 @@ import net.minecraftforge.items.IItemHandler;
 
 public class LegacyMachineWrapper implements IItemHandler {
   protected final @Nonnull AbstractInventoryMachineEntity machine;
-  protected final @Nonnull EnumFacing side;
+  protected final @Nullable EnumFacing side;
   protected IoMode lastIoMode = null;
   protected final @Nonnull NNList<Integer> slots = new NNList<Integer>();
 
-  public LegacyMachineWrapper(@Nonnull AbstractInventoryMachineEntity machine, @Nonnull EnumFacing side) {
+  public LegacyMachineWrapper(@Nonnull AbstractInventoryMachineEntity machine, @Nullable EnumFacing side) {
     this.machine = machine;
     this.side = side;
   }

@@ -1,5 +1,7 @@
 package crazypants.enderio.base.machine.baselegacy;
 
+import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -10,7 +12,6 @@ import crazypants.enderio.base.capability.ItemTools.MoveResult;
 import crazypants.enderio.base.capability.LegacyMachineWrapper;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
-import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -23,8 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-
-import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
 @Storable
 public abstract class AbstractInventoryMachineEntity extends AbstractMachineEntity {
@@ -39,7 +38,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     for (int i = 0; i < inventory.length; ++i) {
       inventory[i] = Prep.getEmpty();
     }
-    addICap(ITEM_HANDLER_CAPABILITY, ICap.facedOnly(facingIn -> new LegacyMachineWrapper(this, facingIn)));
+    addICap(ITEM_HANDLER_CAPABILITY, facingIn -> new LegacyMachineWrapper(this, facingIn));
   }
 
   @Override

@@ -21,7 +21,6 @@ import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.tic.TicProxy;
-import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.render.ranged.IRanged;
@@ -103,7 +102,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     tank.setCanDrain(false);
 
     addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facingIn -> getSmartTankFluidHandler().get(facingIn));
-    addICap(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, ICap.facedOnly(facingIn -> new LegacyKillerJoeWrapper(this, facingIn)));
+    addICap(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facingIn -> new LegacyKillerJoeWrapper(this, facingIn));
   }
 
   // These weapons are tested to work and render correctly in the Killer Joe. That's why this is not in the config file.

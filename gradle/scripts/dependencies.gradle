@@ -71,6 +71,8 @@ ext {
     runtime_only_dependencies = [
         'curse.maven:hwyla-253449:2568751': "waila",
         'curse.maven:actually-additions-228404:3117927': "aa",
+        'curse.maven:rftools-224641:2861573': "rftools",
+        'curse.maven:mcjtylib-233105:2745846': "rftools",
     ]
 
     loaded_modules = [

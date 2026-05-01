@@ -1,6 +1,7 @@
 package crazypants.enderio.machines.capability;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.capability.LegacyMachineWrapper;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -15,7 +16,7 @@ import net.minecraft.util.EnumFacing;
  */
 public class LegacyKillerJoeWrapper extends LegacyMachineWrapper {
 
-  public LegacyKillerJoeWrapper(@Nonnull TileKillerJoe machine, @Nonnull EnumFacing side) {
+  public LegacyKillerJoeWrapper(@Nonnull TileKillerJoe machine, @Nullable EnumFacing side) {
     super(machine, side);
   }
 

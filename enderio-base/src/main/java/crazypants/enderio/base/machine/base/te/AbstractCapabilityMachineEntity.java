@@ -74,7 +74,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     inventoryDelegate.setOwner(this);
     energyLogic = NullHelper.first(logicSupplier.apply(this), NullEnergyLogic.INSTANCE);
     energy = (NullEnergyTank) energyLogic.getEnergy(); // sic
-    addICap(ITEM_HANDLER_CAPABILITY, ICap.facedOnly(facingIn -> getIoMode(facingIn).canInputOrOutput() ? new Side(facingIn) : null));
+    addICap(ITEM_HANDLER_CAPABILITY, facingIn -> getIoMode(facingIn).canInputOrOutput() ? new Side(facingIn) : null);
   }
 
   /////////////////////////////////////////////////////////////////////////
@@ -257,7 +257,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
 
   private class Side implements IItemHandler {
 
-    private final EnumFacing side;
+    private @Nullable final EnumFacing side;
 
     protected Side(EnumFacing side) {
       this.side = side;
@@ -265,7 +265,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
 
     private @Nonnull IItemHandler getView() {
       if (side == null) {
-        return getInventory().getView(EnderInventory.Type.INTERNAL);
+        return getInventory().getView(EnderInventory.Type.INOUT);
       }
       switch (getIoMode(side)) {
       case NONE:

@@ -1,8 +1,10 @@
 package crazypants.enderio.base.machine.base.te;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.inventory.Callback;
 import com.enderio.core.common.inventory.EnderInventory.Type;
@@ -20,7 +22,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class EnergyLogic implements IEnergyLogic, ICap.NNFunction, Callback<ItemStack> {
+public class EnergyLogic implements IEnergyLogic, Function<EnumFacing, Object>, Callback<ItemStack> {
 
   public static final @Nonnull String CAPSLOT = "cap";
 
@@ -37,7 +39,7 @@ public class EnergyLogic implements IEnergyLogic, ICap.NNFunction, Callback<Item
     this.energy = energy;
     owner.getInventory().add(Type.UPGRADE, EnergyLogic.CAPSLOT, new InventorySlot(Filters.CAPACITORS, null, this, 1));
     updateCapacitorFromSlot();
-    owner.addICap(CapabilityEnergy.ENERGY, ICap.facedOnly(this));
+    owner.addICap(CapabilityEnergy.ENERGY, this);
   }
 
   @Override
@@ -133,7 +135,7 @@ public class EnergyLogic implements IEnergyLogic, ICap.NNFunction, Callback<Item
   }
 
   @Override
-  public IEnergyStorage apply(@Nonnull EnumFacing facingIn) {
+  public IEnergyStorage apply(@Nullable EnumFacing facingIn) {
     return owner.getIoMode(facingIn).canInputOrOutput() ? getEnergy().get(facingIn) : null;
   }
 
