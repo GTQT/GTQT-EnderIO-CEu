@@ -9,9 +9,6 @@ def enabledDependencies = [
   "waila": false,
   "aa": false,
   // Modules
-  "machines": true,
-  "conduits": true,
-  "invpanel": true,
   "endergy": true,
   "zoo": false,
   // Integration
@@ -70,11 +67,13 @@ dependencies {
   } 
 
   implementation project(":endercore")  
-  /*loaded_modules.entrySet().forEach {
+  loaded_modules.entrySet().forEach {
     if (shouldUse(enabledDependencies, it.value)) {
-      implementation project(":enderio-${it.key}")
+      implementation (project(":enderio-${it.key}")) {
+        transitive = false
+      }
     }
-  }*/
+  }
 
 }
 

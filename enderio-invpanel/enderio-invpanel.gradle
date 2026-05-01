@@ -1,7 +1,8 @@
 apply from: "../gradle/scripts/applyrfg.gradle"
 
 dependencies {
-	compileOnly project(":enderio-base")
-	compileOnly project(":enderio-machines")
-	compileOnly project(":enderio-conduits")
+	implementation project(":endercore")
+	implementation project(":enderio-base")
+	implementation project(":enderio-machines")
+	implementation project(":enderio-conduits")
 }

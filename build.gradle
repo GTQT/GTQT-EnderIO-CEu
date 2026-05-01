@@ -194,7 +194,7 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.register('cleanroomAfterSync') {
     group 'cleanroom helpers'
-    dependsOn 'injectTags', 'generateMixinJson'
+    dependsOn 'injectTags'
 }
 
 if (propertyBool('use_modern_java_syntax')) {
@@ -233,8 +233,7 @@ def modsToCombine = [
     'enderio-base',
     'enderio-machines', 'enderio-conduits', 'enderio-invpanel', 'enderio-powertools',
     'enderio-integration-tic', 'enderio-integration-forestry',
-    'enderio-conduits-refinedstorage', 'enderio-conduits-opencomputers', 'enderio-conduits-appliedenergistics', 'enderio-conduits-mekanism',
-    'enderio-endergy']
+    'enderio-conduits-refinedstorage', 'enderio-conduits-opencomputers', 'enderio-conduits-appliedenergistics', 'enderio-conduits-mekanism']
 def generatedResourceDir = 'build/resources/main'
 
 sourceSets.main.resources {
@@ -306,10 +305,12 @@ tasks.register('combinedAssets') {
 
 tasks.named('build').configure {
     dependsOn subprojects.findAll { it.name.replace(":", "") in modsToCombine }.collect { it.tasks.named('build') }
+    dependsOn subprojects.findAll { "endercore" in it.name }.collect { it.tasks.named('build') }
 }
 
 tasks.named('jar', Jar).configure {
     dependsOn subprojects.findAll { it.name.replace(":", "") in modsToCombine }.collect { it.tasks.named('build') }
+    dependsOn subprojects.findAll { "endercore" in it.name }.collect { it.tasks.named('build') }
     dependsOn tasks.named('combinedAssets')
     from(file(generatedResourceDir))
     from {

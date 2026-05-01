@@ -74,17 +74,7 @@ ext {
     ]
 
     loaded_modules = [
-        'base': true,
-        'conduits': "conduits",
-        'conduits-appliedenergistics': ['and': ["conduits", "ae2"]],
-        'conduits-mekanism': ['and': ["conduits", "mekanism"]],
-        'conduits-opencomputers': ['and': ["conduits", "opencomputers"]],
-        'conduits-refinedstorage': ['and': ["conduits", "rs"]],
         'endergy': "endergy",
-        'integration-forestry': "forestry",
-        'integration-tic': "tconstruct",
-        'invpanel': "invpanel",
-        'machines': "machines",
         'zoo': "zoo",
     ]
 }
@@ -142,11 +132,5 @@ dependencies {
     if (project.name != 'ap' && project.name != 'endercore') {
         annotationProcessor project(':ap')
         implementation project(':ap')
-    }
-
-    // Add EnderCore so we do not need to add it into every module
-    if (project.name != 'endercore') {
-        compileOnly project(':endercore')
-        testImplementation project(':endercore')
     }
 }
