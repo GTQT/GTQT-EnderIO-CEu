@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.ToggleButton;
 
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.integration.jei.IHaveGhostTargets;
 import crazypants.enderio.base.machine.gui.GuiCapMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
@@ -12,7 +13,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiImpulseHopper extends GuiCapMachineBase<TileImpulseHopper> implements ImpulseHopperRemoteExec.GUI {
+public class GuiImpulseHopper extends GuiCapMachineBase<TileImpulseHopper> implements ImpulseHopperRemoteExec.GUI, IHaveGhostTargets<GuiImpulseHopper> {
 
   private static final int ID_LOCK_OUTPUT_BUTTON = 141;
 
