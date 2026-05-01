@@ -265,4 +265,58 @@ public interface IEnderConduit {
    */
   void setClientDirty();
 
+  /**
+   * Gets the map of ticks per extraction for each connection
+   * 
+   * @return The map of ticks per extraction for each direction
+   */
+  @Nonnull
+  default Map<EnumFacing, Integer> getTicksPerExtraction() {
+    return new HashMap<>();
+  }
+
+  /**
+   * Gets the map of eco mode state for each connection
+   * 
+   * @return The map of eco mode state for each direction
+   */
+  @Nonnull
+  default Map<EnumFacing, Boolean> getEcoMode() {
+    return new HashMap<>();
+  }
+
+  default boolean getDefaultEcoMode() {
+    return true;
+  }
+
+  default int getDefaultTicksPerExtraction() {
+    return 20;
+  }
+
+  default int getTicksPerExtraction(@Nonnull EnumFacing dir) {
+    Integer ticksPerExtraction = getTicksPerExtraction().get(dir);
+    return ticksPerExtraction == null ? getDefaultTicksPerExtraction() : ticksPerExtraction;
+  }
+
+  default boolean getEcoMode(@Nonnull EnumFacing dir) {
+    Boolean ecoMode = getEcoMode().get(dir);
+    return ecoMode == null ? getDefaultEcoMode() : ecoMode;
+  }
+
+  default void setTicksPerExtraction(@Nonnull EnumFacing dir, int ticks) {
+    if (ticks == getDefaultTicksPerExtraction()) {
+      getTicksPerExtraction().remove(dir);
+    } else {
+      getTicksPerExtraction().put(dir, ticks);
+    }
+  }
+
+  default void setEcoMode(@Nonnull EnumFacing dir, boolean ecoMode) {
+    if (ecoMode == getDefaultEcoMode()) {
+      getEcoMode().remove(dir);
+    } else {
+      getEcoMode().put(dir, ecoMode);
+    }
+  }
+
 }

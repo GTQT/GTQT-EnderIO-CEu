@@ -62,15 +62,27 @@ public final class ConduitConfig {
       "When extracting from an inventory, how many items should be tried to insert somewhere? Lowering this can increase tps on bigger servers "
           + "but will slow down extracting from big inventories. Default is one normal chest. Empty slots are not counted.")
       .setRange(1, 512).sync();
-  public static final IValue<Integer> sleepBetweenFailedTries = FI.make("sleepBetweenFailedTries", 50, //
-      "When extracting from an inventory, how long should the connection wait until retrying if it couldn't transfer anything? Note that this "
-          + "is per input connection. Increasing this can increase tps on bigger servers but will create awkward pauses until conduits (re-)start "
-          + "transfering items.")
-      .setRange(10, 500).sync();
-  public static final IValue<Integer> sleepBetweenTries = FI.make("sleepBetweenTries", 20, //
-      "When extracting from an inventory, how often should the connection check if it is in extract mode and its redstone mode allows extracting? "
-          + "Note that this is per input connection. Increasing this can increase tps on bigger servers but will create awkward pauses until conduits "
-          + "(re-)start transfering items.")
-      .setRange(10, 500).sync();
+    
+  public static final IValue<Integer> ecoModeMultiplier = FI.make("ecoModeMultiplier", 4, //
+    "Conduits with eco mode enabled will wait this many times longer when extracting from an inventory where an extraction failed, compared to normal. For example, if the conduit has base speed of 20 ticks, and this value is 4, then after failing, the conduit will not try to extract for 80 ticks."
+    ).setRange(1, 10).sync();
+
+  public static final IValue<int[]> extractTickModes = FI.make("extractTickModes", new int[] { 10, 20, 50, 100 }, //
+      "Determines the legal tick rates for item conduit extractions. 1 second is 20 ticks. If there's only 1 option, the button to modify this will not be shown. Warning: don't leave this empty.").sync();
+
+  // Leave these in place in case addons rely on them
+  public static final IValue<Integer> sleepBetweenFailedTries = new IValue<Integer>() {
+    @Override
+    public Integer get() {
+      return sleepBetweenTries.get() * ecoModeMultiplier.get();
+    }
+  };
+
+  public static final IValue<Integer> sleepBetweenTries = new IValue<Integer>() {
+    @Override
+    public Integer get() {
+      return 10;
+    }
+  };
 
 }

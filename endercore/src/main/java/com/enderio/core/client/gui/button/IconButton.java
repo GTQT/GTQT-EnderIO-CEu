@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.api.client.render.IWidgetIcon;
+import com.enderio.core.client.gui.IRenderable;
 import com.enderio.core.client.render.EnderWidget;
 
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ public class IconButton extends TooltipButton implements IButtonAwareButton {
   public static final int DEFAULT_HEIGHT = 16;
 
   protected @Nullable IWidgetIcon icon;
+  protected @Nullable IRenderable extraRender;
 
   private int marginY = 0;
   private int marginX = 0;
@@ -44,6 +46,10 @@ public class IconButton extends TooltipButton implements IButtonAwareButton {
 
   public void setIcon(@Nullable IWidgetIcon icon) {
     this.icon = icon;
+  }
+
+  public void setRenderCallback(@Nullable IRenderable callback) {
+    this.extraRender = callback;
   }
 
   /**
@@ -91,6 +97,9 @@ public class IconButton extends TooltipButton implements IButtonAwareButton {
       final @Nullable IWidgetIcon icon2 = icon;
       if (icon2 != null) {
         icon2.getMap().render(icon2, x + marginX, y + marginY, width - 2 * marginX, height - 2 * marginY, 0, true);
+      }
+      if (extraRender != null) {
+        extraRender.render(x + marginX, y + marginY, width - 2 * marginX, height - 2 * marginY);
       }
 
       GL11.glPopAttrib();

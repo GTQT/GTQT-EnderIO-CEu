@@ -20,6 +20,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemCo
   private boolean loopMode;
   private boolean roundRobin;
   private boolean slotSwitch;
+  private boolean ecoMode;
+  private int ticksPerExtraction;
   private DyeColor colIn;
   private DyeColor colOut;
   private int priority;
@@ -35,6 +37,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemCo
     loopMode = con.isSelfFeedEnabled(dir);
     roundRobin = con.isRoundRobinEnabled(dir);
     slotSwitch = con.isSlotSwitchEnabled(dir);
+    ecoMode = con.getEcoMode(dir);
+    ticksPerExtraction = con.getTicksPerExtraction(dir);
     colIn = con.getInputColor(dir);
     colOut = con.getOutputColor(dir);
     priority = con.getOutputPriority(dir);
@@ -49,6 +53,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemCo
     buf.writeBoolean(loopMode);
     buf.writeBoolean(roundRobin);
     buf.writeBoolean(slotSwitch);
+    buf.writeBoolean(ecoMode);
+    buf.writeInt(ticksPerExtraction);
     buf.writeInt(priority);
     buf.writeShort(colIn.ordinal());
     buf.writeShort(colOut.ordinal());
@@ -62,6 +68,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemCo
     loopMode = buf.readBoolean();
     roundRobin = buf.readBoolean();
     slotSwitch = buf.readBoolean();
+    ecoMode = buf.readBoolean();
+    ticksPerExtraction = buf.readInt();
     priority = buf.readInt();
     colIn = DyeColor.fromIndex(buf.readShort());
     colOut = DyeColor.fromIndex(buf.readShort());
@@ -78,6 +86,9 @@ public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemCo
         conduit.setSelfFeedEnabled(message.dir, message.loopMode);
         conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
         conduit.setSlotSwitchEnabled(message.dir, message.slotSwitch);
+        conduit.setEcoMode(message.dir, message.ecoMode);
+        // This should be safe because setTicksPerExtraction finds a valid value
+        conduit.setTicksPerExtraction(message.dir, message.ticksPerExtraction);
         conduit.setInputColor(message.dir, NullHelper.first(message.colIn, DyeColor.BLACK));
         conduit.setOutputColor(message.dir, NullHelper.first(message.colOut, DyeColor.BLACK));
         conduit.setOutputPriority(message.dir, message.priority);

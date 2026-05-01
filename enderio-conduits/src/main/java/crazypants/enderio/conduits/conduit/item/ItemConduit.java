@@ -51,6 +51,7 @@ import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.power.PowerConduit;
+import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.gui.ItemSettings;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
@@ -92,23 +93,25 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
   ItemConduitNetwork network;
 
   protected final @Nonnull EnumMap<EnumFacing, RedstoneControlMode> extractionModes = new EnumMap<EnumFacing, RedstoneControlMode>(EnumFacing.class);
-  protected final @Nonnull EnumMap<EnumFacing, DyeColor> extractionColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, DyeColor> extractionColors = new EnumMap<>(EnumFacing.class);
 
-  protected final @Nonnull EnumMap<EnumFacing, IItemFilter> outputFilters = new EnumMap<EnumFacing, IItemFilter>(EnumFacing.class);
-  protected final @Nonnull EnumMap<EnumFacing, IItemFilter> inputFilters = new EnumMap<EnumFacing, IItemFilter>(EnumFacing.class);
-  protected final @Nonnull EnumMap<EnumFacing, ItemStack> outputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
-  protected final @Nonnull EnumMap<EnumFacing, ItemStack> inputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
-  protected final @Nonnull EnumMap<EnumFacing, ItemStack> functionUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, IItemFilter> outputFilters = new EnumMap<>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, IItemFilter> inputFilters = new EnumMap<>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, ItemStack> outputFilterUpgrades = new EnumMap<>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, ItemStack> inputFilterUpgrades = new EnumMap<>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, ItemStack> functionUpgrades = new EnumMap<>(EnumFacing.class);
 
-  protected final @Nonnull EnumMap<EnumFacing, Boolean> selfFeed = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Boolean> selfFeed = new EnumMap<>(EnumFacing.class);
 
-  protected final @Nonnull EnumMap<EnumFacing, Boolean> roundRobin = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
-  protected final @Nonnull EnumMap<EnumFacing, Boolean> slotSwitch = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Boolean> roundRobin = new EnumMap<>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Boolean> slotSwitch = new EnumMap<>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Integer> ticksPerExtraction = new EnumMap<>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Boolean> ecoMode = new EnumMap<>(EnumFacing.class);
 
-  protected final @Nonnull EnumMap<EnumFacing, Integer> priorities = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Integer> priorities = new EnumMap<>(EnumFacing.class);
 
-  protected final @Nonnull EnumMap<EnumFacing, DyeColor> outputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
-  protected final @Nonnull EnumMap<EnumFacing, DyeColor> inputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, DyeColor> outputColors = new EnumMap<>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, DyeColor> inputColors = new EnumMap<>(EnumFacing.class);
 
   private int metaData;
 
@@ -136,6 +139,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
     setSelfFeedEnabled(dir, dataRoot.getBoolean("selfFeed"));
     setRoundRobinEnabled(dir, dataRoot.getBoolean("roundRobin"));
     setSlotSwitchEnabled(dir, dataRoot.getBoolean("slotSwitch"));
+    setTicksPerExtraction(dir, dataRoot.getInteger("ticksPerExtraction"));
+    // invert to make default true for compatibility with old worlds
+    // this only affects when someone has a probe they copied a conduit with and want to paste it, but still
+    setEcoMode(dir, !dataRoot.getBoolean("noEcoMode"));
     setOutputPriority(dir, dataRoot.getInteger("outputPriority"));
   }
 
@@ -149,6 +156,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
     dataRoot.setBoolean("selfFeed", isSelfFeedEnabled(dir));
     dataRoot.setBoolean("roundRobin", isRoundRobinEnabled(dir));
     dataRoot.setBoolean("slotSwitch", isSlotSwitchEnabled(dir));
+    dataRoot.setInteger("ticksPerExtraction", getTicksPerExtraction(dir));
+    dataRoot.setBoolean("noEcoMode", !getEcoMode(dir));
     dataRoot.setInteger("outputPriority", getOutputPriority(dir));
   }
 
@@ -318,12 +327,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
   }
 
   @Override
-  public float getTickTimePerItem(@Nonnull EnumFacing dir) {
-    float maxExtract = 10f / getMaximumExtracted(dir);
-    return maxExtract;
-  }
-
-  @Override
   public void itemsExtracted(int numExtracted, int slot) {
   }
 
@@ -448,6 +451,41 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
   @Nonnull
   public Map<EnumFacing, Boolean> getSlotSwitch() {
     return slotSwitch;
+  }
+
+  @Override
+  @Nonnull
+  public Map<EnumFacing, Boolean> getEcoMode() {
+    return ecoMode;
+  }
+
+  @Override
+  @Nonnull
+  public Map<EnumFacing, Integer> getTicksPerExtraction() {
+    return ticksPerExtraction;
+  }
+
+  @Override
+  public void setTicksPerExtraction(@Nonnull EnumFacing dir, int ticks) {
+    // We always save this value because we might want to change the default when the options change
+    getTicksPerExtraction().put(dir, findClosestTPE(ticks));
+  }
+
+  private int findClosestTPE(int ticks) {
+    int closest = getDefaultTicksPerExtraction();
+    if (ticks <= 0) return closest;
+    // no fancy algorithm should be fine because who in their mind will allow 20 billion options
+    for (int i : ConduitConfig.extractTickModes.get()) {
+      if (Math.abs(i - ticks) < Math.abs(closest - ticks)) {
+        closest = i;
+      }
+    }
+    return closest;
+  }
+
+  @Override
+  public int getDefaultTicksPerExtraction() {
+    return ConduitConfig.extractTickModes.get()[0];
   }
 
   @Override
@@ -603,6 +641,18 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
       }
     }
 
+    for (Entry<EnumFacing, Boolean> entry : ecoMode.entrySet()) {
+      if (entry.getValue() != null) {
+        nbtRoot.setBoolean("ecoMode." + entry.getKey().name(), entry.getValue());
+      }
+    }
+
+    for (Entry<EnumFacing, Integer> entry : ticksPerExtraction.entrySet()) {
+      if (entry.getValue() != null) {
+        nbtRoot.setInteger("ticksPerExtraction." + entry.getKey().name(), entry.getValue());
+      }
+    }
+
     for (Entry<EnumFacing, Integer> entry : priorities.entrySet()) {
       if (entry.getValue() != null) {
         nbtRoot.setInteger("priority." + entry.getKey().name(), entry.getValue());
@@ -709,6 +759,18 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
       if (nbtRoot.hasKey(key)) {
         boolean val = nbtRoot.getBoolean(key);
         slotSwitch.put(dir, val);
+      }
+
+      key = "ticksPerExtraction." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        int val = findClosestTPE(nbtRoot.getInteger(key));
+        ticksPerExtraction.put(dir, val);
+      }
+
+      key = "ecoMode." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        boolean val = nbtRoot.getBoolean(key);
+        ecoMode.put(dir, val);
       }
 
       key = "priority." + dir.name();

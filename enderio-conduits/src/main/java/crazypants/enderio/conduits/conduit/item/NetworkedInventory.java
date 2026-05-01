@@ -101,7 +101,7 @@ public class NetworkedInventory {
     }
     if (!canExtract() || !con.isExtractionRedstoneConditionMet(conDir) || sendPriority.isEmpty()) {
       // Cannot extract or has no targets to insert, sleep for a second before checking again.
-      tickDeficit = ConduitConfig.sleepBetweenTries.get();
+      tickDeficit = 20;
       return false;
     }
     return true;
@@ -110,12 +110,12 @@ public class NetworkedInventory {
   public void onTick() {
     if (!transferItems()) {
       // Transfer failed, sleep for 2.5 seconds before checking again.
-      tickDeficit = ConduitConfig.sleepBetweenFailedTries.get();
+      tickDeficit = con.getTicksPerExtraction(conDir) * (con.getEcoMode(conDir) ? ConduitConfig.ecoModeMultiplier.get() : 1);
       return;
     }
     if (tickDeficit <= 0) {
       // Transfer successful but the transferItems() didn't set a new tickDeficit, sleep for a second before checking again.
-      tickDeficit = ConduitConfig.sleepBetweenTries.get();
+      tickDeficit = con.getTicksPerExtraction(conDir);
     }
   }
 
@@ -210,7 +210,7 @@ public class NetworkedInventory {
 
   private void onItemExtracted(int slot, int numInserted) {
     con.itemsExtracted(numInserted, slot);
-    tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
+    tickDeficit = con.getTicksPerExtraction(conDir);
   }
 
   private int insertIntoTargets(@Nonnull ItemStack toInsert) {

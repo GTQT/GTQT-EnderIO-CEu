@@ -3,6 +3,7 @@ package crazypants.enderio.conduits.gui;
 import java.awt.Color;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
@@ -20,6 +21,7 @@ import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
+import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.network.PacketExtractMode;
@@ -31,6 +33,7 @@ import net.minecraft.client.renderer.GlStateManager;
 public class ItemSettings extends BaseSettingsPanel {
 
   private static final int ID_REDSTONE_BUTTON = 12614;
+  private static final int ID_TICKS_PER_EXTRACT = 12615;
   private static final int ID_COLOR_BUTTON = 179816;
   private static final int ID_LOOP = 22;
   private static final int ID_ROUND_ROBIN = 24;
@@ -39,6 +42,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private static final int ID_INSERT_CHANNEL = 23;
   private static final int ID_EXTRACT_CHANNEL = 27;
   private static final int ID_SLOT_SWITCH = 31;
+  private static final int ID_ECO_MODE = 32;
 
   private @Nonnull IItemConduit itemConduit;
 
@@ -50,6 +54,8 @@ public class ItemSettings extends BaseSettingsPanel {
   private final MultiIconButton priDownB;
 
   private final RedstoneModeButton<?> rsB;
+  private final @Nullable TicksPerExtractionButton ticksB;
+  private final ToggleButton ecoModeB;
   private final @Nonnull ColorButton colorB;
 
   private ColorButton insertChannelB;
@@ -95,13 +101,25 @@ public class ItemSettings extends BaseSettingsPanel {
 
     y += insertChannelB.getHeight() + 6;
     x = rightColumn;
-
-    int x0 = x + 20;
-    colorB = new ColorButton(gui, ID_COLOR_BUTTON, x0, y);
+    colorB = new ColorButton(gui, ID_COLOR_BUTTON, x + 20, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
     colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
-
     rsB = new RedstoneModeButton<>(gui, ID_REDSTONE_BUTTON, x, y, new ConduitRedstoneModeControlable(itemConduit, gui, colorB));
+
+    x += 4 + rsB.getWidth();
+    // TODO: icon
+    ecoModeB = new ToggleButton(gui, ID_ECO_MODE, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
+    ecoModeB.setSelectedToolTip(Lang.GUI_ECO_MODE_ENABLED.get());
+    ecoModeB.setUnselectedToolTip(Lang.GUI_ECO_MODE_DISABLED.get());
+    ecoModeB.setPaintSelectedBorder(false);
+
+    x += 4 + ecoModeB.getWidth();
+    if (ConduitConfig.extractTickModes.get().length > 1) {
+      ticksB = new TicksPerExtractionButton(gui, ID_TICKS_PER_EXTRACT, x, y, ConduitConfig.extractTickModes.get(), gui.getDir(), itemConduit);
+      x += 4 + ticksB.getWidth();
+    } else {
+      ticksB = null;
+    }
 
     x = priLeft + priWidth + 9;
     priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
@@ -122,7 +140,14 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private void updateButtons() {
     rsB.onGuiInit();
-    rsB.setMode(RedstoneControlMode.IconHolder.getFromMode(itemConduit.getExtractionRedstoneMode(gui.getDir())));
+    rsB.setModeRaw(RedstoneControlMode.IconHolder.getFromMode(itemConduit.getExtractionRedstoneMode(gui.getDir())));
+    if (ticksB != null) {
+      ticksB.onGuiInit();
+      ticksB.setMode(new TicksPerExtractionButton.ExtractionTickValue(itemConduit.getTicksPerExtraction(gui.getDir())));
+    }
+
+    ecoModeB.onGuiInit();
+    ecoModeB.setSelected(itemConduit.getEcoMode(gui.getDir()));
 
     loopB.onGuiInit();
     loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.getDir()));
@@ -153,6 +178,8 @@ public class ItemSettings extends BaseSettingsPanel {
       itemConduit.setRoundRobinEnabled(gui.getDir(), !itemConduit.isRoundRobinEnabled(gui.getDir()));
     } else if (guiButton.id == ID_SLOT_SWITCH) {
       itemConduit.setSlotSwitchEnabled(gui.getDir(), !itemConduit.isSlotSwitchEnabled(gui.getDir()));
+    } else if (guiButton.id == ID_ECO_MODE) {
+      itemConduit.setEcoMode(gui.getDir(), !itemConduit.getEcoMode(gui.getDir()));
     } else if (guiButton.id == ID_PRIORITY_UP) {
       itemConduit.setOutputPriority(gui.getDir(), itemConduit.getOutputPriority(gui.getDir()) + 1);
     } else if (guiButton.id == ID_PRIORITY_DOWN) {
@@ -205,6 +232,10 @@ public class ItemSettings extends BaseSettingsPanel {
     loopB.detach();
     priUpB.detach();
     priDownB.detach();
+    if (ticksB != null) {
+      ticksB.detach();
+    }
+    ecoModeB.detach();
     insertChannelB.detach();
     extractChannelB.detach();
   }

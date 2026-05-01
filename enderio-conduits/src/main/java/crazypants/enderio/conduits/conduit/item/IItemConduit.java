@@ -21,8 +21,6 @@ public interface IItemConduit extends IExtractor, IServerConduit, IClientConduit
 
   int getMaximumExtracted(@Nonnull EnumFacing direction);
 
-  float getTickTimePerItem(@Nonnull EnumFacing direction);
-
   void itemsExtracted(int numInserted, int slot);
 
   void setInputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack);
