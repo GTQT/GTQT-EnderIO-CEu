@@ -14,8 +14,8 @@ import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.config.ConfigHandlerEIO;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.powertools.config.Config;
-import crazypants.enderio.powertools.network.PacketHandler;
 import crazypants.enderio.powertools.init.CommonProxy;
+import crazypants.enderio.powertools.network.PacketHandler;
 import info.loenwind.autoconfig.ConfigHandler;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = EnderIOPowerTools.MODID, name = EnderIOPowerTools.MOD_NAME, version = EnderIOPowerTools.VERSION, dependencies = "required-after:enderioconduits")
+@Mod(modid = EnderIOPowerTools.MODID, name = EnderIOPowerTools.MOD_NAME, version = EnderIOPowerTools.VERSION, dependencies = EnderIOPowerTools.DEPENDENCIES)
 public class EnderIOPowerTools implements IEnderIOAddon {
 
   @NetworkCheckHandler
@@ -50,6 +50,7 @@ public class EnderIOPowerTools implements IEnderIOAddon {
   public static final @Nonnull String DOMAIN = "enderio";
   public static final @Nonnull String MOD_NAME = Tags.MOD_NAME;
   public static final @Nonnull String VERSION = Tags.VERSION;
+  public static final @Nonnull String DEPENDENCIES = Tags.DEPENDENCIES;
 
   public static final @Nonnull Lang lang = new Lang(DOMAIN);
 

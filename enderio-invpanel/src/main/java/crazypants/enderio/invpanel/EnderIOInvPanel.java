@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = EnderIOInvPanel.MODID, name = EnderIOInvPanel.MOD_NAME, version = EnderIOInvPanel.VERSION)
+@Mod(modid = EnderIOInvPanel.MODID, name = EnderIOInvPanel.MOD_NAME, version = EnderIOInvPanel.VERSION, dependencies = EnderIOInvPanel.DEPENDENCIES)
 public class EnderIOInvPanel implements IEnderIOAddon {
 
   @NetworkCheckHandler
@@ -47,6 +47,7 @@ public class EnderIOInvPanel implements IEnderIOAddon {
   public static final @Nonnull String DOMAIN = "enderio";
   public static final @Nonnull String MOD_NAME = Tags.MOD_NAME;
   public static final @Nonnull String VERSION = Tags.VERSION;
+  public static final @Nonnull String DEPENDENCIES = Tags.DEPENDENCIES;
 
   @SuppressWarnings("unused")
   private static ConfigHandler configHandler;

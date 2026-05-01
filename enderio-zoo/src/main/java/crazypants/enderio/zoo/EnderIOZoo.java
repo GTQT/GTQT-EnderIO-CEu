@@ -51,9 +51,7 @@ public class EnderIOZoo implements IEnderIOAddon {
   public static final @Nonnull String DOMAIN = "enderio";
   public static final @Nonnull String MOD_NAME = Tags.MOD_NAME;
   public static final @Nonnull String VERSION = Tags.VERSION;
-
-  private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
-  public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
+  public static final @Nonnull String DEPENDENCIES = Tags.DEPENDENCIES;
 
   @SidedProxy(clientSide = "crazypants.enderio.zoo.init.ClientProxy", serverSide = "crazypants.enderio.zoo.init.CommonProxy")
   public static CommonProxy proxy;
