@@ -54,6 +54,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private final MultiIconButton priDownB;
 
   private final RedstoneModeButton<?> rsB;
+  private final ConduitRedstoneModeControlable rsConfigControl;
   private final @Nullable TicksPerExtractionButton ticksB;
   private final ToggleButton ecoModeB;
   private final @Nonnull ColorButton colorB;
@@ -101,12 +102,14 @@ public class ItemSettings extends BaseSettingsPanel {
 
     y += insertChannelB.getHeight() + 6;
     x = rightColumn;
-    colorB = new ColorButton(gui, ID_COLOR_BUTTON, x + 20, y);
-    colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
-    colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
-    rsB = new RedstoneModeButton<>(gui, ID_REDSTONE_BUTTON, x, y, new ConduitRedstoneModeControlable(itemConduit, gui, colorB));
+    rsConfigControl = new ConduitRedstoneModeControlable(itemConduit, gui, this::showRedstoneControl, this::hideRedstoneControl);
+    rsB = new RedstoneModeButton<>(gui, ID_REDSTONE_BUTTON, x, y, rsConfigControl);
 
     x += 4 + rsB.getWidth();
+    colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
+    colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
+    colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
+
     // TODO: icon
     ecoModeB = new ToggleButton(gui, ID_ECO_MODE, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
     ecoModeB.setSelectedToolTip(Lang.GUI_ECO_MODE_ENABLED.get());
@@ -127,6 +130,26 @@ public class ItemSettings extends BaseSettingsPanel {
 
   }
 
+  private void showRedstoneControl() {
+    colorB.setIsVisible(true);
+    ecoModeB.setX(rightColumn + rsB.getWidth() + colorB.getWidth() + 8);
+    ecoModeB.onGuiInit();
+    if (ticksB != null) {
+      ticksB.setX(rightColumn + rsB.getWidth() + colorB.getWidth() + ecoModeB.getWidth() + 12);
+      ticksB.onGuiInit();
+    }
+  }
+
+  private void hideRedstoneControl() {
+    colorB.setIsVisible(false);
+    ecoModeB.setX(rightColumn + rsB.getWidth() + 4);
+    ecoModeB.onGuiInit();
+    if (ticksB != null) {
+      ticksB.setX(rightColumn + rsB.getWidth() + ecoModeB.getWidth() + 8);
+      ticksB.onGuiInit();
+    }
+  }
+
   @Override
   protected void initCustomOptions() {
     gui.getContainer().setInOutSlotsVisible(true, true, itemConduit);
@@ -145,9 +168,12 @@ public class ItemSettings extends BaseSettingsPanel {
       ticksB.onGuiInit();
       ticksB.setMode(new TicksPerExtractionButton.ExtractionTickValue(itemConduit.getTicksPerExtraction(gui.getDir())));
     }
+    colorB.onGuiInit();
+    colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
 
     ecoModeB.onGuiInit();
     ecoModeB.setSelected(itemConduit.getEcoMode(gui.getDir()));
+    rsConfigControl.configureGUI(itemConduit.getExtractionRedstoneMode(gui.getDir()));
 
     loopB.onGuiInit();
     loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.getDir()));

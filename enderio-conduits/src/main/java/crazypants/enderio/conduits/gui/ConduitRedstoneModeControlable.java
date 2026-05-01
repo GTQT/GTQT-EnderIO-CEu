@@ -15,25 +15,33 @@ public class ConduitRedstoneModeControlable implements IRedstoneModeControlable 
 
   private final IExtractor con;
   private final IGuiExternalConnection gui;
-  private final ColorButton colorB;
+  private final Runnable showRedstoneControl;
+  private final Runnable hideRedstoneControl;
 
-  public ConduitRedstoneModeControlable(@Nonnull IExtractor con, @Nonnull IGuiExternalConnection gui, @Nonnull ColorButton colorB) {
+  public ConduitRedstoneModeControlable(@Nonnull IExtractor con, @Nonnull IGuiExternalConnection gui, @Nonnull Runnable showRedstoneControl, @Nonnull Runnable hideRedstoneControl) {
     this.con = con;
     this.gui = gui;
-    this.colorB = colorB;
+    this.showRedstoneControl = showRedstoneControl;
+    this.hideRedstoneControl = hideRedstoneControl;
+  }
+
+  public ConduitRedstoneModeControlable(@Nonnull IExtractor con, @Nonnull IGuiExternalConnection gui, @Nonnull ColorButton colorB) {
+    this(con, gui, () -> colorB.setIsVisible(true), () -> colorB.setIsVisible(false));
+  }
+
+  public void configureGUI(@Nonnull RedstoneControlMode mode) {
+    if (mode == RedstoneControlMode.OFF || mode == RedstoneControlMode.ON) {
+      showRedstoneControl.run();
+    } else {
+      hideRedstoneControl.run();
+    }
   }
 
   @Override
   public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
     RedstoneControlMode curMode = getRedstoneControlMode();
     con.setExtractionRedstoneMode(mode, gui.getDir());
-    colorB.onGuiInit();
-    colorB.setColorIndex(con.getExtractionSignalColor(gui.getDir()).ordinal());
-    if (mode == RedstoneControlMode.OFF || mode == RedstoneControlMode.ON) {
-      colorB.setIsVisible(true);
-    } else {
-      colorB.setIsVisible(false);
-    }
+    configureGUI(mode);
     if (curMode != mode) {
       PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(con, gui.getDir()));
     }

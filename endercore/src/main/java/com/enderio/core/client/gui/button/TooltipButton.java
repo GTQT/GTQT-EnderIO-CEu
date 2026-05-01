@@ -88,8 +88,14 @@ public class TooltipButton extends GuiButtonHideable {
   public TooltipButton setPosition(int x, int y) {
     xOrigin = x;
     yOrigin = y;
+    this.x = xOrigin + gui.getGuiRootLeft();
+    this.y = yOrigin + gui.getGuiRootTop();
     updateTooltipBounds();
     return this;
+  }
+
+  public TooltipButton setX(int x) {
+    return setPosition(x, yOrigin);
   }
 
   public void setXOrigin(int xOrigin) {
