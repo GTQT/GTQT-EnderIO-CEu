@@ -38,7 +38,7 @@ public class TileImpulseHopper extends AbstractCapabilityMachineEntity {
 
     @Override
     public boolean doApply(@Nonnull ItemStack input) {
-      return input.isItemEqual(items.get(slot));
+      return input.isItemEqual(items.get(slot)) && ItemStack.areItemStackTagsEqual(input, items.get(slot));
     }
 
   }
