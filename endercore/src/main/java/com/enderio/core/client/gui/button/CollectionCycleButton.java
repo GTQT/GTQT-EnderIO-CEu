@@ -47,8 +47,6 @@ public class CollectionCycleButton<T extends CycleButton.ICycleEnum> extends Ico
     this(gui, id, x, y, 16, modes);
   }
 
-  
-
   @Override
   public void onGuiInit() {
     super.onGuiInit();
