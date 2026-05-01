@@ -94,8 +94,7 @@ public class ItemSettings extends BaseSettingsPanel {
     loopB.setPaintSelectedBorder(false);
 
     x += 4 + loopB.getWidth();
-    // TODO: icons temp
-    slotSwitchB = new ToggleButton(gui, ID_SLOT_SWITCH, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
+    slotSwitchB = new ToggleButton(gui, ID_SLOT_SWITCH, x, y, IconEIO.SLOT_SWITCH_OFF, IconEIO.SLOT_SWITCH);
     slotSwitchB.setSelectedToolTip(Lang.GUI_SLOT_SWITCH_ENABLED.get());
     slotSwitchB.setUnselectedToolTip(Lang.GUI_SLOT_SWITCH_DISABLED.get());
     slotSwitchB.setPaintSelectedBorder(false);
@@ -110,8 +109,7 @@ public class ItemSettings extends BaseSettingsPanel {
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
     colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
 
-    // TODO: icon
-    ecoModeB = new ToggleButton(gui, ID_ECO_MODE, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
+    ecoModeB = new ToggleButton(gui, ID_ECO_MODE, x, y, IconEIO.ECO_MODE_OFF, IconEIO.ECO_MODE);
     ecoModeB.setSelectedToolTip(Lang.GUI_ECO_MODE_ENABLED.get());
     ecoModeB.setUnselectedToolTip(Lang.GUI_ECO_MODE_DISABLED.get());
     ecoModeB.setPaintSelectedBorder(false);

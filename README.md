@@ -1,10 +1,8 @@
-EnderIO [![Build Status](http://ci.tterrag.com/buildStatus/icon?job=EnderIO)](http://ci.tterrag.com/job/EnderIO/)
-=======
+# EnderIO CEu
 
-All code (excluding the bundled APIs from other mods, which are covered by their respective licenses) are released without restriction into the public domain under the CC0 1.0 license (http://creativecommons.org/publicdomain/zero/1.0/legalcode) FAQ (https://wiki.creativecommons.org/CC0_FAQ).
-Do what you want with it, as long as you smile while doing so. While it is not a requirement, it would be nice to know if it is being used and how, so send me hello to **crazypants.mc at gmail.com**.
+This repository is for long-term support of EnderIO for Minecraft 1.12.2.
 
-
+Originally made by the EnderIO Team. Please do not contact them about issues with EnderIO CEu, we're not affiliated with them.
 
 ### Sound Credits
 
@@ -20,3 +18,8 @@ Below sounds are used under [CC BY 3.0](https://creativecommons.org/licenses/by/
 - https://freesound.org/people/LiamG_SFX/
 - https://freesound.org/people/kuchenanderung1/
 - https://freesound.org/people/170048@virtualwindow.co.za/
+
+### Texture Credits
+
+- EnderIO Team
+- https://github.com/desht/ModularRouters/
