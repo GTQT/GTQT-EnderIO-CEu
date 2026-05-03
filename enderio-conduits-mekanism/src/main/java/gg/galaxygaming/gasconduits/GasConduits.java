@@ -86,7 +86,7 @@ public class GasConduits implements IEnderIOAddon {
     @Override
     @Nullable
     public Configuration getConfiguration() {
-        return Config.F.getConfig();
+        return isLoaded() ? Config.F.getConfig() : null;
     }
 
     @Override
