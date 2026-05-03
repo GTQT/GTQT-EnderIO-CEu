@@ -318,8 +318,8 @@ tasks.named('jar', Jar).configure {
             subproject.sourceSets.main.output + subproject.configurations.embed.collect { zipTree(it) } }
     } {
         exclude '**/mcmod.info'
-        exclude '**/sounds.json'
-        exclude '**/lang/*.lang'
+        exclude '**/enderio/sounds.json'
+        exclude '**/enderio/lang/*.lang'
         exclude 'META-INF/*'
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
