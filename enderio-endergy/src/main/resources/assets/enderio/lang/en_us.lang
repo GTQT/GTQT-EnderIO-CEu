@@ -34,3 +34,5 @@ item.item_stellar_alloy_helmet.name=Stellar Helmet
 item.item_stellar_alloy_chestplate.name=Stellar Chestplate
 item.item_stellar_alloy_leggings.name=Stellar Leggings
 item.item_stellar_alloy_boots.name=Stellar Boots
+
+enderio.config.title.enderioendergy.tooltip=EnderIO Endergy Configuration

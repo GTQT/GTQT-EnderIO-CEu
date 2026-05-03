@@ -109,3 +109,6 @@ tile.block_inventory_chest_huge.name=Huge Inventory System Storage
 tile.block_inventory_chest_enormous.name=Enormous Inventory System Storage
 tile.block_inventory_chest_warehouse.name=Inventory System Storage Warehouse
 tile.block_inventory_chest_warehouse13.name=Inventory System Storage Extended Warehouse
+
+enderio.config.title.enderioinvpanel.tooltip=Inventory Panel Configuration
+enderio.config.invpanel=Inventory Panel

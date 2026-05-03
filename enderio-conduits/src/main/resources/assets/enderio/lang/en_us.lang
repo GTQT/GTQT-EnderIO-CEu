@@ -75,11 +75,12 @@ enderio.gui.conduit_redstone.header=Redstone Conduit
 enderio.gui.conduit_bundle_full=Bundle Full
 
 # Config
-enderio.config.condit=Conduits
-enderio.config.condit.energy=Energy Conduits
-enderio.config.condit.fluid=Fluid Conduits
-enderio.config.condit.item=Item Conduits
-enderio.config.condit.redstone=Redstone Conduits
+enderio.config.title.enderioconduits.tooltip=EnderIO Conduits Configuration
+enderio.config.conduit=Conduits
+enderio.config.conduit.energy=Energy Conduits
+enderio.config.conduit.fluid=Fluid Conduits
+enderio.config.conduit.item=Item Conduits
+enderio.config.conduit.redstone=Redstone Conduits
 
 # Upgrades
 

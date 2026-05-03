@@ -22,8 +22,9 @@ gasconduits.gui.gas_blacklist=Blacklist
 
 
 
+enderio.config.title.gasconduits.tooltip=EnderIO Conduits for Mekanism Configuration
 gasconduits.gui.conduit_gas.header=Gas Conduit
-gasconduits.config.condit.gas=Gas Conduits
+gasconduits.config.gasconduits=Gas Conduits
 
 
 item.item_gas_filter.name=Gas Filter

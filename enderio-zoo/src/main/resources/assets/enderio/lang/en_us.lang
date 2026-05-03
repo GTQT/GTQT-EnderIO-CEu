@@ -12,3 +12,18 @@ entity.enderiozoo.lovechild.name=Ender Infected Zombie
 entity.enderiozoo.epicsquid.name=Epic Squid
 entity.enderiozoo.voidslime.name=Infinity Spawn
 
+
+enderio.config.title.enderiozoo.tooltip=Ender Zoo Configuration
+enderio.config.zoo=Zoo
+enderio.config.zoo.mobs=Individual Mobs
+enderio.config.zoo.mobs.concussion_creeper=Concussion Creeper
+enderio.config.zoo.mobs.dire_slime=Dire Slime
+enderio.config.zoo.mobs.dire_wolf=Dire Wolf
+enderio.config.zoo.mobs.endermini=Endermini
+enderio.config.zoo.mobs.fallen_knight=Fallen Knight
+enderio.config.zoo.mobs.fallen_mount=Fallen Mount
+enderio.config.zoo.mobs.owl=Owl
+enderio.config.zoo.mobs.wither_cat=Wither Cat
+enderio.config.zoo.mobs.wither_witch=Wither Witch
+enderio.config.zoo.mobs.love_child=Love Child
+enderio.config.zoo.mobs.epic_squid=Epic Squid

@@ -67,4 +67,6 @@ tile.block_gauge.name=Energy Gauge
 tile.block_gauge.tooltip.detailed.line1=Displays energy levels of adjacent blocks.
 
 
+enderio.config.title.enderiopowertools.tooltip=EnderIO Power Tools Configuration
 enderio.config.capbank=Capacitor Bank
+enderio.config.gauge=Gauge

@@ -446,10 +446,11 @@ enderio.darksteel.upgrade.solar_5.tooltip.detailed.line1=Generates power from th
 enderio.darksteel.upgrade.solar_6.name=Solar VI
 enderio.darksteel.upgrade.solar_6.tooltip.detailed.line1=Generates power from the sun.
 
+enderio.config.title.enderiomachines.tooltip=EnderIO Machines Configuration
 enderio.config.capacitor=Capacitor Values
 enderio.config.client=Client Settings
 
-enderio.config.soulbinder=Soulbinder
+enderio.config.soulbinder=Soul Binder
 enderio.config.spawner=Powered Spawner
 enderio.config.spawner.tooltip=I ran out of witty tooltips.
 enderio.config.vacuum=Vacuum Chest/XP Vacuum
@@ -463,6 +464,14 @@ enderio.config.killerjoe=Killer Joe
 enderio.config.experience=Experience Obelisk
 enderio.config.tank=Tank
 enderio.config.tranceiver=Tranceiver
+enderio.config.alloysmelter=Alloy Smelter
+enderio.config.attractor=Attraction Obelisk
+enderio.config.crafter=Crafter
+enderio.config.impulse_hopper=Impulse Hopper
+enderio.config.niard=Niard
+enderio.config.sagmill=SAG Mill
+enderio.config.slicensplice=Slice'N'Splice
+enderio.config.xpobelisk=Experience Obelisk
 
 enderio.config.generator=Generators
 enderio.config.generator.combustion=Combustion Generator
