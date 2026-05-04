@@ -38,33 +38,35 @@ enderio.gui.cap_bank.output_mode=输出
 
 # Power Monitor
 tile.block_power_monitor.name=能量监控器
-tile.block_power_monitor.tooltip.detailed.line1=Displays details of power use and storage.
-tile.block_power_monitor.tooltip.detailed.line3=Can be used to emit redstone based on stored power levels-
-tile.block_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO energy conduit.
+tile.block_power_monitor.tooltip.detailed.line1=显示能量使用与存储的详细信息。
+tile.block_power_monitor.tooltip.detailed.line3=可根据存储能量等级发出红石信号。
+tile.block_power_monitor.tooltip.detailed.line5=必须与末影接口的能量导管连接。
 
-tile.block_advanced_power_monitor.name=Graphical Power Monitor
-tile.block_advanced_power_monitor.tooltip.detailed.line1=Displays details of power use and storage.
-tile.block_advanced_power_monitor.tooltip.detailed.line3=Can be used to emit redstone based on stored power levels.
-tile.block_advanced_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO energy conduit.
+tile.block_advanced_power_monitor.name=图形化能量监控器
+tile.block_advanced_power_monitor.tooltip.detailed.line1=显示能量使用与存储的详细信息。
+tile.block_advanced_power_monitor.tooltip.detailed.line3=可根据存储能量等级发出红石信号。
+tile.block_advanced_power_monitor.tooltip.detailed.line5=必须与末影接口的能量导管连接。
 
-enderio.gui.power_monitor.engine_control=Engine Control
-enderio.gui.power_monitor.emit=Emit
-enderio.gui.power_monitor.engine_section1=Emit signal when storage less
-enderio.gui.power_monitor.engine_section2=than
-enderio.gui.power_monitor.engine_section3=% full.
-enderio.gui.power_monitor.engine_section4= Stop when storage greater than
-enderio.gui.power_monitor.engine_section5=or equal to
-enderio.gui.power_monitor.of=of
-enderio.gui.power_monitor.conduit_storage=Conduit Storage
-enderio.gui.power_monitor.capbank_storage=Capacitor Bank Storage
-enderio.gui.power_monitor.machine_buffer=Machine Buffers
-enderio.gui.power_monitor.average_output=Average output over 5 seconds
-enderio.gui.power_monitor.average_input=Average input over 5 seconds
-enderio.gui.power_monitor.no_network_error=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
+enderio.gui.power_monitor.engine_control=引擎控制
+enderio.gui.power_monitor.emit=发送
+enderio.gui.power_monitor.engine_section1=输出信号条件：当存储
+enderio.gui.power_monitor.engine_section2=能量小于
+enderio.gui.power_monitor.engine_section3=%时。
+enderio.gui.power_monitor.engine_section4=停止条件：当存储能量
+enderio.gui.power_monitor.engine_section5=大于等于
+enderio.gui.power_monitor.of=/
+enderio.gui.power_monitor.conduit_storage=导管储能
+enderio.gui.power_monitor.capbank_storage=电容库储能
+enderio.gui.power_monitor.machine_buffer=机器缓存
+enderio.gui.power_monitor.average_output=5秒内平均输出
+enderio.gui.power_monitor.average_input=5秒内平均输入
+enderio.gui.power_monitor.no_network_error=未连接到导管网络。能量监控器需要连接到导管网络才能读取数据。
 
 # Gauge
 tile.block_gauge.name=能量存量计
 tile.block_gauge.tooltip.detailed.line1=显示相邻方块的能量水平。
 
 
+enderio.config.title.enderiopowertools.tooltip=末影接口丨能量工具配置
 enderio.config.capbank=电容库
+enderio.config.gauge=能量存量计

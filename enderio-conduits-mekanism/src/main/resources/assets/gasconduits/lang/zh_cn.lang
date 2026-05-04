@@ -22,7 +22,8 @@ gasconduits.gui.gas_blacklist=黑名单
 
 
 
-gasconduits.gui.conduit_gas.header=气体导管
+enderio.config.title.gasconduits.tooltip=末影接口丨用于通用机械的导管配置
+gasconduits.gui.gasconduits.header=气体导管
 gasconduits.config.condit.gas=气体导管
 
 

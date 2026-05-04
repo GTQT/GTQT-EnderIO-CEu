@@ -12,3 +12,18 @@ entity.enderiozoo.lovechild.name=末影感染僵尸
 entity.enderiozoo.epicsquid.name=史诗鱿鱼
 entity.enderiozoo.voidslime.name=基岩史莱姆
 
+
+enderio.config.title.enderiozoo.tooltip=末影动物园配置
+enderio.config.zoo=动物园
+enderio.config.zoo.mobs=个体生物
+enderio.config.zoo.mobs.concussion_creeper=震荡爬行者
+enderio.config.zoo.mobs.dire_slime=泥土史莱姆
+enderio.config.zoo.mobs.dire_wolf=冰原狼
+enderio.config.zoo.mobs.endermini=迷你末影人
+enderio.config.zoo.mobs.fallen_knight=堕落骑士
+enderio.config.zoo.mobs.fallen_mount=堕落战马
+enderio.config.zoo.mobs.owl=猫头鹰
+enderio.config.zoo.mobs.wither_cat=凋灵猫
+enderio.config.zoo.mobs.wither_witch=凋灵女巫
+enderio.config.zoo.mobs.love_child=末影感染僵尸
+enderio.config.zoo.mobs.epic_squid=史诗鱿鱼

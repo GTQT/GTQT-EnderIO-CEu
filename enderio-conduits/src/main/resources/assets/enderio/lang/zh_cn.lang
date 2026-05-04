@@ -75,11 +75,12 @@ enderio.gui.conduit_redstone.header=红石导管
 enderio.gui.conduit_bundle_full=导管束已满
 
 # Config
-enderio.config.condit=导管
-enderio.config.condit.energy=能量导管
-enderio.config.condit.fluid=流体导管
-enderio.config.condit.item=物品导管
-enderio.config.condit.redstone=红石导管
+enderio.config.title.enderioconduits.tooltip=末影接口丨导管配置
+enderio.config.conduit=导管
+enderio.config.conduit.energy=能量导管
+enderio.config.conduit.fluid=流体导管
+enderio.config.conduit.item=物品导管
+enderio.config.conduit.redstone=红石导管
 
 # Upgrades
 

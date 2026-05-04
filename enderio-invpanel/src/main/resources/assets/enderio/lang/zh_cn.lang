@@ -109,3 +109,6 @@ tile.block_inventory_chest_huge.name=超级存储系统仓库
 tile.block_inventory_chest_enormous.name=终极存储系统仓库
 tile.block_inventory_chest_warehouse.name=存储系统仓库货栈
 tile.block_inventory_chest_warehouse13.name=物品系统存储器扩展货栈
+
+enderio.config.title.enderioinvpanel.tooltip=存储面板配置
+enderio.config.invpanel=存储面板
