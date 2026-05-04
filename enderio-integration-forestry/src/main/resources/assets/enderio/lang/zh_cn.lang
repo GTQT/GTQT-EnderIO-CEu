@@ -1,0 +1,32 @@
+#PARSE_ESCAPES
+# ^ having this in the first line allows us to use "\uXXXX" escapes in this file
+
+#***  Ender IO Foresty INT*****#
+
+# Translators, check your ".guess" file to see which keys your
+# language is missing and which keys it has that do not exist anymore.
+
+# forestry
+
+enderio.darksteel.upgrade.naturalist_eye.name=自然学家之眼
+enderio.darksteel.upgrade.naturalist_eye.tooltip.detailed.line1=显示已授粉的树叶
+
+enderio.darksteel.upgrade.apiarist_armor.head.name=养蜂人帽子
+enderio.darksteel.upgrade.apiarist_armor.head.tooltip.detailed.line1=防蜂
+
+enderio.darksteel.upgrade.apiarist_armor.chest.name=养蜂人衬衫
+enderio.darksteel.upgrade.apiarist_armor.chest.tooltip.detailed.line1=防蜂
+
+enderio.darksteel.upgrade.apiarist_armor.legs.name=养蜂人裤子
+enderio.darksteel.upgrade.apiarist_armor.legs.tooltip.detailed.line1=防蜂
+
+enderio.darksteel.upgrade.apiarist_armor.feet.name=养蜂人鞋子
+enderio.darksteel.upgrade.apiarist_armor.feet.tooltip.detailed.line1=防蜂
+
+enderio.config.items.darksteel.upgrades.forestry=林业升级
+
+item.item_species_item_filter.name=品种物品过滤器
+
+enderio.gui.conduit.item.species.primary_icon=过滤主要品种
+enderio.gui.conduit.item.species.secondary_icon=过滤次要品种
+enderio.gui.conduit.item.species.both_icon=过滤所有品种
