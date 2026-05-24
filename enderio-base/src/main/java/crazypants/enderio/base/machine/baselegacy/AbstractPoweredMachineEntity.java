@@ -4,7 +4,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
@@ -13,12 +12,14 @@ import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.machine.gui.IPowerBarData;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
@@ -82,7 +83,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   @Override
   public float getPowerLossPerTick() {
-    return energyLoss != null ? energyLoss.getFloat(getCapacitorData()) : 0;
+    return energyLoss != null ? (int) (energyLoss.getFloat(getCapacitorData()) * MachineConfig.globalPowerMultiplier.get()) : 0;
   }
 
   // RF API Power
@@ -94,7 +95,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   @Override
   public int getMaxEnergyStored() {
-    return maxEnergyStored.get(getCapacitorData());
+    return (int) (maxEnergyStored.get(getCapacitorData()) * MachineConfig.globalPowerMultiplier.get());
   }
 
   @Override
@@ -260,7 +261,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   }
 
   public int getMaxUsage(@Nonnull ICapacitorKey key) {
-    return key.get(capacitorData);
+    return (int) (key.get(capacitorData) * MachineConfig.globalPowerMultiplier.get());
   }
 
   protected float getEfficiencyMultiplier() {

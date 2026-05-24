@@ -17,6 +17,7 @@ import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
@@ -31,7 +32,6 @@ import crazypants.enderio.machines.machine.generator.stirling.GuiStirlingGenerat
 import crazypants.enderio.machines.machine.generator.stirling.TileStirlingGenerator;
 import crazypants.enderio.util.Prep;
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
@@ -81,16 +81,20 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
       
       ICapacitorKey minKey = simpleFuel(solidFuel.get(0)) ? CapacitorKey.SIMPLE_STIRLING_POWER_GEN : CapacitorKey.STIRLING_POWER_GEN;
 
-      double minEnergyProducedPerTick = minKey.getFloat(DefaultCapacitorData.BASIC_CAPACITOR);
-      double maxEnergyProducedPerTick = CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR);
+      float burnRate = MachineConfig.globalPowerMultiplier.get();
+      float minEnergyProducedPerTick = minKey.getFloat(DefaultCapacitorData.BASIC_CAPACITOR) * burnRate;
+      float maxEnergyProducedPerTick = CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR) * burnRate;
 
-      double minEnergyProduced = minEnergyProducedPerTick * TileStirlingGenerator.getBurnTime(solidFuel.get(0), minKey, DefaultCapacitorData.BASIC_CAPACITOR);
-      double maxEnergyProduced = maxEnergyProducedPerTick * TileStirlingGenerator.getBurnTime(solidFuel.get(0), CapacitorKey.STIRLING_POWER_GEN, DefaultCapacitorData.ENDER_CAPACITOR);
+      float minEnergyProduced = minEnergyProducedPerTick * TileStirlingGenerator.getBurnTime(solidFuel.get(0), minKey, DefaultCapacitorData.BASIC_CAPACITOR);
+      float maxEnergyProduced = maxEnergyProducedPerTick * TileStirlingGenerator.getBurnTime(solidFuel.get(0), CapacitorKey.STIRLING_POWER_GEN, DefaultCapacitorData.ENDER_CAPACITOR);
+      EnergyIngredient minEnergy = new EnergyIngredient(Math.round(minEnergyProduced), false);
+      minEnergy.setPowerMultAdjusted(false);
+      EnergyIngredient maxEnergy = new EnergyIngredient(Math.round(maxEnergyProduced), false);
+      maxEnergy.setPowerMultAdjusted(false);
 
       ingredients.setOutputs(EnergyIngredient.class,
-          new NNList<>(new EnergyIngredient((int) Math.round(minEnergyProducedPerTick), true),
-              new EnergyIngredient((int) Math.round(maxEnergyProducedPerTick), true), new EnergyIngredient((int) Math.round(minEnergyProduced), false),
-              new EnergyIngredient((int) Math.round(maxEnergyProduced), false)));
+          new NNList<>(new EnergyIngredient((int) minEnergyProducedPerTick, true),
+              new EnergyIngredient((int) maxEnergyProducedPerTick, true), minEnergy, maxEnergy));
     }
 
     @Override

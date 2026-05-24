@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
@@ -23,7 +24,6 @@ import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.zombie.GuiZombieGenerator;
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiIngredientGroup;
@@ -66,7 +66,8 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow("-", 89 - sw / 2 - xOff, 10 - yOff, ColorUtil.getRGB(Color.WHITE));
 
-      txt = LangFluid.tMB(ZombieGenConfig.ticksPerBucketOfFuel.get() / 1000);
+      float timeEfficiency = MachineConfig.generatorEfficiencyMultiplier.get() / MachineConfig.globalPowerMultiplier.get();
+      txt = LangFluid.tMB((int) (ZombieGenConfig.ticksPerBucketOfFuel.get() * timeEfficiency / 1000));
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, recipeWidth / 2 - sw / 2, 4 + 57 + fr.FONT_HEIGHT / 2, ColorUtil.getRGB(Color.WHITE));
 

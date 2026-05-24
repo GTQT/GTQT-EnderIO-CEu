@@ -2,6 +2,7 @@ package crazypants.enderio.base.integration.jei.energy;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.config.config.MachineConfig;
 import mezz.jei.api.recipe.IIngredientType;
 
 public class EnergyIngredient {
@@ -10,6 +11,7 @@ public class EnergyIngredient {
 
   private final int amount;
   private final boolean hasAmount, isPerTick;
+  private boolean powerMultAdjusted = true;
 
   public EnergyIngredient() {
     this(0, false, false);
@@ -29,7 +31,14 @@ public class EnergyIngredient {
     this.isPerTick = isPerTick;
   }
 
+  public void setPowerMultAdjusted(boolean isAdjusted) {
+    powerMultAdjusted = isAdjusted;
+  }
+
   public int getAmount() {
+    if (powerMultAdjusted) {
+      return (int) (amount * MachineConfig.globalPowerMultiplier.get());
+    }
     return amount;
   }
 

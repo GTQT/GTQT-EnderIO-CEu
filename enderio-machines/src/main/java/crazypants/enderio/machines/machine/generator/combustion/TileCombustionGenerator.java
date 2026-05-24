@@ -14,6 +14,7 @@ import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
@@ -293,7 +294,9 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
     if (curCoolant == null) {
       curCoolant = CombustionMath.toCoolant(getCoolantTank());
     }
-    return new CombustionMath(curCoolant, curFuel, maxEnergyUsed.getFloat(getCapacitorData()), getEfficiencyMultiplier());
+    float burnRate = MachineConfig.globalPowerMultiplier.get();
+    float efficiency = MachineConfig.generatorEfficiencyMultiplier.get();
+    return new CombustionMath(curCoolant, curFuel, maxEnergyUsed.getFloat(getCapacitorData()), getEfficiencyMultiplier(), efficiency / burnRate, burnRate);
   }
 
   public int getGeneratedLastTick() {

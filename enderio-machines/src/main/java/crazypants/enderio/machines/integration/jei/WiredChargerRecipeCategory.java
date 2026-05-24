@@ -47,6 +47,7 @@ public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredCharger
       this.itemInput = itemInput;
       this.itemOutput = itemOutput;
       this.energy = new EnergyIngredient(energy);
+      this.energy.setPowerMultAdjusted(false);
     }
 
     @Override

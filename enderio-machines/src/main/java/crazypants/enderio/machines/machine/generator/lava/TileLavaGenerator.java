@@ -16,6 +16,7 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.capacitor.ICapacitorData;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityGeneratorEntity;
 import crazypants.enderio.base.network.PacketSpawnParticles;
@@ -128,7 +129,8 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
       }
       if (burnTime <= 0 && !tank.isEmpty()) {
         tank.drain(1, true);
-        burnTime = getLavaBurntime() / Fluid.BUCKET_VOLUME / CapacitorKey.LAVAGEN_POWER_FLUID_USE.get(getCapacitorData());
+        burnTime = (int) (getLavaBurntime() / Fluid.BUCKET_VOLUME / CapacitorKey.LAVAGEN_POWER_FLUID_USE.get(getCapacitorData())
+          * MachineConfig.generatorEfficiencyMultiplier.get() / MachineConfig.globalPowerMultiplier.get());
         if (LavaGenConfig.outputEnabled.get()) {
           lavaUsed++;
           doGenOutput();

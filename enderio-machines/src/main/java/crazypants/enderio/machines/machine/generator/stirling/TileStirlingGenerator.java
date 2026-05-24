@@ -17,6 +17,7 @@ import com.enderio.core.common.util.FluidUtil;
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
@@ -137,7 +138,9 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
     }
     // The vanilla burn time results in 24,000FE for a piece of coal at 15FE/t output.
     // So we hardcode 15 as a baseline to keep that density consistent
-    return Math.round(base /= maxUsage.getDefaultFloat() / 15);
+    float computed = base / maxUsage.getDefaultFloat() * 15
+      * MachineConfig.generatorEfficiencyMultiplier.get() / MachineConfig.globalPowerMultiplier.get();
+    return Math.max(1, (int) (computed));
   }
 
   public int getBurnTime(@Nonnull ItemStack item) {

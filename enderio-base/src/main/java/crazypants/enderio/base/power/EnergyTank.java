@@ -10,6 +10,7 @@ import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -169,7 +170,7 @@ public class EnergyTank extends NullEnergyTank implements IEnergyTank {
   }
 
   public int getMaxEnergyRecieved() {
-    return maxEnergyRecieved.get(capacitorData);
+    return (int) (maxEnergyRecieved.get(capacitorData) * MachineConfig.globalPowerMultiplier.get());
   }
 
   public boolean canUseEnergy() {
@@ -207,7 +208,7 @@ public class EnergyTank extends NullEnergyTank implements IEnergyTank {
 
   @Override
   public int getMaxUsage(@Nonnull ICapacitorKey key) {
-    return key.get(capacitorData);
+    return (int) (key.get(capacitorData) * MachineConfig.globalPowerMultiplier.get());
   }
 
   @Override
@@ -249,7 +250,7 @@ public class EnergyTank extends NullEnergyTank implements IEnergyTank {
 
   @Override
   public int getMaxEnergyStored() {
-    return maxEnergyStored.get(capacitorData);
+    return (int) (maxEnergyStored.get(capacitorData) * MachineConfig.globalPowerMultiplier.get());
   }
 
   @Override

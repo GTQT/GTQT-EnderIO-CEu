@@ -11,6 +11,7 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.gui.BlockSceneRenderer;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
@@ -26,7 +27,6 @@ import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.lava.TileLavaGenerator;
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiIngredientGroup;
@@ -99,8 +99,9 @@ public class LavaGeneratorRecipeCategory extends BlankRecipeCategory<LavaGenerat
 
       int burnTime = (LavaGenConfig.useVanillaBurnTime.get() ? 20000 : TileEntityFurnace.getItemBurnTime(new ItemStack(Items.LAVA_BUCKET)))
           / Fluid.BUCKET_VOLUME / CapacitorKey.LAVAGEN_POWER_FLUID_USE.get(DefaultCapacitorData.BASIC_CAPACITOR);
+      float timeEfficiency = MachineConfig.generatorEfficiencyMultiplier.get() / MachineConfig.globalPowerMultiplier.get();
 
-      txt = LangFluid.tMB(burnTime);
+      txt = LangFluid.tMB((int) (burnTime * timeEfficiency));
       fr.drawString(txt, 0, 40, ColorUtil.getRGB(Color.GRAY));
 
       int i = 0;

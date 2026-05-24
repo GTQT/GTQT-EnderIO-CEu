@@ -179,7 +179,7 @@ class CombustionMathTest {
   void testCryo_cap2_n() {
     CombustionMath cm = new CombustionMath(CRYO, HOOTCH, 2f, 1f);
     assertEquals(120, cm.getEnergyPerTick(), "CRYO+HOOTCH getEnergyPerTick");
-    assertEquals(646, cm.getTicksPerCoolant(), "CRYO+HOOTCH getTicksPerCoolant");
+    assertEquals(647, cm.getTicksPerCoolant(), "CRYO+HOOTCH getTicksPerCoolant");
     assertEquals(3, cm.getTicksPerFuel(), "CRYO+HOOTCH getTicksPerFuel");
   }
 

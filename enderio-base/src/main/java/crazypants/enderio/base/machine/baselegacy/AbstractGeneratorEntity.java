@@ -3,6 +3,7 @@ package crazypants.enderio.base.machine.baselegacy;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
 import crazypants.enderio.base.power.forge.tile.InternalGeneratorTileWrapper;
@@ -34,7 +35,8 @@ public abstract class AbstractGeneratorEntity extends AbstractPoweredMachineEnti
    * @return a positive integer
    */
   public int getMaxEnergySent() {
-    return Math.min(getEnergyStored(), maxEnergyRecieved != NO_POWER ? maxEnergyRecieved.get(getCapacitorData()) : (getPowerUsePerTick() * 2));
+    int ioRate = maxEnergyRecieved != NO_POWER ? maxEnergyRecieved.get(getCapacitorData()) : (getPowerUsePerTick() * 2);
+    return Math.min(getEnergyStored(), (int) (ioRate * MachineConfig.globalPowerMultiplier.get()));
   }
 
 }

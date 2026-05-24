@@ -15,22 +15,27 @@ public class CombustionMath {
 
   public static final double HEAT_PER_RF = 0.00023F / 2f;
 
-  private final int ticksPerCoolant;
-  private final int ticksPerFuel;
+  private final float ticksPerCoolant;
+  private final float ticksPerFuel;
   private final int energyPerTick;
-
-  public CombustionMath(@Nullable IFluidCoolant coolant, @Nullable IFluidFuel fuel, float capQuality, float machineQuality) {
+  
+  public CombustionMath(@Nullable IFluidCoolant coolant, @Nullable IFluidFuel fuel, float capQuality, float machineQuality, float timeMultiplier, float rfTMultiplier) {
     if (coolant == null || fuel == null || capQuality == 0 || machineQuality == 0) {
-      ticksPerCoolant = ticksPerFuel = energyPerTick = 0;
+      energyPerTick = 0;
+      ticksPerFuel = ticksPerCoolant = 0.0f;
     } else {
-      energyPerTick = Math.round(fuel.getPowerPerCycle() * capQuality * machineQuality);
+      energyPerTick = Math.round(fuel.getPowerPerCycle() * capQuality * machineQuality * rfTMultiplier);
 
       double cooling = coolant.getDegreesCoolingPerMB(); // heat absorbed per mB
       double toCool = HEAT_PER_RF * energyPerTick * machineQuality; // heat per tick
-      ticksPerCoolant = Math.max((int) Math.round(cooling / toCool), 1);
+      ticksPerCoolant = (float) (cooling / toCool * timeMultiplier);
 
-      ticksPerFuel = Math.max((int) (fuel.getTotalBurningTime() / capQuality / 1000), 1);
+      ticksPerFuel = fuel.getTotalBurningTime() / capQuality / 1000 * timeMultiplier;
     }
+  }
+
+  public CombustionMath(@Nullable IFluidCoolant coolant, @Nullable IFluidFuel fuel, float capQuality, float machineQuality) {
+    this(coolant, fuel, capQuality, machineQuality, 1.0f, 1.0f);
   }
 
   public CombustionMath(@Nonnull SmartTank coolant, @Nonnull SmartTank fuel, float capQuality, float machineQuality) {
@@ -66,19 +71,20 @@ public class CombustionMath {
   }
 
   public int getTicksPerCoolant() {
-    return ticksPerCoolant;
+    // I have no idea why coolant uses round()
+    return Math.max(Math.round(ticksPerCoolant), 1);
   }
 
   public int getTicksPerCoolant(int amount) {
-    return ticksPerCoolant * amount;
+    return Math.max(Math.round(ticksPerCoolant * amount), 1);
   }
 
   public int getTicksPerFuel() {
-    return ticksPerFuel;
+    return Math.max((int) (ticksPerFuel), 1);
   }
 
   public int getTicksPerFuel(int amount) {
-    return ticksPerFuel * amount;
+    return Math.max((int) (ticksPerFuel * amount), 1);
   }
 
   public int getEnergyPerTick() {

@@ -13,6 +13,7 @@ import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorEntity;
@@ -57,7 +58,8 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     public TileEnderGenerator() {
       super(new SlotDefinition(0, 0, 1), CapacitorKey.ENDER_POWER_BUFFER, CapacitorKey.ENDER_POWER_GEN);
       setEnergyLoss(ENDER_POWER_LOSS);
-      ticksPerBucketOfFuel = EnderGenConfig.ticksPerBucketOfFuel.get();
+      ticksPerBucketOfFuel = (int) (EnderGenConfig.ticksPerBucketOfFuel.get() *
+        MachineConfig.generatorEfficiencyMultiplier.get() / MachineConfig.globalPowerMultiplier.get());
       minimumTankLevel = EnderGenConfig.minimumTankLevel.get();
     }
 
@@ -68,7 +70,8 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     }
   }
 
-  protected int ticksPerBucketOfFuel = ZombieGenConfig.ticksPerBucketOfFuel.get();
+  protected int ticksPerBucketOfFuel = (int) (ZombieGenConfig.ticksPerBucketOfFuel.get() *
+    MachineConfig.generatorEfficiencyMultiplier.get() / MachineConfig.globalPowerMultiplier.get());
   protected float minimumTankLevel = ZombieGenConfig.minimumTankLevel.get();
 
   private static int IO_MB_TICK = 250;

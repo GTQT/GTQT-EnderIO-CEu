@@ -14,6 +14,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
@@ -27,7 +28,6 @@ import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.combustion.CombustionMath;
 import crazypants.enderio.machines.machine.generator.combustion.GuiCombustionGenerator;
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiIngredient;
@@ -69,8 +69,11 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
       ingredients.setInputs(FluidStack.class, Arrays.asList(fluidCoolant, fluidFuel));
-      ingredients.setOutputs(EnergyIngredient.class,
-          new NNList<>(new EnergyIngredient(mathMin.getEnergyPerTick(), true), new EnergyIngredient(mathMax.getEnergyPerTick(), true)));
+      EnergyIngredient low = new EnergyIngredient(mathMin.getEnergyPerTick(), true);
+      low.setPowerMultAdjusted(false);
+      EnergyIngredient high = new EnergyIngredient(mathMax.getEnergyPerTick(), true);
+      high.setPowerMultAdjusted(false);
+      ingredients.setOutputs(EnergyIngredient.class, new NNList<>(low, high));
     }
 
     @Override
@@ -131,10 +134,12 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
         for (Fluid fluid2 : fluids.values()) {
           IFluidFuel fuel = CombustionMath.toFuel(fluid2);
           if (fuel != null) {
+            float burnRate = MachineConfig.globalPowerMultiplier.get();
+            float efficiency = MachineConfig.generatorEfficiencyMultiplier.get();
             CombustionMath mathMin = new CombustionMath(coolant, fuel, CapacitorKey.COMBUSTION_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR),
-                CapacitorKey.COMBUSTION_POWER_EFFICIENCY.get(DefaultCapacitorData.BASIC_CAPACITOR));
+                CapacitorKey.COMBUSTION_POWER_EFFICIENCY.get(DefaultCapacitorData.BASIC_CAPACITOR), efficiency / burnRate, burnRate);
             CombustionMath mathmax = new CombustionMath(coolant, fuel, CapacitorKey.COMBUSTION_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR),
-                CapacitorKey.ENHANCED_COMBUSTION_POWER_EFFICIENCY.get(DefaultCapacitorData.ENDER_CAPACITOR));
+                CapacitorKey.ENHANCED_COMBUSTION_POWER_EFFICIENCY.get(DefaultCapacitorData.ENDER_CAPACITOR), efficiency / burnRate, burnRate);
             result.add(new CombustionRecipeWrapper(new FluidStack(fluid1, 1000), new FluidStack(fluid2, 1000), mathMin, mathmax));
           }
         }

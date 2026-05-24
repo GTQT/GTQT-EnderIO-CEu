@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.fluid.BlockFluidEio;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
@@ -102,7 +103,7 @@ public class TileSolarPanel extends TileEntityEio implements ILegacyPoweredTile,
   static int getEnergyPerTick(@Nonnull World world, @Nonnull BlockPos pos) {
     final IBlockState blockState = world.getBlockState(pos);
     if (blockState.getBlock() == block_solar_panel.getBlock()) {
-      return blockState.getValue(SolarType.KIND).getRfperTick();
+      return (int) (blockState.getValue(SolarType.KIND).getRfperTick() * MachineConfig.globalPowerMultiplier.get());
     } else {
       return -1;
     }

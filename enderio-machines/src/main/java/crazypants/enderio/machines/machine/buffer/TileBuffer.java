@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -96,7 +97,7 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
   }
 
   public int getMaxIO() {
-    return maxEnergyRecieved.get(getCapacitorData());
+    return (int) (maxEnergyRecieved.get(getCapacitorData()) * MachineConfig.globalPowerMultiplier.get());
   }
 
   @Override

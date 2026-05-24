@@ -3,6 +3,7 @@ package crazypants.enderio.base.machine.baselegacy;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
@@ -33,7 +34,7 @@ public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachine
     if (isSideDisabled(dir)) {
       return 0;
     }
-    return maxEnergyRecieved.get(getCapacitorData());
+    return (int) (maxEnergyRecieved.get(getCapacitorData()) * MachineConfig.globalPowerMultiplier.get());
   }
 
 }

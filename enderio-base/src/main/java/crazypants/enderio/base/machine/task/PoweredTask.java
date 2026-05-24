@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
@@ -69,7 +70,7 @@ public class PoweredTask implements IPoweredTask {
     this.nextSeed = nextSeed;
     this.outputMultiplier = outputMultiplier;
     this.chanceMultiplier = chanceMultiplier;
-    requiredEnergy = recipe.getEnergyRequired(inputsIn);
+    requiredEnergy = (int) (recipe.getEnergyRequired(inputsIn) * MachineConfig.globalPowerMultiplier.get());
     bonusType = recipe.getBonusType(inputsIn);
   }
 
