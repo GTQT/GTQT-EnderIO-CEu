@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * An int-int mapping that has a low memory footprint and reasonable lookup times but slow insert times. It also can save and load from/to nbt.
  * <p>
  * Note that keys that have not been stored (or have been deleted) have a value of 0.
+ * Also note that this mapping only supports positive values. Inserting negative values into it leads to unexpected behavior down the line.
  *
  */
 public class SparseArray {

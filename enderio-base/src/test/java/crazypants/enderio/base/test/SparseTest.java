@@ -17,6 +17,12 @@ class SparseTest {
 
   private static final int COUNT = 10_000;
 
+  private int replaceValue(int value) {
+    // We need to be careful: SparseArray does not support negative values,
+    // so we cannot trigger integer overflow here.
+    return value > 2_000_000_000 ? value - 13370 : value + 13371;
+  }
+
   @Test
   void test() { // too lazy to split this into single tests...
     SparseArray a = new SparseArray();
@@ -65,11 +71,11 @@ class SparseTest {
     // (3)
     // replacing values with the different data
     for (Entry<Integer, Integer> e : m.entrySet()) {
-      a.put(e.getKey(), e.getValue() + 1337);
+      a.put(e.getKey(), replaceValue(e.getValue()));
     }
     // all values can still be read again
     for (Entry<Integer, Integer> e : m.entrySet()) {
-      assertEquals(e.getValue() + 1337, a.get(e.getKey()));
+      assertEquals(replaceValue(e.getValue()), a.get(e.getKey()));
     }
     // no values pop out that we didn't put in
     for (int i = 0; i < COUNT; i++) {
