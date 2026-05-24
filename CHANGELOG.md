@@ -1,5 +1,25 @@
 # Changelog
 
+## [5.4.1] - 2026-05-24
+
+### Features
+
+- Added Simplified Chinese translations (from ZHAY10086)
+  - Ender Core configuration keys currently do not have these translations
+
+### Tweaks
+
+- Added a Global Power Multiplier config option
+- SAG Mill Grinding Balls will no longer try to increase the output's stack size beyond the maximum item's stack capacity
+
+### Bugfixes
+
+- SAG Mill will now consume grinding balls before starting to execute a recipe for the first time
+- Conduit Probe can now be safely put into an Omni-Wand
+- Fixed several config options missing localization keys
+- Fixed Gas Conduits missing localization keys
+- Fixed the config window not opening when Mekanism is not installed
+
 ## [5.4.0] - 2026-05-01
 
 _Ender Core version: 0.5.80_
