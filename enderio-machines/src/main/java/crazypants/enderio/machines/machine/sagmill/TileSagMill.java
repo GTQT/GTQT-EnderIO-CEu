@@ -160,16 +160,6 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
           }
         }
       }
-      if (grindingBall == null) {
-        final ItemStack ballInSlot = getStackInSlot(1);
-        grindingBall = SagMillRecipeManager.getInstance().getGrindballFromStack(ballInSlot);
-        if (grindingBall != null) {
-          grindingBallDurabilityMax = grindingBall.getDurability();
-          ballInSlot.shrink(1);
-          markDirty();
-          sendGB = false; // the tile update will also sync the grinding ball
-        }
-      }
       if (sendGB) {
         PacketHandler.sendToAllAround(new PacketGrindingBall(this), this);
         lastSendGbScaled = getBallDurationScaled(16);
@@ -181,6 +171,15 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
   @Override
   protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, long nextSeed) {
     PoweredTask res;
+    if (grindingBall == null) {
+      final ItemStack ballInSlot = getStackInSlot(1);
+      grindingBall = SagMillRecipeManager.getInstance().getGrindballFromStack(ballInSlot);
+      if (grindingBall != null) {
+        grindingBallDurabilityMax = grindingBall.getDurability();
+        ballInSlot.shrink(1);
+        markDirty();
+      }
+    }
     if (grindingBall != null && nextRecipe.getBonusType(getRecipeInputs()).doChances()) {
       res = new PoweredTask(nextRecipe, nextSeed, grindingBall.getGrindingMultiplier(), grindingBall.getChanceMultiplier(), getRecipeInputs());
       res.setRequiredEnergy(res.getRequiredEnergy() * grindingBall.getPowerMultiplier());
