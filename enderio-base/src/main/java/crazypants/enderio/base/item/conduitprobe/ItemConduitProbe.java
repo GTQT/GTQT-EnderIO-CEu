@@ -62,6 +62,11 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     if (nbt == null || nbt.hasNoTags()) {
       return false;
     }
+    if (nbt.hasKey("conduitConfig")) {
+      // The negation of this happens when migrating from EnderIO < 5.4.1, when the data was not saved in a sub-nbt
+      // We try to paste from it, and when copying, we try to erase the old saved data to avoid the stack NBT from growing
+      nbt = nbt.getCompoundTag("conduitConfig");
+    }
 
     boolean performedAction = false;
 
@@ -88,7 +93,11 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     }
 
     if (!nbt.hasNoTags()) {
-      stack.setTagCompound(nbt);
+      stack.getTagCompound().setTag("conduitConfig", nbt);
+      for (String k : nbt.getKeySet()) {
+        // See the comment above for the purpose of this loop
+        stack.getTagCompound().removeTag(k);
+      }
       player.sendStatusMessage(Lang.GUI_PROBE_COPIED.toChatServer(), true);
       return true;
     } else {

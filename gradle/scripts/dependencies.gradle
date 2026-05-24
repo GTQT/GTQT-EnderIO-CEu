@@ -68,13 +68,6 @@ ext {
         'curse.maven:redstone-flux-270789:2920436': "project_intelligence",
     ]
 
-    runtime_only_dependencies = [
-        'curse.maven:hwyla-253449:2568751': "waila",
-        'curse.maven:actually-additions-228404:3117927': "aa",
-        'curse.maven:rftools-224641:2861573': "rftools",
-        'curse.maven:mcjtylib-233105:2745846': "rftools",
-    ]
-
     loaded_modules = [
         'endergy': "endergy",
         'zoo': "zoo",
@@ -124,12 +117,6 @@ dependencies {
     compile_dependencies.entrySet().forEach {
         compileOnly it.key
     }
-    // See runtimeConfig.gradle
-    /* runtime_only_dependencies.entrySet().forEach {
-        if (it.value.any { it.toBoolean() }) {
-            runtimeOnly it.key
-        }
-    } */
 
     if (project.name != 'ap' && project.name != 'endercore') {
         annotationProcessor project(':ap')

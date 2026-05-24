@@ -9,6 +9,7 @@ def enabledDependencies = [
   "waila": false,
   "aa": false,
   "rftools": false,
+  "omniwand": false,
   // Modules
   "endergy": true,
   "zoo": false,
@@ -49,6 +50,14 @@ def shouldUse(deps, value) {
       throw new RuntimeException("Invalid expression ${value}")
   }
 }
+
+def runtime_only_dependencies = [
+    'curse.maven:hwyla-253449:2568751': "waila",
+    'curse.maven:actually-additions-228404:3117927': "aa",
+    'curse.maven:rftools-224641:2861573': "rftools",
+    'curse.maven:mcjtylib-233105:2745846': "rftools",
+    'curse.maven:omniwand-923677:7476868': "omniwand",
+]
 
 dependencies {
   // Include StripLatestForgeRequirements by default for the dev env, saves everyone a hassle
