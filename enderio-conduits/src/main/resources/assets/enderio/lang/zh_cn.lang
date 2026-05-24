@@ -1,0 +1,193 @@
+#PARSE_ESCAPES
+# ^ having this in the first line allows us to use "\uXXXX" escapes in this file
+
+#***  Ender IO Conduits *****#
+
+# Translators, check your ".guess" file to see which keys your
+# language is missing and which keys it has that do not exist anymore.
+
+# Conduits
+enderio.block_conduit_bundle=导管束
+tile.block_conduit_bundle.name=导管接口
+
+enderio.item_power_conduit.name=能量导管
+enderio.item_power_conduit_enhanced.name=强化能量导管
+enderio.item_power_conduit_ender.name=末影能量导管
+enderio.power.max_output=最大输出
+
+enderio.item_redstone_conduit_insulated.name=红石导管
+
+enderio.item_liquid_conduit.name=流体导管
+enderio.item_liquid_conduit_advanced.name=高压流体导管
+enderio.item_liquid_conduit_ender.name=末影流体导管
+enderio.item_liquid_conduit.locked_type=流体种类锁定为
+enderio.item_liquid_conduit.unlocked_type=流体种类已解锁
+enderio.item_liquid_conduit.locked_waila=锁定为
+
+enderio.fluid.millibuckets_tick=mB/t
+enderio.item_liquid_conduit.tooltip.max_extract=最大输出：
+enderio.item_liquid_conduit.tooltip.max_io=最大输入/输出：
+enderio.item_liquid_conduit.tooltip.detailed.line1=流体流动受重力影响。
+enderio.item_liquid_conduit.tooltip.detailed.line2=流速取决于流体黏度。
+
+enderio.item_liquid_conduit_ender.tooltip.detailed.line1=即时流体传送。
+enderio.item_liquid_conduit_ender.tooltip.detailed.line2=能够同时传输多种流体。
+
+enderio.item_item_conduit.name=物品导管
+
+# Conduit Probe
+enderio.gui.conduit_probe.item.heading=物品导管连接到：%s
+enderio.gui.conduit_probe.item.heading.no_connections=物品导管无外部连接
+
+enderio.gui.conduit_probe.item.receive.no_items=\u0020- 无法接收物品
+enderio.gui.conduit_probe.item.receive.no_item=\u0020- 无法接收%s
+enderio.gui.conduit_probe.item.receive.items=\u0020- 可从以下来源接收物品：
+enderio.gui.conduit_probe.item.receive.item=\u0020- 可从以下来源接收%s：
+
+enderio.gui.conduit_probe.item.extract.no_item.no_targets=\u0020- 被提取物品无有效输出目标
+enderio.gui.conduit_probe.item.extract.no_item.targets=\u0020- 被提取的物品将传输至：
+enderio.gui.conduit_probe.item.extract.item.no_targets=\u0020- %s无有效输出目标
+enderio.gui.conduit_probe.item.extract.item.targets=\u0020- %s将传输至：
+
+enderio.gui.conduit_probe.power.tracked_conduit.line1=能量导管
+enderio.gui.conduit_probe.power.tracked_conduit.line2=\u0020- 内部缓存：%s
+enderio.gui.conduit_probe.power.tracked_conduit.line3=\u0020- 5秒内平均输出：%s
+enderio.gui.conduit_probe.power.tracked_conduit.line4=\u0020- 5秒内平均输入：%s
+
+enderio.gui.conduit_probe.power.tracked_network.line1=能量网络
+enderio.gui.conduit_probe.power.tracked_network.line2=\u0020- 导管储能：%s
+enderio.gui.conduit_probe.power.tracked_network.line3=\u0020- 电容库储能：%s
+enderio.gui.conduit_probe.power.tracked_network.line4=\u0020- 机器缓存：%s
+enderio.gui.conduit_probe.power.tracked_network.line5=\u0020- 5秒内平均输出：%s
+enderio.gui.conduit_probe.power.tracked_network.line6=\u0020- 5秒内平均输入：%s
+
+enderio.gui.conduit_probe.redstone.heading=红石导管连接至：%s
+enderio.gui.conduit_probe.redstone.heading.no_connections=红石导管无外部连接
+enderio.gui.conduit_probe.redstone.strong=\u0020- 提供强信号，强度：%s
+enderio.gui.conduit_probe.redstone.weak=\u0020- 提供弱信号，强度：%s
+enderio.gui.conduit_probe.redstone.external=\u0020- 读取红石信号强度：%s
+
+enderio.gui.conduit_energy.header=能量导管
+enderio.gui.conduit_item.header=物品导管
+enderio.gui.conduit_fluid.header=流体导管
+enderio.gui.conduit_redstone.header=红石导管
+
+enderio.gui.conduit_bundle_full=导管束已满
+
+# Config
+enderio.config.title.enderioconduits.tooltip=末影接口丨导管配置
+enderio.config.conduit=导管
+enderio.config.conduit.energy=能量导管
+enderio.config.conduit.fluid=流体导管
+enderio.config.conduit.item=物品导管
+enderio.config.conduit.redstone=红石导管
+
+# Upgrades
+
+item.item_extract_speed_upgrade.name=导管提取速率升级
+item.item_extract_speed_downgrade.name=导管提取速率降级
+item.item_inventory_panel_upgrade.name=存储面板升级
+
+# GUI
+enderio.gui.conduit_insert_mode=存入
+enderio.gui.conduit_extract_mode=提取
+enderio.gui.conduit_enabled_mode=已启用
+enderio.gui.conduit_disabled_mode=已禁用
+enderio.gui.redstone_conduit_input_mode=输入
+enderio.gui.redstone_conduit_output_mode=输出
+
+enderio.gui.conduit_channel=频道
+enderio.gui.round_robin_enabled=轮询调度已启用
+enderio.gui.round_robin_disabled=轮询调度已禁用
+enderio.gui.slot_switch_enabled=提取后移至下一个槽位
+enderio.gui.slot_switch_disabled=从同一槽位持续提取物品
+enderio.gui.tooltip.extractionTicks=每%d刻提取一次
+enderio.gui.self_feed_enabled=自供给已启用
+enderio.gui.self_feed_disabled=自供给已禁用
+enderio.gui.eco_mode_enabled=节能模式已启用
+enderio.gui.eco_mode_disabled=节能模式已禁用
+enderio.gui.item_filter_upgrade=过滤升级
+enderio.gui.item_function_upgrade=功能升级
+enderio.gui.item_function_upgrade2=速率升级数量上限为15
+enderio.gui.item_function_upgrade3=速率降级数量上限为3
+enderio.gui.item_function_upgrade.details=有效速度：
+enderio.gui.item_function_upgrade.details2=每次操作传输%s个物品
+enderio.gui.signal_color=信号颜色
+enderio.gui.priority=优先级
+
+enderio.gui.liquid_auto_extract=自动提取
+enderio.gui.liquid_filter=过滤器
+enderio.gui.liquid_whitelist=白名单
+enderio.gui.liquid_blacklist=黑名单
+enderio.gui.liquid_function_upgrade.details=有效速度：
+enderio.gui.liquid_function_upgrade.details2=每次操作传输%2$s流体（%1$s）
+
+enderio.gui.redstone_signal_strength=强信号
+
+enderio.gui.enabled=已启用
+enderio.gui.disabled=已禁用
+
+enderio.gui.conduit.network.unloaded=部分导管处于未加载的区块
+
+# Advancements
+
+enderio.advancement.conduits.root.name=末影接口丨导管
+enderio.advancement.conduits.root.desc=一个方块中有多少导管？
+
+enderio.advancement.conduits.binder_composite.name=我才不是渣渣！
+enderio.advancement.conduits.binder_composite.desc=制作一些导管粘合胚料
+
+# Temp?
+enderio.advancement.conduits.conduit_binder.name=通用粘合剂
+enderio.advancement.conduits.conduit_binder.desc=烧制一些导管粘合剂
+
+# Temp
+enderio.advancement.conduits.energy_conduit.basic.name=基础能量
+enderio.advancement.conduits.energy_conduit.basic.desc=制作一些能量导管
+
+# Temp
+enderio.advancement.conduits.energy_conduit.enhanced.name=强化能量
+enderio.advancement.conduits.energy_conduit.enhanced.desc=制作一些强化能量导管
+
+# Temp
+enderio.advancement.conduits.energy_conduit.ender.name=末影能量
+enderio.advancement.conduits.energy_conduit.ender.desc=制作一些末影能量导管
+
+# Temp
+enderio.advancement.conduits.fluid_conduit.basic.name=基础流体
+enderio.advancement.conduits.fluid_conduit.basic.desc=制作一些流体导管
+
+# Temp?
+enderio.advancement.conduits.fluid_conduit.pressurized.name=高压驱动
+enderio.advancement.conduits.fluid_conduit.pressurized.desc=制作一些高压流体导管
+
+enderio.advancement.conduits.fluid_conduit.ender.name=瞬间流体传输，只需加入末影
+enderio.advancement.conduits.fluid_conduit.ender.desc=制作一些末影流体导管
+
+# Temp
+enderio.advancement.conduits.item_conduit.name=物品传输
+enderio.advancement.conduits.item_conduit.desc=制作一些物品导管
+
+enderio.advancement.conduits.basic_filter.name=傻瓜式过滤
+enderio.advancement.conduits.basic_filter.desc=制作一个基础物品过滤器
+
+enderio.advancement.conduits.advanced_filter.name=最大控制
+enderio.advancement.conduits.advanced_filter.desc=制作一个高级物品过滤器
+
+enderio.advancement.conduits.big_filter.name=最大尺寸
+enderio.advancement.conduits.big_filter.desc=制作一个大型物品过滤器
+
+enderio.advancement.conduits.big_advanced_filter.name=一滤驭众滤
+enderio.advancement.conduits.big_advanced_filter.desc=制作一个高级大型物品过滤器
+
+# Temp
+enderio.advancement.conduits.redstone_conduit.name=红石传输
+enderio.advancement.conduits.redstone_conduit.desc=制作一些红石导管
+
+# Temp?
+enderio.advancement.conduits.all_conduits.name=多面手
+enderio.advancement.conduits.all_conduits.desc=制作出所有核心导管类型
+
+# Temp?
+enderio.advancement.conduits.all_filters.name=分门别滤
+enderio.advancement.conduits.all_filters.desc=制作出所有核心过滤器类型

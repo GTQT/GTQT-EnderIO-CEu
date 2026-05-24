@@ -1,0 +1,21 @@
+#PARSE_ESCAPES
+# ^ having this in the first line allows us to use "\uXXXX" escapes in this file
+
+#***  Ender IO RS Conduit*****#
+
+# Translators, check your ".guess" file to see which keys your
+# language is missing and which keys it has that do not exist anymore.
+
+# Conduits
+enderio.item_refined_storage_conduit.name=RS导管
+item.item_rs_crafting_upgrade.name=RS合成升级
+item.item_rs_crafting_speed_upgrade.name=RS合成速度升级
+item.item_rs_crafting_speed_downgrade.name=RS合成速度降级
+
+enderio.gui.rs_filter_upgrade_in=输入过滤器
+enderio.gui.rs_filter_upgrade_in2=在此处放置过滤器来为
+enderio.gui.rs_filter_upgrade_in3=精致存储启用输入过滤
+
+enderio.gui.rs_filter_upgrade_out=输出过滤器
+enderio.gui.rs_filter_upgrade_out2=在此处放置过滤器来为
+enderio.gui.rs_filter_upgrade_out3=精致存储启用输出过滤
