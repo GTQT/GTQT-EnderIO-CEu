@@ -91,18 +91,8 @@ public class PoweredTask implements IPoweredTask {
   @Override
   public @Nonnull ResultStack[] getCompletedResult() {
     Random rand = new Random(nextSeed);
-    NNList<ResultStack> result = new NNList<>();
-    result.addAll(recipe.getCompletedResult(rand.nextLong(), getBonusType().doChances() ? chanceMultiplier : 1f, inputs));
-    if (getBonusType().doMultiply()) {
-      float mul = outputMultiplier - 1f;
-      while (mul > 0) {
-        if (rand.nextFloat() < mul) {
-          result.addAll(recipe.getCompletedResult(rand.nextLong(), getBonusType().doChances() ? chanceMultiplier : 1f, inputs));
-        }
-        mul--;
-      }
-    }
-    return result.toArray(new ResultStack[0]);
+    float outputMultiplier = getBonusType().doMultiply() ? this.outputMultiplier : 1f;
+    return recipe.getCompletedResult(rand.nextLong(), getBonusType().doChances() ? chanceMultiplier : 1f, outputMultiplier, inputs);
   }
 
   @Override

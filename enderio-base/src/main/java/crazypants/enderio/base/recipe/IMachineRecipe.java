@@ -1,6 +1,8 @@
 package crazypants.enderio.base.recipe;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -66,6 +68,30 @@ public interface IMachineRecipe {
    */
   @Nonnull
   ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs);
+
+  /**
+   * Returns the output from a single 'cycle' of the recipe, when the recipe has an output multiplier (i.e. SAG Mill Grinding Balls).
+   * 
+   * @param nextSeed
+   *          a random number to be used as a seed for determining whether '% chance' outputs are returned. This value is in the range 0-1.
+   * @param chanceMultiplier
+   * @param outputMultiplier
+   * @param inputs
+   * @return
+   * @since EnderIO CEu 5.4.1
+   */
+  @Nonnull
+  default ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, float outputMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
+    Random rand = new Random(nextSeed);
+    NNList<ResultStack> list = new NNList<>();
+    while (outputMultiplier > 0f) {
+      if (rand.nextFloat() < outputMultiplier) {
+        list.addAll(Arrays.asList(getCompletedResult(nextSeed, chanceMultiplier, inputs)));
+      }
+      outputMultiplier--;
+    }
+    return list.toArray(new ResultStack[0]);
+  }
 
   /**
    * Returns the experience a user gains when this recipe has generated the specified output. If the output is the result of several recipe cycles, the

@@ -117,6 +117,11 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
 
   @Override
   public @Nonnull ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
+    return getCompletedResult(nextSeed, chanceMultiplier, 1.0f, inputs);
+  }
+
+  @Override
+  public @Nonnull ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, float outputMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
     if (inputs.size() <= 0) {
       return EMPTY_RESULT;
     }
@@ -138,13 +143,23 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
         }
       } else {
         final ItemStack stack = output.getOutput().copy();
-        int stackSize = 0;
-        for (int i = 0; i < stack.getCount(); i++) {
-          if (rand.nextFloat() < output.getChance() * chanceMultiplier) {
-            stackSize++;
+        int targetSize = 0;
+        for (float it = 0; it < outputMultiplier; it++) {
+          if (rand.nextFloat() < outputMultiplier - it) {
+            targetSize += stack.getCount();
           }
         }
-        stack.setCount(stackSize);
+        if (output.getChance() * chanceMultiplier < 1.0f) {
+          // Most of the time, it's >+ 1f, so should be more performant to do this check
+          int stackSize = 0;
+          for (int i = 0; i < targetSize; i++) {
+            if (rand.nextFloat() < output.getChance() * chanceMultiplier) {
+              stackSize++;
+            }
+          }
+          targetSize = stackSize;
+        }
+        stack.setCount(Math.min(targetSize, stack.getMaxStackSize()));
         if (Prep.isValid(stack)) {
           result.add(new ResultStack(stack));
         }
