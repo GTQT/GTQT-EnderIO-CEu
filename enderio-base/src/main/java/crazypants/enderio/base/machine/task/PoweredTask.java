@@ -112,7 +112,7 @@ public class PoweredTask implements IPoweredTask {
 
   @Override
   public float getRemainingEnergy() {
-    return requiredEnergy - usedEnergy;
+    return Math.max(0.0f, requiredEnergy - usedEnergy);
   }
 
   public void setRequiredEnergy(float requiredEnergy) {
