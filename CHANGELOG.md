@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.4.2] - 2026-05-31
+
+_Ender Core version: 0.5.81_
+
+### Bugfixes
+
+- Fixed the buttons in Advanced Item Filter and Lava-filled Tank not responding to a click correctly
+- Fixed the conduit tick rate config having a cryptic comment
+- Fixed a regression related to Enhanced machines
+- Newly crafted Conduit Probes will now work correctly
+
 ## [5.4.1] - 2026-05-24
 
 ### Features
