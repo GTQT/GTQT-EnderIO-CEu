@@ -29,18 +29,24 @@ public class CollectionCycleButton<T extends CycleButton.ICycleEnum> extends Ico
   // the creation of this class was sponsored by Java ABI :skull:
 
   private final @Nonnull NNList<T> modes;
+  private final @Nullable IButtonProcessor ownerScreen;
 
   private @Nullable T mode;
 
   private boolean isOpened = true;
   private PickerOverlay overlay;
 
-  public CollectionCycleButton(@Nonnull IGuiScreen gui, int id, int x, int y, int width, @Nonnull NNList<T> modes) {
+  public CollectionCycleButton(@Nonnull IGuiScreen gui, int id, int x, int y, int width, @Nonnull NNList<T> modes, IButtonProcessor ownerScreen) {
     super(gui, id, x, y, (IWidgetIcon)null);
     this.modes = modes;
     this.setWidth(width);
     overlay = new PickerOverlay(this);
     ((GuiContainerBase)gui).addOverlay(overlay);
+    this.ownerScreen = ownerScreen;
+  }
+
+  public CollectionCycleButton(@Nonnull IGuiScreen gui, int id, int x, int y, int width, @Nonnull NNList<T> modes) {
+    this(gui, id, x, y, width, modes, null);
   }
 
   public CollectionCycleButton(@Nonnull IGuiScreen gui, int id, int x, int y, @Nonnull NNList<T> modes) {
@@ -194,7 +200,11 @@ public class CollectionCycleButton<T extends CycleButton.ICycleEnum> extends Ico
           for (Pair<Rectangle, T> pair : modes) {
             if (pair.getLeft().contains(mouseX, mouseY)) {
               cycleButton.setMode(pair.getRight());
+              if (ownerScreen != null) {
+                ownerScreen.processButtonClick(cycleButton);
+              }
               setIsVisible(false);
+              break;
             }
           }
         }

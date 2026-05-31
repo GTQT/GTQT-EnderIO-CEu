@@ -17,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.button.IButtonProcessor;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
@@ -46,7 +47,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiContainerBaseEIO<O> extends GuiContainerBase implements IRemoteExec.IGui {
+public abstract class GuiContainerBaseEIO<O> extends GuiContainerBase implements IRemoteExec.IGui, IButtonProcessor {
 
   private final @Nonnull NNList<ResourceLocation> guiTextures = new NNList<ResourceLocation>();
   private final @Nonnull O owner;
@@ -195,6 +196,13 @@ public abstract class GuiContainerBaseEIO<O> extends GuiContainerBase implements
 
   protected boolean doSwitchTab(int tab) {
     return false;
+  }
+
+  @Override
+  public void processButtonClick(GuiButton button) {
+    try {
+      this.actionPerformed(button);
+    } catch (IOException e) {}
   }
 
   public @Nonnull Rectangle renderStdTab(int sx, int sy, int tabNo, boolean isActive) {

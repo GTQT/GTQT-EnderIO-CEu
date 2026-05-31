@@ -45,7 +45,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
       }
     });
 
-    voidBut = new CycleButton<VoidMode.IconHolder>(this, 123, 155, 43 + (showRecipeButton() ? 18 : 0), VoidMode.IconHolder.class);
+    voidBut = new CycleButton<VoidMode.IconHolder>(this, 123, 155, 43 + (showRecipeButton() ? 18 : 0), VoidMode.IconHolder.class, this);
   }
 
   @Override

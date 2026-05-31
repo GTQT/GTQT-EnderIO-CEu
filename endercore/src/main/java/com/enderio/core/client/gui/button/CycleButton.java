@@ -47,4 +47,8 @@ public class CycleButton<T extends Enum<T> & ICycleEnum> extends CollectionCycle
   public CycleButton(@Nonnull IGuiScreen gui, int id, int x, int y, @Nonnull Class<T> clazz) {
     super(gui, id, x, y, NNList.of(clazz));
   }
+
+  public CycleButton(@Nonnull IGuiScreen gui, int id, int x, int y, @Nonnull Class<T> clazz, IButtonProcessor ownerScreen) {
+    super(gui, id, x, y, 16, NNList.of(clazz), ownerScreen);
+  }
 }

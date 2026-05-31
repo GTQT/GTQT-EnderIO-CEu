@@ -97,7 +97,7 @@ public class BasicItemFilterGui extends AbstractFilterGui {
     useNbtB.setPaintSelectedBorder(false);
 
     x += 20;
-    damageB = new CycleButton<DamageModeIconHolder>(this, ID_DAMAGE, x, y, DamageModeIconHolder.class);
+    damageB = new CycleButton<DamageModeIconHolder>(this, ID_DAMAGE, x, y, DamageModeIconHolder.class, this);
   }
 
   public void createFilterSlots() {

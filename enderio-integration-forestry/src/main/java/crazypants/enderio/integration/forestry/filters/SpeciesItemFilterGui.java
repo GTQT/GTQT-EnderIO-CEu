@@ -62,7 +62,7 @@ public class SpeciesItemFilterGui extends AbstractFilterGui {
     y += 20;
     x = butLeft;
 
-    speciesModeB = new CycleButton<SpeciesMode.IconHolder>(this, ID_SPECIES_MODE + buttonIdOffset, x, y, SpeciesMode.IconHolder.class);
+    speciesModeB = new CycleButton<SpeciesMode.IconHolder>(this, ID_SPECIES_MODE + buttonIdOffset, x, y, SpeciesMode.IconHolder.class, this);
   }
 
   @Override
