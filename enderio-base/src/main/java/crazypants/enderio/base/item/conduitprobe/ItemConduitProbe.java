@@ -59,6 +59,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
 
   public static boolean pasteSettings(@Nonnull EntityPlayer player, @Nonnull ItemStack stack, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
     NBTTagCompound nbt = stack.getTagCompound();
+    System.out.println("Tag when pasting: " + nbt);
     if (nbt == null || nbt.hasNoTags()) {
       return false;
     }
@@ -93,11 +94,17 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     }
 
     if (!nbt.hasNoTags()) {
-      stack.getTagCompound().setTag("conduitConfig", nbt);
-      for (String k : nbt.getKeySet()) {
-        // See the comment above for the purpose of this loop
-        stack.getTagCompound().removeTag(k);
+      NBTTagCompound tag = stack.getTagCompound();
+      if (tag == null) {
+        tag = new NBTTagCompound();
+        stack.setTagCompound(tag);
+      } else {
+        for (String k : nbt.getKeySet()) {
+          // See the comment above for the purpose of this loop
+          stack.getTagCompound().removeTag(k);
+        };
       }
+      tag.setTag("conduitConfig", nbt);
       player.sendStatusMessage(Lang.GUI_PROBE_COPIED.toChatServer(), true);
       return true;
     } else {
