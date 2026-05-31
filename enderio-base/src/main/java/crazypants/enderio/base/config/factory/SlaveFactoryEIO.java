@@ -24,6 +24,11 @@ public class SlaveFactoryEIO extends SlaveFactory implements IValueFactoryEIO {
   }
 
   @Override
+  public IValue<int[]> make(String keyname, int[] defaultValue, String text) {
+    return new FixedIntListValue(this, getSection(), keyname, defaultValue, text).preload();
+  }
+
+  @Override
   public @Nonnull IValue<Things> make(@Nonnull String keyname, @Nonnull Things defaultValue, @Nonnull String text) {
     return new ThingsValue(this, getSection(), keyname, defaultValue, text).preload();
   }
