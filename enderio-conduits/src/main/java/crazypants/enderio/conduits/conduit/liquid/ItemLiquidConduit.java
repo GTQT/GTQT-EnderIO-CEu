@@ -40,11 +40,21 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
   protected ItemLiquidConduit(@Nonnull IModObject modObject) {
     super(modObject, new ItemConduitSubtype(modObject.getUnlocalisedName(), modObject.getRegistryName().toString()),
         new ItemConduitSubtype(modObject.getUnlocalisedName() + "_advanced", modObject.getRegistryName().toString() + "_advanced"),
-        new ItemConduitSubtype(modObject.getUnlocalisedName() + "_ender", modObject.getRegistryName().toString() + "_ender"));
+        new ItemConduitSubtype(modObject.getUnlocalisedName() + "_ender", modObject.getRegistryName().toString() + "_ender"),
+        new ItemConduitSubtype(modObject.getUnlocalisedName() + "_crystalline_ender", modObject.getRegistryName().toString() + "_crystalline_ender"),
+        new ItemConduitSubtype(modObject.getUnlocalisedName() + "_crystalline_pink_slime_ender",
+            modObject.getRegistryName().toString() + "_crystalline_pink_slime_ender"),
+        new ItemConduitSubtype(modObject.getUnlocalisedName() + "_melodic_ender", modObject.getRegistryName().toString() + "_melodic_ender"),
+        new ItemConduitSubtype(modObject.getUnlocalisedName() + "_stellar_ender", modObject.getRegistryName().toString() + "_stellar_ender"));
     ConduitRegistry.register(ConduitBuilder.start().setUUID(new ResourceLocation(EnderIO.DOMAIN, "fluid")).setClass(getBaseConduitType())
         .setOffsets(Offset.WEST, Offset.NORTH, Offset.WEST, Offset.WEST).build().setUUID(new ResourceLocation(EnderIO.DOMAIN, "liquid_conduit"))
         .setClass(LiquidConduit.class).build().setUUID(new ResourceLocation(EnderIO.DOMAIN, "advanced_liquid_conduit")).setClass(AdvancedLiquidConduit.class)
-        .build().setUUID(new ResourceLocation(EnderIO.DOMAIN, "ender_liquid_conduit")).setClass(EnderLiquidConduit.class).build().finish());
+        .build().setUUID(new ResourceLocation(EnderIO.DOMAIN, "ender_liquid_conduit")).setClass(EnderLiquidConduit.class).build()
+        .setUUID(new ResourceLocation(EnderIO.DOMAIN, "crystalline_ender_liquid_conduit")).setClass(CrystallineEnderLiquidConduit.class).build()
+        .setUUID(new ResourceLocation(EnderIO.DOMAIN, "crystalline_pink_slime_ender_liquid_conduit"))
+        .setClass(CrystallinePinkSlimeEnderLiquidConduit.class).build().setUUID(new ResourceLocation(EnderIO.DOMAIN, "melodic_ender_liquid_conduit"))
+        .setClass(MelodicEnderLiquidConduit.class).build().setUUID(new ResourceLocation(EnderIO.DOMAIN, "stellar_ender_liquid_conduit"))
+        .setClass(StellarEnderLiquidConduit.class).build().finish());
     ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_FLUID, IconEIO.WRENCH_OVERLAY_FLUID_OFF));
   }
 
@@ -70,6 +80,18 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
       configureAsInput(conduit);
     } else if (stack.getItemDamage() == 2) {
       conduit = new EnderLiquidConduit();
+      configureAsInput(conduit);
+    } else if (stack.getItemDamage() == CrystallineEnderLiquidConduit.META) {
+      conduit = new CrystallineEnderLiquidConduit();
+      configureAsInput(conduit);
+    } else if (stack.getItemDamage() == CrystallinePinkSlimeEnderLiquidConduit.META) {
+      conduit = new CrystallinePinkSlimeEnderLiquidConduit();
+      configureAsInput(conduit);
+    } else if (stack.getItemDamage() == MelodicEnderLiquidConduit.META) {
+      conduit = new MelodicEnderLiquidConduit();
+      configureAsInput(conduit);
+    } else if (stack.getItemDamage() == StellarEnderLiquidConduit.META) {
+      conduit = new StellarEnderLiquidConduit();
       configureAsInput(conduit);
     } else {
       conduit = new LiquidConduit();
@@ -107,8 +129,28 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
       extractRate = ConduitConfig.fluid_tier2_extractRate.get();
       maxIo = ConduitConfig.fluid_tier2_maxIO.get();
     } else {
-      extractRate = ConduitConfig.fluid_tier3_extractRate.get();
-      maxIo = ConduitConfig.fluid_tier3_maxIO.get();
+      switch (itemstack.getItemDamage()) {
+      case CrystallineEnderLiquidConduit.META:
+        extractRate = ConduitConfig.fluid_tier4_extractRate.get();
+        maxIo = ConduitConfig.fluid_tier4_maxIO.get();
+        break;
+      case CrystallinePinkSlimeEnderLiquidConduit.META:
+        extractRate = ConduitConfig.fluid_tier5_extractRate.get();
+        maxIo = ConduitConfig.fluid_tier5_maxIO.get();
+        break;
+      case MelodicEnderLiquidConduit.META:
+        extractRate = ConduitConfig.fluid_tier6_extractRate.get();
+        maxIo = ConduitConfig.fluid_tier6_maxIO.get();
+        break;
+      case StellarEnderLiquidConduit.META:
+        extractRate = ConduitConfig.fluid_tier7_extractRate.get();
+        maxIo = ConduitConfig.fluid_tier7_maxIO.get();
+        break;
+      default:
+        extractRate = ConduitConfig.fluid_tier3_extractRate.get();
+        maxIo = ConduitConfig.fluid_tier3_maxIO.get();
+        break;
+      }
     }
 
     String mbt = " " + Lang.FLUID_MILLIBUCKETS_TICK.get();
@@ -118,6 +160,8 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
     if (itemstack.getItemDamage() == 0) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.item_liquid_conduit");
     } else if (itemstack.getItemDamage() == 2) {
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.item_liquid_conduit_ender");
+    } else if (itemstack.getItemDamage() >= CrystallineEnderLiquidConduit.META && itemstack.getItemDamage() <= StellarEnderLiquidConduit.META) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.item_liquid_conduit_ender");
     }
 

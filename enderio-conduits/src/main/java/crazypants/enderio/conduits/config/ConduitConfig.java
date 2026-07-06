@@ -54,6 +54,22 @@ public final class ConduitConfig {
       "Millibuckets per tick extracted by a ender fluid conduit's auto extracting.").setRange(1, MAXIO).sync();
   public static final IValue<Integer> fluid_tier3_maxIO = FF.make("tier3_maxIO", 800, //
       "Millibuckets per tick that can pass through a single connection to a ender fluid conduit.").setRange(1, MAXIO).sync();
+  public static final IValue<Integer> fluid_tier4_extractRate = FF.make("tier4_extractRate", 1000, //
+      "Millibuckets per tick extracted by a crystalline ender fluid conduit's auto extracting.").setRange(1, MAXIO).sync();
+  public static final IValue<Integer> fluid_tier4_maxIO = FF.make("tier4_maxIO", 4000, //
+      "Millibuckets per tick that can pass through a single connection to a crystalline ender fluid conduit.").setRange(1, MAXIO).sync();
+  public static final IValue<Integer> fluid_tier5_extractRate = FF.make("tier5_extractRate", 2000, //
+      "Millibuckets per tick extracted by a crystalline pink slime ender fluid conduit's auto extracting.").setRange(1, MAXIO).sync();
+  public static final IValue<Integer> fluid_tier5_maxIO = FF.make("tier5_maxIO", 8000, //
+      "Millibuckets per tick that can pass through a single connection to a crystalline pink slime ender fluid conduit.").setRange(1, MAXIO).sync();
+  public static final IValue<Integer> fluid_tier6_extractRate = FF.make("tier6_extractRate", 10000, //
+      "Millibuckets per tick extracted by a melodic ender fluid conduit's auto extracting.").setRange(1, MAXIO).sync();
+  public static final IValue<Integer> fluid_tier6_maxIO = FF.make("tier6_maxIO", 40000, //
+      "Millibuckets per tick that can pass through a single connection to a melodic ender fluid conduit.").setRange(1, MAXIO).sync();
+  public static final IValue<Integer> fluid_tier7_extractRate = FF.make("tier7_extractRate", 20000, //
+      "Millibuckets per tick extracted by a stellar ender fluid conduit's auto extracting.").setRange(1, MAXIO).sync();
+  public static final IValue<Integer> fluid_tier7_maxIO = FF.make("tier7_maxIO", 80000, //
+      "Millibuckets per tick that can pass through a single connection to a stellar ender fluid conduit.").setRange(1, MAXIO).sync();
 
   public static final IValue<Boolean> usePhyscialDistance = FI.make("usePhyscialDistance", false, //
       "If true, 'line of sight' distance rather than conduit path distance is used to calculate priorities.").sync();

@@ -86,6 +86,102 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Conduit, Liquid, Crystalline Ender" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="FUSED_QUARTZ" /><item name="ingotCrystallineAlloy" /><item name="FUSED_QUARTZ" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_liquid_conduit:3" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Crystalline Ender (upgrade)" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotCrystallineAlloy" /><item name="enderio:item_liquid_conduit:2" /><item name="ingotCrystallineAlloy" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_liquid_conduit:3" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Crystalline Pink Slime Ender" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="FUSED_QUARTZ" /><item name="ingotCrystallinePinkSlime" /><item name="FUSED_QUARTZ" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_liquid_conduit:4" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Crystalline Pink Slime Ender (upgrade)" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotCrystallinePinkSlime" /><item name="enderio:item_liquid_conduit:3" /><item name="ingotCrystallinePinkSlime" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_liquid_conduit:4" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Melodic Ender" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="FUSED_QUARTZ" /><item name="ingotMelodicAlloy" /><item name="FUSED_QUARTZ" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_liquid_conduit:5" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Melodic Ender (upgrade)" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotMelodicAlloy" /><item name="enderio:item_liquid_conduit:4" /><item name="ingotMelodicAlloy" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_liquid_conduit:5" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Stellar Ender" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="FUSED_QUARTZ" /><item name="ingotStellarAlloy" /><item name="FUSED_QUARTZ" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_liquid_conduit:6" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Stellar Ender (upgrade)" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotStellarAlloy" /><item name="enderio:item_liquid_conduit:5" /><item name="ingotStellarAlloy" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_liquid_conduit:6" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
   <recipe name="Conduit, Endergy, Tier 1" required="true">
     <crafting>
       <grid>

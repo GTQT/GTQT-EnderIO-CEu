@@ -43,7 +43,6 @@ import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.IEnderConduit;
-import crazypants.enderio.conduits.conduit.item.ItemConduit;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.power.PowerConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
@@ -69,8 +68,8 @@ import static crazypants.enderio.conduits.init.ConduitObject.item_liquid_conduit
 
 public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilterHolder<IFluidFilter>, IUpgradeHolder, IEnderConduit {
 
-  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit"), ConduitTexture.arm(3));
-  public static final IConduitTexture ICON_CORE_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_1"), ConduitTexture.core(2));
+  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_ender"));
+  public static final IConduitTexture ICON_CORE_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender"));
 
   private EnderLiquidConduitNetwork network;
   private int ticksSinceFailedExtract;
@@ -105,7 +104,23 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   @Override
   @Nonnull
   public ItemStack createItem() {
-    return new ItemStack(item_liquid_conduit.getItemNN(), 1, 2);
+    return new ItemStack(item_liquid_conduit.getItemNN(), 1, getItemMeta());
+  }
+
+  protected int getItemMeta() {
+    return 2;
+  }
+
+  protected int getEnderConduitType() {
+    return 2;
+  }
+
+  public int getExtractRate() {
+    return ConduitConfig.fluid_tier3_extractRate.get();
+  }
+
+  public int getMaxIO() {
+    return ConduitConfig.fluid_tier3_maxIO.get();
   }
 
   @Override
@@ -227,17 +242,25 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   @Nonnull
   public IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     if (component.isCore()) {
-      return ICON_CORE_KEY;
+      return getCoreTexture();
     }
     if (PowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       return new ConduitTextureWrapper(IconUtil.instance.whiteTexture);
     }
+    return getConduitTexture();
+  }
+
+  protected @Nonnull IConduitTexture getConduitTexture() {
     return ICON_KEY;
   }
 
+  protected @Nonnull IConduitTexture getCoreTexture() {
+    return ICON_CORE_KEY;
+  }
+
   @Override
-  public @Nonnull IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
-    return ItemConduit.ICON_KEY_ENDER;
+  public @Nullable IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+    return null;
   }
 
   @Override
@@ -264,7 +287,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
     if (!(con instanceof EnderLiquidConduit)) {
       return false;
     }
-    return true;
+    return getEnderConduitType() == ((EnderLiquidConduit) con).getEnderConduitType();
   }
 
   @Override
@@ -695,7 +718,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   public List<String> getFunctionUpgradeToolTipText(@Nonnull EnumFacing dir) {
     return new NNList<>(crazypants.enderio.conduits.lang.Lang.GUI_LIQUID_FUNCTION_UPGRADE_DETAILS.get(),
         crazypants.enderio.conduits.lang.Lang.GUI_LIQUID_FUNCTION_UPGRADE_DETAILS2.get((int) (100 * getExtractSpeedMultiplier(dir)),
-            LangFluid.MB((int) (ConduitConfig.fluid_tier3_extractRate.get() * getExtractSpeedMultiplier(dir)))));
+            LangFluid.MB((int) (getExtractRate() * getExtractSpeedMultiplier(dir)))));
   }
 
   @SuppressWarnings("unchecked")

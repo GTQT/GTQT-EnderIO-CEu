@@ -16,6 +16,7 @@ import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.util.Prep;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -189,20 +190,29 @@ public class NetworkedInventory {
   }
 
   private boolean doTransfer(@Nonnull IItemHandler inventory, @Nonnull ItemStack extractedItem, int slot) {
-    int numInserted = insertIntoTargets(extractedItem.copy());
-    if (numInserted <= 0) {
+    int numToExtract = insertIntoTargets(extractedItem.copy(), SIMULATE);
+    if (numToExtract <= 0) {
       return false;
     }
-    ItemStack extracted = inventory.extractItem(slot, numInserted, EXECUTE);
-    if (Prep.isInvalid(extracted) || extracted.getCount() != numInserted || extracted.getItem() != extractedItem.getItem()) {
-      if (extracted.getCount() < numInserted && (extracted.getCount() == 0 || extracted.getItem() == extractedItem.getItem())) {
-        Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + extractedItem.getDisplayName() + " but only removed "
-            + extracted.getCount() + " " + extracted.getDisplayName() + " from " + inventory + " at " + location + ". This means that "
-            + (numInserted - extracted.getCount()) + " items were just duped by " + inventory + "!");
-      } else {
-        Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + extractedItem.getDisplayName() + " but only removed "
-            + extracted.getCount() + " " + extracted.getDisplayName() + " from " + inventory + " at " + location);
-      }
+
+    ItemStack extracted = inventory.extractItem(slot, numToExtract, EXECUTE);
+    if (Prep.isInvalid(extracted)) {
+      Log.warn("NetworkedInventory.itemExtracted: Target accepted " + numToExtract + " " + extractedItem.getDisplayName()
+          + " in simulation, but source removed nothing from " + inventory + " at " + location + ".");
+      return false;
+    }
+    if (extracted.getCount() != numToExtract || extracted.getItem() != extractedItem.getItem()) {
+      Log.warn("NetworkedInventory.itemExtracted: Target accepted " + numToExtract + " " + extractedItem.getDisplayName()
+          + " in simulation, but source removed " + extracted.getCount() + " " + extracted.getDisplayName() + " from " + inventory + " at " + location
+          + ".");
+    }
+
+    int numInserted = insertIntoTargets(extracted.copy(), EXECUTE);
+    if (numInserted < extracted.getCount()) {
+      returnItemsToSource(inventory, extracted, numInserted);
+    }
+    if (numInserted <= 0) {
+      return false;
     }
     onItemExtracted(slot, numInserted);
     return true;
@@ -214,6 +224,10 @@ public class NetworkedInventory {
   }
 
   private int insertIntoTargets(@Nonnull ItemStack toInsert) {
+    return insertIntoTargets(toInsert, EXECUTE);
+  }
+
+  private int insertIntoTargets(@Nonnull ItemStack toInsert, boolean simulate) {
     if (Prep.isInvalid(toInsert)) {
       return 0;
     }
@@ -223,13 +237,13 @@ public class NetworkedInventory {
     // list, so all sticky outputs are queried before any non-sticky one.
     boolean matchedStickyOutput = false;
 
-    for (Target target : getTargetIterator()) {
+    for (Target target : getTargetIterator(simulate)) {
       final IItemFilter filter = valid(target.inv.getCon().getOutputFilter(target.inv.getConDir()));
       if (target.stickyInput && !matchedStickyOutput && filter != null) {
         matchedStickyOutput = filter.doesItemPassFilter(target.inv.getInventory(), toInsert);
       }
       if (target.stickyInput || !matchedStickyOutput) {
-        toInsert.shrink(positive(target.inv.insertItem(toInsert, filter)));
+        toInsert.shrink(positive(target.inv.insertItem(toInsert, filter, simulate)));
         if (Prep.isInvalid(toInsert)) {
           // everything has been inserted. we're done.
           break;
@@ -243,6 +257,18 @@ public class NetworkedInventory {
     return totalToInsert - toInsert.getCount();
   }
 
+  private void returnItemsToSource(@Nonnull IItemHandler inventory, @Nonnull ItemStack extracted, int numInserted) {
+    ItemStack notInserted = extracted.copy();
+    notInserted.setCount(extracted.getCount() - numInserted);
+    ItemStack sourceRejected = ItemTools.insertItemStacked(inventory, notInserted.copy(), EXECUTE);
+    if (Prep.isValid(sourceRejected)) {
+      EntityItem drop = new EntityItem(world, location.getX() + 0.5, location.getY() + 0.5, location.getZ() + 0.5, sourceRejected);
+      world.spawnEntity(drop);
+      Log.warn("NetworkedInventory.itemExtracted: Target accepted " + numInserted + " " + extracted.getDisplayName() + " after source extraction, but "
+          + sourceRejected.getCount() + " rejected items could not be returned to " + inventory + " at " + location + " and were dropped.");
+    }
+  }
+
   private static final IItemFilter valid(IItemFilter filter) {
     return filter != null && filter.isValid() ? filter : null;
   }
@@ -251,14 +277,18 @@ public class NetworkedInventory {
     return x > 0 ? x : 0;
   }
 
-  private Iterable<Target> getTargetIterator() {
+  private Iterable<Target> getTargetIterator(boolean simulate) {
     if (con.isRoundRobinEnabled(conDir)) {
-      return rrIter;
+      return simulate ? rrIter.copy() : rrIter;
     }
     return sendPriority;
   }
 
   private int insertItem(@Nonnull ItemStack item, IItemFilter filter) {
+    return insertItem(item, filter, EXECUTE);
+  }
+
+  private int insertItem(@Nonnull ItemStack item, IItemFilter filter, boolean simulate) {
     if (!canInsert() || Prep.isInvalid(item)) {
       return 0;
     }
@@ -284,7 +314,16 @@ public class NetworkedInventory {
         return 0;
       }
     }
-    return ItemTools.doInsertItem(inventory, item);
+    return simulate ? simulateInsertItem(inventory, item) : ItemTools.doInsertItem(inventory, item);
+  }
+
+  private static int simulateInsertItem(@Nonnull IItemHandler inventory, @Nonnull ItemStack item) {
+    if (Prep.isInvalid(item)) {
+      return 0;
+    }
+    final int startSize = item.getCount();
+    ItemStack res = ItemTools.insertItemStacked(inventory, item.copy(), SIMULATE);
+    return startSize - res.getCount();
   }
 
   public void updateInsertOrder() {

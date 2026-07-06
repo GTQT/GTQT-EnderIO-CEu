@@ -13,7 +13,7 @@ import com.enderio.core.common.util.RoundRobinIterator;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduits.config.ConduitConfig;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,15 +21,28 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit, EnderLiquidConduit> {
 
+  private static final long TRANSFER_MISMATCH_WARN_INTERVAL_TICKS = 200L;
+  private static final int WARN_OVERFILL = 0;
+  private static final int WARN_UNDERFILL = 1;
+  private static final int WARN_PUT_BACK = 2;
+
   List<NetworkTank> tanks = new ArrayList<NetworkTank>();
-  Map<NetworkTankKey, NetworkTank> tankMap = new HashMap<NetworkTankKey, NetworkTank>();
+  Map<NetworkTankKey, NetworkTank> tankMap = new Object2ObjectOpenHashMap<NetworkTankKey, NetworkTank>();
 
   Map<NetworkTank, RoundRobinIterator<NetworkTank>> iterators;
 
   boolean filling;
+  private long nextOverfillWarningTick;
+  private long nextUnderfillWarningTick;
+  private long nextPutBackWarningTick;
 
   public EnderLiquidConduitNetwork() {
     super(EnderLiquidConduit.class, ILiquidConduit.class);
+  }
+
+  @SuppressWarnings("unchecked")
+  public EnderLiquidConduitNetwork(@Nonnull Class<? extends EnderLiquidConduit> implClass) {
+    super((Class<EnderLiquidConduit>) implClass, ILiquidConduit.class);
   }
 
   public void connectionChanged(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
@@ -50,7 +63,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       return false;
     }
 
-    final int fullLimit = (int) (ConduitConfig.fluid_tier3_extractRate.get() * getExtractSpeedMultiplier(tank));
+    final int fullLimit = (int) (tank.con.getExtractRate() * getExtractSpeedMultiplier(tank));
     if (tank.supportsMultipleTanks) {
       int limit = fullLimit;
       for (ITankInfoWrapper tankInfoWrapper : tank.externalTank.getTankInfoWrappers()) {
@@ -93,11 +106,11 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     // (4) Insert what we just drained into targets for real---and hope it actually works out...
     int amountFilled = fillFrom(from, drained.copy(), true);
     if (amountFilled > drained.amount) {
-      Log.warn(
+      warnTransferMismatch(con, WARN_OVERFILL,
           "EnderLiquidConduit at " + con.getBundle().getLocation() + " in dimension " + con.getBundle().getBundleworld().provider.getDimensionType().getId()
               + ": Inserted fluid volume (" + amountFilled + "mB) is more than we tried to insert (" + drained.amount + "mB).");
     } else if (amountFilled < drained.amount) {
-      Log.warn(
+      warnTransferMismatch(con, WARN_UNDERFILL,
           "EnderLiquidConduit at " + con.getBundle().getLocation() + " in dimension " + con.getBundle().getBundleworld().provider.getDimensionType().getId()
               + ": Inserted fluid volume (" + amountFilled + "mB) is less than when we asked the target how much to insert (" + drained.amount
               + "mB). This means that one of the blocks connected to this conduit line has a bug.");
@@ -105,7 +118,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       toPutBack.amount = drained.amount - amountFilled;
       int putBack = from.externalTank.fill(toPutBack.copy());
       if (putBack < toPutBack.amount) {
-        Log.warn("EnderLiquidConduit at " + con.getBundle().getLocation() + " in dimension "
+        warnTransferMismatch(con, WARN_PUT_BACK, "EnderLiquidConduit at " + con.getBundle().getLocation() + " in dimension "
             + con.getBundle().getBundleworld().provider.getDimensionType().getId() + ": In addition, putting back " + toPutBack.amount
             + "mB into the source tank failed, leading to " + (toPutBack.amount - putBack) + "mB being voided.");
       }
@@ -116,6 +129,38 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   @Nonnull
   private NetworkTank getTank(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
     return tankMap.get(new NetworkTankKey(con, conDir));
+  }
+
+  private void warnTransferMismatch(@Nonnull EnderLiquidConduit con, int warningType, @Nonnull String message) {
+    if (shouldWarnTransferMismatch(con, warningType)) {
+      Log.warn(message + " Further matching warnings are throttled for " + TRANSFER_MISMATCH_WARN_INTERVAL_TICKS + " ticks.");
+    }
+  }
+
+  private boolean shouldWarnTransferMismatch(@Nonnull EnderLiquidConduit con, int warningType) {
+    final long now = con.getBundle().getBundleworld().getTotalWorldTime();
+    switch (warningType) {
+    case WARN_OVERFILL:
+      if (now < nextOverfillWarningTick) {
+        return false;
+      }
+      nextOverfillWarningTick = now + TRANSFER_MISMATCH_WARN_INTERVAL_TICKS;
+      return true;
+    case WARN_UNDERFILL:
+      if (now < nextUnderfillWarningTick) {
+        return false;
+      }
+      nextUnderfillWarningTick = now + TRANSFER_MISMATCH_WARN_INTERVAL_TICKS;
+      return true;
+    case WARN_PUT_BACK:
+      if (now < nextPutBackWarningTick) {
+        return false;
+      }
+      nextPutBackWarningTick = now + TRANSFER_MISMATCH_WARN_INTERVAL_TICKS;
+      return true;
+    default:
+      return true;
+    }
   }
 
   // this is called when a neighbor block pushes fluid into the conduit
@@ -150,7 +195,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       }
 
       resource = resource.copy();
-      resource.amount = Math.min(resource.amount, (int) (ConduitConfig.fluid_tier3_maxIO.get() * getExtractSpeedMultiplier(tank)));
+      resource.amount = Math.min(resource.amount, (int) (tank.con.getMaxIO() * getExtractSpeedMultiplier(tank)));
       int filled = 0;
       int remaining = resource.amount;
 
@@ -218,8 +263,9 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   static class NetworkTankKey {
 
-    EnumFacing conDir;
-    BlockPos conduitLoc;
+    final EnumFacing conDir;
+    final BlockPos conduitLoc;
+    private final int hashCode;
 
     public NetworkTankKey(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
       this(con.getBundle().getLocation(), conDir);
@@ -228,15 +274,16 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     public NetworkTankKey(@Nonnull BlockPos conduitLoc, @Nonnull EnumFacing conDir) {
       this.conDir = conDir;
       this.conduitLoc = conduitLoc;
-    }
-
-    @Override
-    public int hashCode() {
       final int prime = 31;
       int result = 1;
       result = prime * result + ((conDir == null) ? 0 : conDir.hashCode());
       result = prime * result + ((conduitLoc == null) ? 0 : conduitLoc.hashCode());
-      return result;
+      hashCode = result;
+    }
+
+    @Override
+    public int hashCode() {
+      return hashCode;
     }
 
     @Override
