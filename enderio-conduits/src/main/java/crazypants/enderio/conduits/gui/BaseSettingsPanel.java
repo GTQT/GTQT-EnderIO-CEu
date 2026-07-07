@@ -174,6 +174,10 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     }
   }
 
+  protected void setFunctionUpgradeInfoPosition(int x, int y) {
+    functionUpgradeOptionsB.setPosition(x, y);
+  }
+
   protected boolean hasFilterGui(boolean input) {
     return true;
   }

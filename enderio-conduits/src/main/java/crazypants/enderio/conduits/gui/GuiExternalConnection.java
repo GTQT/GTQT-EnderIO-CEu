@@ -47,7 +47,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO<IConduitBundle> i
     this.playerInv = playerInv;
     this.dir = dir;
 
-    ySize = 194;
+    ySize = 243;
     xSize = 206;
 
     List<IClientConduit> cons = new ArrayList<>(bundle.getClientConduits());

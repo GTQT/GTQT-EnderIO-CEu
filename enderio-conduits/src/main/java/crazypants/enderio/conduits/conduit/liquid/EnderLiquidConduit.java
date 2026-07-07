@@ -178,9 +178,18 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
 
   public IFluidFilter getFilter(@Nonnull EnumFacing dir, boolean isInput) {
     if (isInput) {
-      return inputFilters.get(dir);
+      return getOrCreateFilter(inputFilters, dir);
     }
-    return outputFilters.get(dir);
+    return getOrCreateFilter(outputFilters, dir);
+  }
+
+  private IFluidFilter getOrCreateFilter(@Nonnull EnumMap<EnumFacing, IFluidFilter> filters, @Nonnull EnumFacing dir) {
+    IFluidFilter filter = filters.get(dir);
+    if (filter == null) {
+      filter = new FluidFilter();
+      filters.put(dir, filter);
+    }
+    return filter;
   }
 
   public void setFilter(@Nonnull EnumFacing dir, @Nonnull IFluidFilter filter, boolean isInput) {
@@ -202,6 +211,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   }
 
   public void setFilterStack(@Nonnull EnumFacing dir, @Nonnull ItemStack stack, boolean isInput) {
+    IFluidFilter currentFilter = getFilter(dir, isInput);
     if (isInput) {
       inputFilterUpgrades.put(dir, stack);
     } else {
@@ -209,7 +219,11 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
     }
     final IFluidFilter filterForUpgrade = FilterRegistry.<IFluidFilter> getFilterForUpgrade(stack);
     if (filterForUpgrade != null) {
-      setFilter(dir, filterForUpgrade, isInput);
+      if (filterForUpgrade.isDefault() && currentFilter != null && !currentFilter.isDefault()) {
+        setFilter(dir, currentFilter, isInput);
+      } else {
+        setFilter(dir, filterForUpgrade, isInput);
+      }
     }
     setClientStateDirty();
   }

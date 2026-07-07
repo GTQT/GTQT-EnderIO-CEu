@@ -100,7 +100,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   @Override
   @Nonnull
   public Point getPlayerInventoryOffset() {
-    return new Point(23, 113);
+    return new Point(23, 161);
   }
 
   @Override
