@@ -1,5 +1,8 @@
 package crazypants.enderio.base.teleport;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +19,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.api.teleport.ITravelSource;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.base.EnderIO;
@@ -87,7 +91,7 @@ public class TravelController {
   }
 
   public static boolean activateTravelAccessable(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull World world, @Nonnull EntityPlayer player,
-      @Nonnull TravelSource source) {
+      @Nonnull ITravelSource source) {
     BlockPos target = selectedCoord;
     if (target == null) {
       return false;
@@ -109,6 +113,10 @@ public class TravelController {
   }
 
   public static boolean doBlink(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull EntityPlayer player) {
+    return doBlink(equipped, hand, player, TravelSource.STAFF_BLINK);
+  }
+
+  public static boolean doBlink(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull EntityPlayer player, @Nonnull ITravelSource source) {
     if (!doesHandAllowBlink(hand)) {
 
       return false;
@@ -117,7 +125,7 @@ public class TravelController {
     Vector3d look = Util.getLookVecEio(player);
 
     Vector3d sample = new Vector3d(look);
-    sample.scale(TravelSource.STAFF_BLINK.getMaxDistanceTravelled());
+    sample.scale(source.getMaxDistanceTravelled());
     sample.add(eye);
     Vec3d eye3 = new Vec3d(eye.x, eye.y, eye.z);
     Vec3d end = new Vec3d(sample.x, sample.y, sample.z);
@@ -125,7 +133,7 @@ public class TravelController {
     double playerHeight = player.getYOffset();
     // if you looking at you feet, and your player height to the max distance, or part there of
     double lookComp = -look.y * playerHeight;
-    double maxDistance = TravelSource.STAFF_BLINK.getMaxDistanceTravelled() + lookComp;
+    double maxDistance = source.getMaxDistanceTravelled() + lookComp;
 
     RayTraceResult p = player.world.rayTraceBlocks(eye3, end, !TeleportConfig.enableBlinkNonSolidBlocks.get());
     if (p == null) {
@@ -138,7 +146,7 @@ public class TravelController {
         sample.add(eye);
         // we test against our feets location
         sample.y -= playerHeight;
-        if (doBlinkAround(player, equipped, hand, sample, true)) {
+        if (doBlinkAround(player, equipped, hand, source, sample, true)) {
           return true;
         }
       }
@@ -168,7 +176,7 @@ public class TravelController {
         // we test against our feets location
         sample.y -= playerHeight;
 
-        if (doBlinkAround(player, equipped, hand, sample, false)) {
+        if (doBlinkAround(player, equipped, hand, source, sample, false)) {
           return true;
         }
         teleDistance++;
@@ -183,7 +191,7 @@ public class TravelController {
         // we test against our feets location
         sample.y -= playerHeight;
 
-        if (doBlinkAround(player, equipped, hand, sample, false)) {
+        if (doBlinkAround(player, equipped, hand, source, sample, false)) {
           return true;
         }
         sampleDistance--;
@@ -198,25 +206,26 @@ public class TravelController {
         || (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 && !TeleportConfig.enableBlinkUnbreakableBlocks.get());
   }
 
-  private static boolean doBlinkAround(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull Vector3d sample,
-      boolean conserveMomentum) {
+  private static boolean doBlinkAround(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull ITravelSource source,
+      @Nonnull Vector3d sample, boolean conserveMomentum) {
     if (doBlink(player, equipped, hand, new BlockPos((int) Math.floor(sample.x), (int) Math.floor(sample.y) - 1, (int) Math.floor(sample.z)),
-        conserveMomentum)) {
+        source, conserveMomentum)) {
       return true;
     }
-    if (doBlink(player, equipped, hand, new BlockPos((int) Math.floor(sample.x), (int) Math.floor(sample.y), (int) Math.floor(sample.z)), conserveMomentum)) {
+    if (doBlink(player, equipped, hand, new BlockPos((int) Math.floor(sample.x), (int) Math.floor(sample.y), (int) Math.floor(sample.z)), source,
+        conserveMomentum)) {
       return true;
     }
     if (doBlink(player, equipped, hand, new BlockPos((int) Math.floor(sample.x), (int) Math.floor(sample.y) + 1, (int) Math.floor(sample.z)),
-        conserveMomentum)) {
+        source, conserveMomentum)) {
       return true;
     }
     return false;
   }
 
   private static boolean doBlink(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull BlockPos coord,
-      boolean conserveMomentum) {
-    return travelToLocation(player, equipped, hand, TravelSource.STAFF_BLINK, coord, conserveMomentum);
+      @Nonnull ITravelSource source, boolean conserveMomentum) {
+    return travelToLocation(player, equipped, hand, source, coord, conserveMomentum);
   }
 
   public static boolean showTargets() {
@@ -318,7 +327,7 @@ public class TravelController {
     return equipped.getItem() instanceof IItemOfTravel && ((IItemOfTravel) equipped.getItem()).isActive(ep, equipped);
   }
 
-  private static boolean travelToSelectedTarget(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull TravelSource source,
+  private static boolean travelToSelectedTarget(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull ITravelSource source,
       boolean conserveMomentum) {
     final BlockPos selectedCoord_nullchecked = selectedCoord;
     if (selectedCoord_nullchecked == null) {
@@ -327,10 +336,10 @@ public class TravelController {
     return travelToLocation(player, equipped, hand, source, selectedCoord_nullchecked, conserveMomentum);
   }
 
-  private static boolean travelToLocation(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull TravelSource source,
+  private static boolean travelToLocation(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull ITravelSource source,
       @Nonnull BlockPos coord, boolean conserveMomentum) {
 
-    if (source != TravelSource.STAFF_BLINK) {
+    if (!source.getConserveMomentum()) {
       TileEntity te = player.world.getTileEntity(coord);
       if (te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
@@ -348,13 +357,13 @@ public class TravelController {
     }
 
     if (!isInRangeTarget(player, coord, source.getMaxDistanceTravelledSq())) {
-      if (source != TravelSource.STAFF_BLINK) {
+      if (!source.getConserveMomentum()) {
         player.sendStatusMessage(Lang.GUI_TRAVEL_OUT_OF_RANGE.toChatServer(), true);
       }
       return false;
     }
     if (!isValidTarget(player, coord, source)) {
-      if (source != TravelSource.STAFF_BLINK) {
+      if (!source.getConserveMomentum()) {
         player.sendStatusMessage(Lang.GUI_TRAVEL_INVALID_TARGET.toChatServer(), true);
       }
       return false;
@@ -368,7 +377,7 @@ public class TravelController {
     return true;
   }
 
-  private static int getRequiredPower(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull TravelSource source, @Nonnull BlockPos coord) {
+  private static int getRequiredPower(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull ITravelSource source, @Nonnull BlockPos coord) {
     if (!isTravelItemActive(player, equipped)) {
       return 0;
     }
@@ -396,10 +405,10 @@ public class TravelController {
     return Math.sqrt(getDistanceSquared(player, coord));
   }
 
-  private static boolean isValidTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, @Nonnull TravelSource source) {
+  private static boolean isValidTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, @Nonnull ITravelSource source) {
     World w = player.world;
     BlockPos baseLoc = bc;
-    if (source != TravelSource.STAFF_BLINK) {
+    if (!source.getConserveMomentum()) {
       // targeting a block so go one up
       baseLoc = bc.offset(EnumFacing.UP);
     }
@@ -407,11 +416,11 @@ public class TravelController {
     return canTeleportTo(player, source, baseLoc, w) && canTeleportTo(player, source, baseLoc.offset(EnumFacing.UP), w);
   }
 
-  private static boolean canTeleportTo(@Nonnull EntityPlayer player, @Nonnull TravelSource source, @Nonnull BlockPos bc, @Nonnull World w) {
+  private static boolean canTeleportTo(@Nonnull EntityPlayer player, @Nonnull ITravelSource source, @Nonnull BlockPos bc, @Nonnull World w) {
     if (bc.getY() < 1) {
       return false;
     }
-    if (source == TravelSource.STAFF_BLINK && !TeleportConfig.enableBlinkSolidBlocks.get()) {
+    if (source.getConserveMomentum() && !TeleportConfig.enableBlinkSolidBlocks.get()) {
       Vec3d start = Util.getEyePosition(player);
       Vec3d target = new Vec3d(bc.getX() + 0.5f, bc.getY() + 0.5f, bc.getZ() + 0.5f);
       if (!canBlinkTo(bc, w, start, target)) {
@@ -500,9 +509,6 @@ public class TravelController {
   @SideOnly(Side.CLIENT)
   private static void updateSelectedTarget(@Nonnull EntityPlayerSP player) {
     selectedCoord = null;
-    if (candidates.isEmpty()) {
-      return;
-    }
 
     double closestDistance = Double.MAX_VALUE;
     for (BlockPos bc : candidates) {
@@ -520,6 +526,107 @@ public class TravelController {
         }
       }
     }
+    updateJourneyMapWaypointTarget(player, closestDistance);
+  }
+
+  private static void updateJourneyMapWaypointTarget(@Nonnull EntityPlayerSP player, double closestDistance) {
+    try {
+      Class<?> storeClass = Class.forName("journeymap.client.waypoint.WaypointStore");
+      Field instanceField = storeClass.getField("INSTANCE");
+      Object store = instanceField.get(null);
+      Method getAll = storeClass.getMethod("getAll");
+      Object waypoints = getAll.invoke(store);
+      if (!(waypoints instanceof Iterable)) {
+        return;
+      }
+
+      int playerDim = player.dimension;
+      Vector3d eyePos = Util.getEyePositionEio(player);
+      for (Object waypoint : (Iterable<?>) waypoints) {
+        if (!isWaypointEnabled(waypoint) || !isWaypointInDimension(waypoint, playerDim)) {
+          continue;
+        }
+
+        BlockPos target = getWaypointBlockPos(waypoint);
+        if (target == null) {
+          continue;
+        }
+
+        Vector3d targetVec = new Vector3d(target.getX(), target.getY(), target.getZ());
+        double distance = targetVec.distance(eyePos);
+        if (distance < closestDistance && isSelectedWaypoint(player, waypoint)) {
+          selectedCoord = target;
+          closestDistance = distance;
+        }
+      }
+    } catch (ReflectiveOperationException | LinkageError ignored) {
+      // JourneyMap is optional; absence or API changes must not break travel targeting.
+    }
+  }
+
+  private static boolean isWaypointEnabled(@Nonnull Object waypoint) throws ReflectiveOperationException {
+    Object enabled = waypoint.getClass().getMethod("isEnable").invoke(waypoint);
+    return enabled instanceof Boolean && ((Boolean) enabled).booleanValue();
+  }
+
+  private static boolean isWaypointInDimension(@Nonnull Object waypoint, int dimension) throws ReflectiveOperationException {
+    Object dimensions = waypoint.getClass().getMethod("getDimensions").invoke(waypoint);
+    return dimensions instanceof Collection && ((Collection<?>) dimensions).contains(Integer.valueOf(dimension));
+  }
+
+  private static BlockPos getWaypointBlockPos(@Nonnull Object waypoint) throws ReflectiveOperationException {
+    Object pos = waypoint.getClass().getMethod("getBlockPos").invoke(waypoint);
+    return pos instanceof BlockPos ? (BlockPos) pos : null;
+  }
+
+  private static boolean isSelectedWaypoint(@Nonnull EntityPlayerSP player, @Nonnull Object waypoint) throws ReflectiveOperationException {
+    Minecraft mc = Minecraft.getMinecraft();
+    Object waypointProperties = getJourneyMapWaypointProperties();
+    Vec3d playerPos = new Vec3d(player.posX, player.posY, player.posZ);
+    Object waypointPosition = waypoint.getClass().getMethod("getPosition").invoke(waypoint);
+    if (!(waypointPosition instanceof Vec3d)) {
+      return false;
+    }
+    Vec3d waypointPos = ((Vec3d) waypointPosition).addVector(0.0D, 0.118D, 0.0D);
+
+    double actualDistance = playerPos.distanceTo(waypointPos);
+    int maxDistance = getJourneyMapDistanceProperty(waypointProperties, "maxDistance");
+    int minDistance = getJourneyMapDistanceProperty(waypointProperties, "minDistance");
+    if (maxDistance > 0 && actualDistance > maxDistance) {
+      return false;
+    }
+    if (minDistance > 0 && actualDistance < minDistance) {
+      return false;
+    }
+
+    double viewDistance = actualDistance;
+    double maxRenderDistance = mc.gameSettings.renderDistanceChunks * 16;
+    if (actualDistance > maxRenderDistance) {
+      Vec3d delta = waypointPos.subtract(playerPos).normalize();
+      waypointPos = playerPos.addVector(delta.x * maxRenderDistance, delta.y * maxRenderDistance, delta.z * maxRenderDistance);
+      viewDistance = maxRenderDistance;
+    }
+
+    if (viewDistance <= 0.5F) {
+      return false;
+    }
+
+    int angle = 5;
+    double yaw = MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(player.posZ - waypointPos.z, player.posX - waypointPos.x)) + 90.0F);
+    double playerYaw = MathHelper.wrapDegrees(player.getRotationYawHead());
+    return Math.abs(yaw - playerYaw) <= angle;
+  }
+
+  private static Object getJourneyMapWaypointProperties() throws ReflectiveOperationException {
+    Class<?> journeymapClass = Class.forName("journeymap.common.Journeymap");
+    Object client = journeymapClass.getMethod("getClient").invoke(null);
+    return client.getClass().getMethod("getWaypointProperties").invoke(client);
+  }
+
+  private static int getJourneyMapDistanceProperty(@Nonnull Object waypointProperties, @Nonnull String fieldName) throws ReflectiveOperationException {
+    Object value = waypointProperties.getClass().getField(fieldName).get(waypointProperties);
+    Object result = value.getClass().getMethod("get").invoke(value);
+    return result instanceof Number ? ((Number) result).intValue() : 0;
   }
 
   @SideOnly(Side.CLIENT)
@@ -629,7 +736,7 @@ public class TravelController {
   }
 
   // Note: This is restricted to the current player
-  public static boolean doClientTeleport(@Nonnull Entity entity, @Nonnull EnumHand hand, @Nonnull BlockPos bc, @Nonnull TravelSource source, int powerUse,
+  public static boolean doClientTeleport(@Nonnull Entity entity, @Nonnull EnumHand hand, @Nonnull BlockPos bc, @Nonnull ITravelSource source, int powerUse,
       boolean conserveMomentum) {
 
     TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc, entity.dimension);

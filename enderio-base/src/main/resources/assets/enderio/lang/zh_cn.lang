@@ -366,6 +366,13 @@ item.item_travel_staff.tooltip.detailed.line4=Shift+右键点击可令玩家
 item.item_travel_staff.tooltip.detailed.line5=进行短距离传送。
 item.item_travel_staff.chat.notEnoughPower=能量不足
 
+item.item_teleport_staff.name=传送权杖
+item.item_teleport_staff.tooltip.common=长距离旅行权杖
+item.item_teleport_staff.tooltip.waypoint=可选中 JourneyMap 路标
+item.item_teleport_staff.tooltip.detailed.line1=右键传送到选中的旅行锚、
+item.item_teleport_staff.tooltip.detailed.line2=Ender IO 目标或 JourneyMap 路标。
+item.item_teleport_staff.tooltip.detailed.line3=Shift+右键可进行短距离闪现。
+
 item.item_staff_of_levity.name=飘浮权杖
 item.item_staff_of_levity.tooltip.detailed.line1=Shift+右键点击可对玩家
 item.item_staff_of_levity.tooltip.detailed.line2=施加反重力效果

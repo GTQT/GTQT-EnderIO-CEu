@@ -19,6 +19,12 @@ public final class TeleportConfig {
   public static final IValue<Integer> rangeItem2Blink = F.make("defaultTeleportRangeItem", 16, //
       "Default range of travel using an item (e.g. Staff blinking).").setRange(4, 16 * 32).sync();
 
+  public static final IValue<Integer> rangeTeleportStaff2Block = F.make("defaultTeleportRangeTeleportStaffToBlock", 2048, //
+      "Default range of travel using the Teleport Staff to a block or waypoint.").setRange(128, 4096).sync();
+
+  public static final IValue<Integer> rangeTeleportStaff2Blink = F.make("defaultTeleportRangeTeleportStaff", 64, //
+      "Default range of blinking using the Teleport Staff.").setRange(16, 512).sync();
+
   public static final IValue<Float> costItem2Block = F.make("defaultTeleportEnergyCostItemToBlock", 250f, //
       "Default energy cost per block of distance of travel using an item to a block (e.g. Staff to Travel Anchors).").setRange(0, 999999).sync();
 

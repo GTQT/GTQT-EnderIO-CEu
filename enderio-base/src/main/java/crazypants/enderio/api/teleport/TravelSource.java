@@ -1,10 +1,17 @@
 package crazypants.enderio.api.teleport;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.TeleportConfig;
+import crazypants.enderio.base.teleport.TravelSourceRegistry;
 import crazypants.enderio.base.sound.IModSound;
 import crazypants.enderio.base.sound.SoundRegistry;
+import net.minecraft.util.ResourceLocation;
 
-public enum TravelSource {
+public enum TravelSource implements ITravelSource {
 
   BLOCK(SoundRegistry.TRAVEL_SOURCE_BLOCK) {
     @Override
@@ -38,7 +45,7 @@ public enum TravelSource {
 
   public static int getMaxDistanceSq() {
     int result = 0;
-    for (TravelSource source : values()) {
+    for (ITravelSource source : TravelSourceRegistry.values()) {
       if (source.getMaxDistanceTravelled() > result) {
         result = source.getMaxDistanceTravelled();
       }
@@ -46,26 +53,53 @@ public enum TravelSource {
     return result * result;
   }
 
-  public final IModSound sound;
+  public final @Nonnull IModSound sound;
+
+  private final @Nonnull ResourceLocation registryName;
 
   private TravelSource(IModSound sound) {
     this.sound = sound;
+    this.registryName = new ResourceLocation(EnderIO.DOMAIN, name().toLowerCase(Locale.ENGLISH));
   }
 
+  @Override
+  public @Nonnull IModSound getSound() {
+    return sound;
+  }
+
+  @Override
   public boolean getConserveMomentum() {
     return this == STAFF_BLINK;
   }
 
+  @Override
   public int getMaxDistanceTravelled() {
     return 0;
   }
 
+  @Override
   public int getMaxDistanceTravelledSq() {
     return getMaxDistanceTravelled() * getMaxDistanceTravelled();
   }
 
+  @Override
   public float getPowerCostPerBlockTraveledRF() {
     return 0;
+  }
+
+  @Override
+  public ITravelSource setRegistryName(ResourceLocation name) {
+    throw new UnsupportedOperationException("Travel sources use fixed registry names");
+  }
+
+  @Override
+  public @Nonnull ResourceLocation getRegistryName() {
+    return registryName;
+  }
+
+  @Override
+  public Class<ITravelSource> getRegistryType() {
+    return ITravelSource.class;
   }
 
 }

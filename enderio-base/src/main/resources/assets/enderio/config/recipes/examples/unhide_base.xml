@@ -78,6 +78,7 @@ XML editor will display that as tooltips when editing this file.
       <item name="enderio:item_xp_transfer:0" show="true" />
       <item name="enderio:item_cold_fire_igniter:0" show="true" />
       <item name="enderio:item_travel_staff:0" show="true" />
+      <item name="enderio:item_teleport_staff:0" show="true" />
       <item name="enderio:item_rod_of_return:0" show="true" />
       <!--  <item name="enderio:item_magnet:0" show="true" /> This one needs a
       crystal to be crafted. You can enable it but you need to supply a

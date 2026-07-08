@@ -37,6 +37,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Teleport Staff" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="VIBRANT_CRYSTAL" /><item name="ENDER_CRYSTAL" />
+        <item /><item name="enderio:item_travel_staff" /><item name="VIBRANT_CRYSTAL" />
+        <item name="itemInfinityRod" /><item /><item />
+      </grid>
+      <output name="enderio:item_teleport_staff" />
+    </crafting>
+  </recipe>
+
   <recipe name="Staff Of Levity" required="true">
     <crafting>
       <grid size="3x3">

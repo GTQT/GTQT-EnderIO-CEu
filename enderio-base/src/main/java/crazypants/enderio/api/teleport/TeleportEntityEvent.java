@@ -30,7 +30,7 @@ public class TeleportEntityEvent extends EntityEvent {
 
   private int dimension;
 
-  private final @Nonnull TravelSource source;
+  private final @Nonnull ITravelSource source;
 
   /**
    * Fired before an entity teleports to the given location.
@@ -41,6 +41,10 @@ public class TeleportEntityEvent extends EntityEvent {
    *          The target coord
    */
   public TeleportEntityEvent(@Nonnull Entity entity, @Nonnull TravelSource source, @Nonnull BlockPos pos, int dimension) {
+    this(entity, (ITravelSource) source, pos, dimension);
+  }
+
+  public TeleportEntityEvent(@Nonnull Entity entity, @Nonnull ITravelSource source, @Nonnull BlockPos pos, int dimension) {
     super(entity);
     this.targetPos = pos;
     this.source = source;
@@ -63,7 +67,7 @@ public class TeleportEntityEvent extends EntityEvent {
     this.dimension = dimension;
   }
 
-  public @Nonnull TravelSource getSource() {
+  public @Nonnull ITravelSource getSource() {
     return source;
   }
 }

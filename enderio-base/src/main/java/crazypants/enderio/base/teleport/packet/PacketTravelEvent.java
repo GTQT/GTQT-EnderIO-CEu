@@ -7,8 +7,10 @@ import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.api.teleport.IItemOfTravel;
+import crazypants.enderio.api.teleport.ITravelSource;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.base.teleport.TravelSourceRegistry;
 import crazypants.enderio.base.sound.SoundHelper;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
@@ -17,8 +19,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -28,17 +32,17 @@ public class PacketTravelEvent implements IMessage {
   long pos;
   int powerUse;
   boolean conserveMotion;
-  int source;
+  ResourceLocation source;
   int hand;
 
   public PacketTravelEvent() {
   }
 
-  public PacketTravelEvent(BlockPos pos, int powerUse, boolean conserveMotion, TravelSource source, EnumHand hand) {
+  public PacketTravelEvent(BlockPos pos, int powerUse, boolean conserveMotion, ITravelSource source, EnumHand hand) {
     this.pos = pos.toLong();
     this.powerUse = powerUse;
     this.conserveMotion = conserveMotion;
-    this.source = source.ordinal();
+    this.source = source.getRegistryName();
     this.hand = (hand == null ? EnumHand.MAIN_HAND : hand).ordinal();
   }
 
@@ -47,7 +51,7 @@ public class PacketTravelEvent implements IMessage {
     buf.writeLong(pos);
     buf.writeInt(powerUse);
     buf.writeBoolean(conserveMotion);
-    buf.writeInt(source);
+    ByteBufUtils.writeUTF8String(buf, source == null ? TravelSource.STAFF.getRegistryName().toString() : source.toString());
     buf.writeInt(hand);
   }
 
@@ -56,7 +60,7 @@ public class PacketTravelEvent implements IMessage {
     pos = buf.readLong();
     powerUse = buf.readInt();
     conserveMotion = buf.readBoolean();
-    source = buf.readInt();
+    source = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
     hand = buf.readInt();
   }
 
@@ -66,7 +70,10 @@ public class PacketTravelEvent implements IMessage {
     public IMessage onMessage(PacketTravelEvent message, MessageContext ctx) {
       Entity toTp = ctx.getServerHandler().player;
 
-      TravelSource source = NullHelper.notnullJ(TravelSource.values()[message.source], "Enum.values()");
+      ITravelSource source = TravelSourceRegistry.getValue(message.source);
+      if (source == null) {
+        source = TravelSource.STAFF;
+      }
       EnumHand hand = NullHelper.notnullJ(EnumHand.values()[message.hand], "Enum.values()");
 
       doServerTeleport(toTp, BlockPos.fromLong(message.pos), message.powerUse, message.conserveMotion, source, hand);
@@ -74,7 +81,7 @@ public class PacketTravelEvent implements IMessage {
       return null;
     }
 
-    private boolean doServerTeleport(@Nonnull Entity toTp, @Nonnull BlockPos pos, int powerUse, boolean conserveMotion, @Nonnull TravelSource source,
+    private boolean doServerTeleport(@Nonnull Entity toTp, @Nonnull BlockPos pos, int powerUse, boolean conserveMotion, @Nonnull ITravelSource source,
         @Nonnull EnumHand hand) {
         
       if (source == TravelSource.TELEPAD) {
@@ -96,7 +103,7 @@ public class PacketTravelEvent implements IMessage {
       }
       pos = evt.getTarget();
 
-      SoundHelper.playSound(toTp.world, toTp, source.sound, 1.0F, 1.0F);
+      SoundHelper.playSound(toTp.world, toTp, source.getSound(), 1.0F, 1.0F);
 
       if (player != null) {
         player.setPositionAndUpdate(pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5);
@@ -104,7 +111,7 @@ public class PacketTravelEvent implements IMessage {
         toTp.setPosition(pos.getX(), pos.getY(), pos.getZ());
       }
 
-      SoundHelper.playSound(toTp.world, toTp, source.sound, 1.0F, 1.0F);
+      SoundHelper.playSound(toTp.world, toTp, source.getSound(), 1.0F, 1.0F);
 
       toTp.fallDistance = 0;
 

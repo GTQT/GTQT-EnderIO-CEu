@@ -366,6 +366,13 @@ item.item_travel_staff.tooltip.detailed.line4=Shift-R-Click will teleport the
 item.item_travel_staff.tooltip.detailed.line5=player a short distance
 item.item_travel_staff.chat.notEnoughPower=Not enough power
 
+item.item_teleport_staff.name=Staff of Teleport
+item.item_teleport_staff.tooltip.common=Long-range travel staff
+item.item_teleport_staff.tooltip.waypoint=Can target JourneyMap waypoints
+item.item_teleport_staff.tooltip.detailed.line1=R-Click teleports to selected Travel Anchors,
+item.item_teleport_staff.tooltip.detailed.line2=Ender IO targets, or JourneyMap waypoints.
+item.item_teleport_staff.tooltip.detailed.line3=Shift-R-Click blinks a short distance.
+
 item.item_staff_of_levity.name=Staff of Levity
 item.item_staff_of_levity.tooltip.detailed.line1=Applies anti-gravity to the 
 item.item_staff_of_levity.tooltip.detailed.line2=player with Shift-R-Click
