@@ -51,12 +51,60 @@ public class ItemEndergyCapacitor extends Item {
     return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.SILVER_CAPACITOR);
   }
 
+  public static ItemEndergyCapacitor create_electrum(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.ELECTRUM_CAPACITOR);
+  }
+
   public static ItemEndergyCapacitor create_energetic_silver(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.ENERGETIC_SILVER_CAPACITOR);
   }
 
   public static ItemEndergyCapacitor create_vivid(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.VIVID_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_lithium_cadmium(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.LITHIUM_CADMIUM_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_vanadium(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.VANADIUM_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_niobium_titanium(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.NIOBIUM_TITANIUM_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_naquadah(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.NAQUADAH_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_enriched_naquadah(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.ENRICHED_NAQUADAH_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_europium(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.EUROPIUM_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_naquadria(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.NAQUADRIA_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_americium(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.AMERICIUM_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_tritanium(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.TRITANIUM_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_duranium(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.DURANIUM_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_neutronium(@Nonnull IModObject modObject, @Nullable Block block) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.NEUTRONIUM_CAPACITOR);
   }
 
   protected ItemEndergyCapacitor(@Nonnull IModObject modObject, @Nonnull ICapacitorData data) {

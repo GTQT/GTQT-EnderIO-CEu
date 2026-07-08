@@ -189,6 +189,138 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Capacitor Electrum" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotElectrum"/><item />
+        <item name="enderio:item_capacitor_silver"/><item name="dustRedstone"/><item name="enderio:item_capacitor_silver"/>
+        <item /><item name="ingotElectrum"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_electrum"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Lithium Cadmium" required="false">
+    <crafting>
+      <grid>
+        <item name="dustLithium"/><item name="ingotCadmium"/><item name="dustLithium"/>
+        <item name="enderio:item_capacitor_electrum"/><item name="dustRedstone"/><item name="enderio:item_capacitor_electrum"/>
+        <item name="dustLithium"/><item name="ingotCadmium"/><item name="dustLithium"/>
+      </grid>
+      <output name="enderio:item_capacitor_lithium_cadmium"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Vanadium" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotVanadium"/><item />
+        <item name="enderio:item_capacitor_lithium_cadmium"/><item name="dustGlowstone"/><item name="enderio:item_capacitor_lithium_cadmium"/>
+        <item /><item name="ingotVanadium"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_vanadium"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Niobium Titanium" required="false">
+    <crafting>
+      <grid>
+        <item name="wireGtSingleNiobiumTitanium"/><item name="ingotNiobiumTitanium"/><item name="wireGtSingleNiobiumTitanium"/>
+        <item name="enderio:item_capacitor_vanadium"/><item name="POWDER_INFINITY"/><item name="enderio:item_capacitor_vanadium"/>
+        <item name="wireGtSingleNiobiumTitanium"/><item name="ingotNiobiumTitanium"/><item name="wireGtSingleNiobiumTitanium"/>
+      </grid>
+      <output name="enderio:item_capacitor_niobium_titanium"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Naquadah" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotNaquadah"/><item />
+        <item name="enderio:item_capacitor_niobium_titanium"/><item name="itemPulsatingPowder"/><item name="enderio:item_capacitor_niobium_titanium"/>
+        <item /><item name="ingotNaquadah"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_naquadah"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Enriched Naquadah" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotNaquadahEnriched"/><item />
+        <item name="enderio:item_capacitor_naquadah"/><item name="VIBRANT_POWDER"/><item name="enderio:item_capacitor_naquadah"/>
+        <item /><item name="ingotNaquadahEnriched"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_enriched_naquadah"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Europium" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotEuropium"/><item />
+        <item name="enderio:item_capacitor_enriched_naquadah"/><item name="ENDER_CRYSTAL"/><item name="enderio:item_capacitor_enriched_naquadah"/>
+        <item /><item name="ingotEuropium"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_europium"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Naquadria" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotNaquadria"/><item />
+        <item name="enderio:item_capacitor_europium"/><item name="ENDER_CRYSTAL"/><item name="enderio:item_capacitor_europium"/>
+        <item /><item name="ingotNaquadria"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_naquadria"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Americium" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotAmericium"/><item />
+        <item name="enderio:item_capacitor_naquadria"/><item name="skullSentientEnder"/><item name="enderio:item_capacitor_naquadria"/>
+        <item /><item name="ingotAmericium"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_americium"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Tritanium" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotTritanium"/><item />
+        <item name="enderio:item_capacitor_americium"/><item name="END_STEEL"/><item name="enderio:item_capacitor_americium"/>
+        <item /><item name="ingotTritanium"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_tritanium"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Duranium" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotDuranium"/><item />
+        <item name="enderio:item_capacitor_americium"/><item name="END_STEEL"/><item name="enderio:item_capacitor_americium"/>
+        <item /><item name="ingotDuranium"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_duranium"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Neutronium" required="false">
+    <crafting>
+      <grid>
+        <item name="enderio:item_capacitor_tritanium"/><item name="ingotNeutronium"/><item name="enderio:item_capacitor_duranium"/>
+        <item name="enderio:item_capacitor_stellar"/><item name="minecraft:nether_star"/><item name="enderio:item_capacitor_stellar"/>
+        <item name="enderio:item_capacitor_duranium"/><item name="ingotNeutronium"/><item name="enderio:item_capacitor_tritanium"/>
+      </grid>
+      <output name="enderio:item_capacitor_neutronium"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Capacitor Grainy" required="true">
     <crafting>
       <grid size="2x3">

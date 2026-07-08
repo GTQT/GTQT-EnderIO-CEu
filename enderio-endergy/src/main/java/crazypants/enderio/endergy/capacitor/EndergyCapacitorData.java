@@ -16,8 +16,22 @@ public enum EndergyCapacitorData implements ICapacitorData {
 
   // Modded ingots progression using silver and tin instead of gold and copper
   SILVER_CAPACITOR("silver", 1.0f),
+  ELECTRUM_CAPACITOR("electrum", 1.5f),
   ENERGETIC_SILVER_CAPACITOR("energetic_silver", 2.0f),
   VIVID_CAPACITOR("vivid", 3.0f),
+
+  // GTQT/GregTech material progression
+  LITHIUM_CADMIUM_CAPACITOR("lithium_cadmium", 2.0f),
+  VANADIUM_CAPACITOR("vanadium", 3.0f),
+  NIOBIUM_TITANIUM_CAPACITOR("niobium_titanium", 3.25f),
+  NAQUADAH_CAPACITOR("naquadah", 3.5f),
+  ENRICHED_NAQUADAH_CAPACITOR("enriched_naquadah", 3.75f),
+  EUROPIUM_CAPACITOR("europium", 4.0f),
+  NAQUADRIA_CAPACITOR("naquadria", 4.25f),
+  AMERICIUM_CAPACITOR("americium", 4.5f),
+  TRITANIUM_CAPACITOR("tritanium", 4.75f),
+  DURANIUM_CAPACITOR("duranium", 4.75f),
+  NEUTRONIUM_CAPACITOR("neutronium", 5.0f),
 
   ;
 
