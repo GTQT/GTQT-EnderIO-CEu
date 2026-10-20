@@ -26,7 +26,7 @@ include 'ap', ':endercore', ':enderio-base', ':enderio-machines', \
         ':enderio-conduits-refinedstorage', ':enderio-conduits-opencomputers', ':enderio-conduits-appliedenergistics', ':enderio-conduits-mekanism'
         
 
-rootProject.name = 'EnderIO'
+rootProject.name = 'EnderIO-CEu'
 
 rootProject.children.each { project ->
     String fileBaseName = project.name.toLowerCase()

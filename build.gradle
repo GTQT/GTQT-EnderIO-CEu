@@ -310,6 +310,10 @@ tasks.named('build').configure {
 
 def combineProjects = subprojects.findAll { it.name.replace(":", "") in modsToCombine }
 
+dependencies {
+    combineProjects.each { compileOnly(project(it.path)) }
+}
+
 tasks.named('jar', Jar).configure {
     dependsOn combineProjects.collect { it.tasks.named('build') }
     dependsOn subprojects.findAll { "endercore" in it.name }.collect { it.tasks.named('build') }

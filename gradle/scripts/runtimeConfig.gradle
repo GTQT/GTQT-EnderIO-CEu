@@ -15,6 +15,7 @@ def enabledDependencies = [
   "profiler": false,
   "bloodmagic": false,
   "openblocks": false,
+  "routers": false,
   // Modules
   "endergy": true,
   "zoo": false,
@@ -69,6 +70,7 @@ def runtime_only_dependencies = [
     'curse.maven:integrated-dynamics-236307:3159505': "indy",
     'curse.maven:common-capabilities-247007:3053017': "indy",
     'curse.maven:cyclops-core-232758:3159497': "indy",
+    'curse.maven:modular-routers-250294:2954953': "routers",
     // 'curse.maven:flare-692142:7857037': "profiler",
     // 'curse.maven:configanytime-870276:5212709': "profiler",
     // 'curse.maven:spark-unforged-900927:6751437': "profiler",

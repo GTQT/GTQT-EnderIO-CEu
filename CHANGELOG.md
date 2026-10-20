@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.5.2] - 2026-10-14
+
+_Ender Core version: 0.5.84_
+
+### Bugfixes
+
+- Modular Routers and XNet can now properly pull from Impulse Hoppers and Crafters
+- Improved performance of Soul Binder JEI handler
+- Disabled crafting recipes will no longer be added to JEI (thanks Aedial!)
+- Painted blocks will now correctly stack with broken versions of themselves (thanks Aedial!)
+
+*Note: this release is not widely tested, please report any bugs you find*
+
 ## [5.5.1] - 2026-08-25
 
 _Ender Core version: 0.5.83_

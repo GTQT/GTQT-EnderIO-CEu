@@ -15,6 +15,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.util.Prep;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import static crazypants.enderio.base.recipe.MachineRecipeInput.getInputForSlot;
@@ -72,7 +73,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
 
   private void applyExtraTags(final @Nonnull ItemStack target, @Nonnull final ItemStack paintSource, final @Nonnull ResultStack[] result) {
     for (ResultStack resultStack : result) {
-      if (PaintUtil.isPainted(resultStack.item)) {
+      if (PaintUtil.isPainted(resultStack.item) && !(resultStack.item.getItem() instanceof ItemBlock)) {
         PaintUtil.setPaintSource(resultStack.item, paintSource);
         if (target.getItem() != resultStack.item.getItem()) {
           PaintUtil.setOriginalStack(resultStack.item, target);

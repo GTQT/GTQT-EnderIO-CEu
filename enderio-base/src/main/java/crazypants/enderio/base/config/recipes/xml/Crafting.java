@@ -109,7 +109,7 @@ public class Crafting extends AbstractCrafting {
             @Override
             public void apply(@Nonnull ItemStack alternative) {
               Log.debug("Providing synthetic alternative recipe to JEI for oredicted output: " + alternative + ": " + grid.getIngredients());
-              JeiAccessor.addAlternativeRecipe(new ShapedRecipes("", grid.getWidth(), grid.getHeight(), grid.getIngredients(), alternative));
+              JeiAccessor.addAlternativeRecipe(recipeRL, new ShapedRecipes("", grid.getWidth(), grid.getHeight(), grid.getIngredients(), alternative));
             }
           });
         }
@@ -128,7 +128,7 @@ public class Crafting extends AbstractCrafting {
             @Override
             public void apply(@Nonnull ItemStack alternative) {
               Log.debug("Providing synthetic alternative recipe to JEI for oredicted output: " + alternative + ": " + shapeless.getIngredients());
-              JeiAccessor.addAlternativeRecipe(new ShapelessRecipes("", alternative, shapeless.getIngredients()));
+              JeiAccessor.addAlternativeRecipe(recipeRL, new ShapelessRecipes("", alternative, shapeless.getIngredients()));
             }
           });
         }

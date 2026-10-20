@@ -5,6 +5,8 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class JeiAccessor {
 
@@ -33,10 +35,31 @@ public class JeiAccessor {
     }
   }
 
-  static final @Nonnull NNList<IRecipe> ALTERNATIVES = new NNList<>();
+  private static final @Nonnull NNList<AlternativeRecipe> ALTERNATIVES = new NNList<>();
 
-  public static void addAlternativeRecipe(@Nonnull IRecipe recipe) {
-    ALTERNATIVES.add(recipe);
+  public static void addAlternativeRecipe(@Nonnull ResourceLocation parentRecipeName, @Nonnull IRecipe recipe) {
+      ALTERNATIVES.add(new AlternativeRecipe(parentRecipeName, recipe));
+  }
+
+  static @Nonnull NNList<IRecipe> getActiveAlternativeRecipes() {
+    NNList<IRecipe> activeAlternatives = new NNList<>();
+    for (AlternativeRecipe alternative : ALTERNATIVES) {
+      if (ForgeRegistries.RECIPES.containsKey(alternative.parentRecipeName)) {
+        activeAlternatives.add(alternative.recipe);
+      }
+    }
+    return activeAlternatives;
+  }
+
+  private static class AlternativeRecipe {
+
+    private final @Nonnull ResourceLocation parentRecipeName;
+    private final @Nonnull IRecipe recipe;
+
+    private AlternativeRecipe(@Nonnull ResourceLocation parentRecipeName, @Nonnull IRecipe recipe) {
+      this.parentRecipeName = parentRecipeName;
+      this.recipe = recipe;
+    }
   }
 
 }

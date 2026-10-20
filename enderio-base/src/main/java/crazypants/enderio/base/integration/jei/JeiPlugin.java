@@ -26,6 +26,7 @@ import mezz.jei.api.ingredients.IModIngredientRegistration;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.ProgressManager;
 
 @JEIPlugin
@@ -68,10 +69,11 @@ public class JeiPlugin implements IModPlugin {
     registry.addGhostIngredientHandler(GuiContainerBaseEIO.class, new GhostIngredientHandlerEnderIO());
 
     bar.step("Fake Recipes");
-    if (!JeiAccessor.ALTERNATIVES.isEmpty()) {
-      // These are lookups for the outputs, the real recipes with the same input create a different oredicted variant of the output item.
-      registry.addRecipes(JeiAccessor.ALTERNATIVES, VanillaRecipeCategoryUid.CRAFTING);
-      Log.debug("Provided " + JeiAccessor.ALTERNATIVES.size() + " synthetic crafting recipes to JEI");
+    NNList<IRecipe> alternatives = JeiAccessor.getActiveAlternativeRecipes();
+    if (!alternatives.isEmpty()) {
+      // These output lookups depend on an enabled crafting recipe with the same input and a different oredicted output.
+      registry.addRecipes(alternatives, VanillaRecipeCategoryUid.CRAFTING);
+      Log.debug("Provided " + alternatives.size() + " synthetic crafting recipes to JEI");
     }
 
     bar.step("Hiding Items");

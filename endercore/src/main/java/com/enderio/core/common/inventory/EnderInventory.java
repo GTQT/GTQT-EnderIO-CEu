@@ -1,8 +1,10 @@
 package com.enderio.core.common.inventory;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -32,7 +34,7 @@ public class EnderInventory implements IItemHandler {
   }
 
   private final @Nonnull Map<String, InventorySlot> idents = new HashMap<String, InventorySlot>();
-  final @Nonnull EnumMap<EnderInventory.Type, NNList<InventorySlot>> slots = new EnumMap<EnderInventory.Type, NNList<InventorySlot>>(EnderInventory.Type.class);
+  final @Nonnull EnumMap<EnderInventory.Type, List<InventorySlot>> slots = new EnumMap<>(EnderInventory.Type.class);
   private final @Nonnull View allSlots = new View(EnderInventory.Type.ALL);
   private @Nullable TileEntity owner = null;
   public static final @Nonnull IItemHandler OFF = new IItemHandler() {
@@ -66,12 +68,22 @@ public class EnderInventory implements IItemHandler {
 
   public EnderInventory() {
     for (EnderInventory.Type type : EnderInventory.Type.values()) {
-      slots.put(type, new NNList<InventorySlot>());
+      slots.put(type, new ArrayList<InventorySlot>());
     }
   }
 
   public void add(@Nonnull EnderInventory.Type type, @Nonnull Enum<?> ident, @Nonnull InventorySlot slot) {
     add(type, ident.name(), slot);
+  }
+
+  private static boolean typeConsistent(EnderInventory.Type fromSlotMap, EnderInventory.Type fromSlotData) {
+    if (fromSlotMap == EnderInventory.Type.ALL || fromSlotMap == fromSlotData) {
+      return true;
+    }
+    if (fromSlotMap != EnderInventory.Type.INOUT && fromSlotData != EnderInventory.Type.INOUT) {
+      return false;
+    }
+    return fromSlotMap == EnderInventory.Type.INPUT || fromSlotMap == EnderInventory.Type.OUTPUT || fromSlotData == EnderInventory.Type.INPUT || fromSlotData == EnderInventory.Type.OUTPUT;
   }
 
   public void add(@Nonnull EnderInventory.Type type, @Nonnull String ident, @Nonnull InventorySlot slot) {
@@ -82,14 +94,12 @@ public class EnderInventory implements IItemHandler {
       throw new RuntimeException("Invalid type '" + type + "'");
     }
     idents.put(ident, slot);
-    slots.get(type).add(slot);
-    slots.get(EnderInventory.Type.ALL).add(slot);
-    if (type == EnderInventory.Type.INPUT || type == EnderInventory.Type.OUTPUT) {
-      slots.get(EnderInventory.Type.INOUT).add(slot);
-    }
-    if (type == EnderInventory.Type.INOUT) {
-      slots.get(EnderInventory.Type.INPUT).add(slot);
-      slots.get(EnderInventory.Type.OUTPUT).add(slot);
+    for (Map.Entry<EnderInventory.Type, List<InventorySlot>> entry : slots.entrySet()) {
+      if (typeConsistent(entry.getKey(), type)) {
+        entry.getValue().add(slot);
+      } else {
+        entry.getValue().add(null);
+      }
     }
     slot.setOwner(owner);
   }
@@ -205,24 +215,27 @@ public class EnderInventory implements IItemHandler {
 
     @Override
     public @Nonnull ItemStack getStackInSlot(int slot) {
-      if (slot >= 0 && slot < getSlots()) {
-        return slots.get(type).get(slot).getStackInSlot(0);
+      InventorySlot slotObj = getSlot(slot);
+      if (slotObj != null) {
+        return slotObj.getStackInSlot(0);
       }
       return CAKE;
     }
 
     @Override
     public @Nonnull ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-      if (!stack.isEmpty() && slot >= 0 && slot < getSlots()) {
-        return slots.get(type).get(slot).insertItem(0, stack, simulate);
+      InventorySlot slotObj = getSlot(slot);
+      if (!stack.isEmpty() && slotObj != null) {
+        return slotObj.insertItem(0, stack, simulate);
       }
       return stack;
     }
 
     @Override
     public @Nonnull ItemStack extractItem(int slot, int amount, boolean simulate) {
-      if (amount > 0 && slot >= 0 && slot < getSlots()) {
-        return slots.get(type).get(slot).extractItem(0, amount, simulate);
+      InventorySlot slotObj = getSlot(slot);
+      if (amount > 0 && slotObj != null) {
+        return slotObj.extractItem(0, amount, simulate);
       }
       return CAKE;
     }
